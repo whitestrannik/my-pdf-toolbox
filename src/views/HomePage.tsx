@@ -48,7 +48,7 @@ const tools = [
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           PDF Tools at Your Fingertips
@@ -75,20 +75,6 @@ export const HomePage: React.FC = () => {
             </Card>
           </Link>
         ))}
-      </div>
-
-      <div className="mt-16 text-center">
-        <Card className="bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-700">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-sky-900 dark:text-sky-100 mb-4">
-              🔒 Privacy First
-            </h2>
-            <p className="text-sky-800 dark:text-sky-200">
-              All processing happens locally in your browser. Your files never leave your device, 
-              ensuring complete privacy and security for your documents.
-            </p>
-          </div>
-        </Card>
       </div>
     </div>
   );
