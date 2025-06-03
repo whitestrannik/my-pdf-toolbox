@@ -57,4 +57,4 @@ test.describe("App", () => {
     await expect(page.locator("text=Privacy First")).toBeVisible();
     await expect(page.locator("text=Always Available")).toBeVisible();
   });
-});
+}); 

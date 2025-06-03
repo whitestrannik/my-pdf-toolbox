@@ -7,10 +7,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/my-pdf-toolbox/",
-  server: {
-    port: 4173,
-    strictPort: true,
-  },
   test: {
     globals: true,
     environment: "jsdom",
