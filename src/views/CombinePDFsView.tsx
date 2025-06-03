@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal } from '../components';
+import { Card, Dropzone, Button, Modal, Toast } from '../components';
 import { mergePDFs } from '../pdf-utils';
 import { saveAs } from 'file-saver';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -13,7 +13,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 interface UploadedFile {
   file: File;
   id: string;
-  thumbnail?: string;
+  thumbnail: string;
   error?: string;
 }
 
@@ -21,6 +21,12 @@ interface ProcessingState {
   isProcessing: boolean;
   progress: string;
   error?: string;
+}
+
+interface ToastState {
+  isVisible: boolean;
+  message: string;
+  type: 'success' | 'error';
 }
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -32,14 +38,18 @@ export const CombinePDFsView: React.FC = () => {
     progress: ''
   });
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
 
-  const generateThumbnail = useCallback(async (file: File): Promise<string> => {
+  const generatePDFThumbnail = useCallback(async (file: File): Promise<string> => {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const page = await pdf.getPage(1); // Get first page
-      
-      const scale = 0.5; // Smaller scale for thumbnail
+      const page = await pdf.getPage(1);
+      const scale = 0.5;
       const viewport = page.getViewport({ scale });
       
       const canvas = document.createElement('canvas');
@@ -54,9 +64,8 @@ export const CombinePDFsView: React.FC = () => {
       
       return canvas.toDataURL('image/jpeg', 0.8);
     } catch (error) {
-      console.error('Failed to generate thumbnail:', error);
-      // Return placeholder SVG on error
-      return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEwMCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTI4IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zMCAzNkg3MFY0Nkg2MFY0Nkg0MFY0Nkg3MFY1Nkg3MFY2Nkg0MFY2Nkg2MFY2Nkg3MFY3Nkg3MFY4Nkg0MFY4Nkg2MFY4Nkg3MFY5NkgzMFYzNloiIGZpbGw9IiM2QjczODAiLz4KPC9zdmc+';
+      console.error('PDF thumbnail generation failed:', error);
+      return '';
     }
   }, []);
 
@@ -78,15 +87,16 @@ export const CombinePDFsView: React.FC = () => {
       const fileObj: UploadedFile = {
         file,
         id: `${file.name}-${Date.now()}-${Math.random()}`,
+        thumbnail: '',
         error: error || undefined
       };
       
       if (!error) {
-        // Generate thumbnail in real-time
         try {
-          fileObj.thumbnail = await generateThumbnail(file);
+          fileObj.thumbnail = await generatePDFThumbnail(file);
         } catch (err) {
           console.error('Thumbnail generation failed:', err);
+          fileObj.error = 'Failed to generate thumbnail';
         }
       }
       
@@ -94,28 +104,44 @@ export const CombinePDFsView: React.FC = () => {
     }
     
     setUploadedFiles(prev => [...prev, ...newFiles]);
-  }, [generateThumbnail]);
+  }, [generatePDFThumbnail]);
 
   const removeFile = (id: string) => {
-    setUploadedFiles(prev => prev.filter(f => f.id !== id));
+    setUploadedFiles(prev => prev.filter(file => file.id !== id));
   };
 
-  const reorderFiles = (fromIndex: number, toIndex: number) => {
+  const moveFileUp = (index: number) => {
+    if (index > 0) {
+      setUploadedFiles(prev => {
+        const newFiles = [...prev];
+        [newFiles[index - 1], newFiles[index]] = [newFiles[index], newFiles[index - 1]];
+        return newFiles;
+      });
+    }
+  };
+
+  const moveFileDown = (index: number) => {
     setUploadedFiles(prev => {
-      const newFiles = [...prev];
-      const [removed] = newFiles.splice(fromIndex, 1);
-      newFiles.splice(toIndex, 0, removed);
-      return newFiles;
+      if (index < prev.length - 1) {
+        const newFiles = [...prev];
+        [newFiles[index], newFiles[index + 1]] = [newFiles[index + 1], newFiles[index]];
+        return newFiles;
+      }
+      return prev;
     });
   };
 
-  const handleCombine = async () => {
-    const validFiles = uploadedFiles.filter(f => !f.error);
+  const clearAllFiles = () => {
+    setUploadedFiles([]);
+  };
+
+  const handleMerge = async () => {
+    const validFiles = uploadedFiles.filter(file => !file.error);
     if (validFiles.length < 2) {
       setProcessing({
         isProcessing: false,
         progress: '',
-        error: 'At least 2 valid PDF files are required for combining'
+        error: 'Please upload at least 2 valid PDF files to combine'
       });
       setShowModal(true);
       return;
@@ -123,14 +149,14 @@ export const CombinePDFsView: React.FC = () => {
 
     setProcessing({
       isProcessing: true,
-      progress: 'Preparing files for merge...'
+      progress: 'Preparing files for merging...'
     });
 
     try {
       setProcessing(prev => ({ ...prev, progress: 'Merging PDF files...' }));
       
       const result = await mergePDFs({
-        files: validFiles.map(f => f.file)
+        files: validFiles.map(file => file.file)
       });
 
       if (!result.success) {
@@ -141,22 +167,22 @@ export const CombinePDFsView: React.FC = () => {
       
       // Generate filename with timestamp
       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-      const filename = `combined-pdf-${timestamp}.pdf`;
+      const filename = `combined-pdfs-${timestamp}.pdf`;
       
       // Download the file
       saveAs(result.pdfBlob, filename);
       
       setProcessing({
         isProcessing: false,
-        progress: `Successfully combined ${validFiles.length} PDFs (${result.totalPages} pages total)`
+        progress: ''
       });
-      setShowModal(true);
       
-      // Clear files after successful combine
-      setTimeout(() => {
-        setUploadedFiles([]);
-        setProcessing({ isProcessing: false, progress: '' });
-      }, 2000);
+      // Show success toast instead of modal
+      setToast({
+        isVisible: true,
+        message: `Successfully combined ${validFiles.length} PDFs!`,
+        type: 'success'
+      });
 
     } catch (error) {
       setProcessing({
@@ -168,8 +194,8 @@ export const CombinePDFsView: React.FC = () => {
     }
   };
 
-  const validFiles = uploadedFiles.filter(f => !f.error);
-  const hasErrors = uploadedFiles.some(f => f.error);
+  const validFiles = uploadedFiles.filter(file => !file.error);
+  const hasErrors = uploadedFiles.some(file => file.error);
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
@@ -178,7 +204,7 @@ export const CombinePDFsView: React.FC = () => {
           📄 Combine PDFs
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Upload multiple PDF files and merge them into a single document. Maximum file size: 20MB per file.
+          Merge multiple PDF files into a single document. Maximum file size: 20MB per file.
         </p>
       </div>
 
@@ -212,7 +238,7 @@ export const CombinePDFsView: React.FC = () => {
                   {processing.isProcessing ? 'Processing...' : 'Drop PDF files here'}
                 </p>
                 <p className="text-sm">
-                  {processing.isProcessing ? processing.progress : 'or click to browse (max 20MB per file)'}
+                  {processing.isProcessing ? processing.progress : 'or click to browse (max 20MB each)'}
                 </p>
               </div>
             </div>
@@ -225,14 +251,24 @@ export const CombinePDFsView: React.FC = () => {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Files to Combine ({validFiles.length} valid)
               </h2>
-              <Button 
-                variant="primary" 
-                disabled={validFiles.length < 2 || processing.isProcessing}
-                onClick={handleCombine}
-                isLoading={processing.isProcessing}
-              >
-                {processing.isProcessing ? processing.progress : 'Combine & Download'}
-              </Button>
+              <div className="flex space-x-2">
+                <Button 
+                  variant="secondary" 
+                  size="sm"
+                  onClick={clearAllFiles}
+                  disabled={processing.isProcessing}
+                >
+                  Clear All
+                </Button>
+                <Button 
+                  variant="primary" 
+                  disabled={validFiles.length < 2 || processing.isProcessing}
+                  onClick={handleMerge}
+                  isLoading={processing.isProcessing}
+                >
+                  {processing.isProcessing ? processing.progress : 'Combine PDFs'}
+                </Button>
+              </div>
             </div>
             
             {hasErrors && (
@@ -241,8 +277,8 @@ export const CombinePDFsView: React.FC = () => {
                   Some files have errors:
                 </h3>
                 <ul className="text-sm text-red-600 dark:text-red-300 space-y-1">
-                  {uploadedFiles.filter(f => f.error).map(f => (
-                    <li key={f.id}>• {f.error}</li>
+                  {uploadedFiles.filter(file => file.error).map(file => (
+                    <li key={file.id}>• {file.error}</li>
                   ))}
                 </ul>
               </div>
@@ -259,15 +295,15 @@ export const CombinePDFsView: React.FC = () => {
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
                     {fileObj.thumbnail ? (
                       <img 
                         src={fileObj.thumbnail} 
                         alt={`${fileObj.file.name} thumbnail`}
-                        className="w-12 h-16 object-cover rounded border"
+                        className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-12 h-16 bg-gray-200 dark:bg-gray-600 rounded border flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center">
                         <span className="text-xs text-gray-500 dark:text-gray-400">PDF</span>
                       </div>
                     )}
@@ -288,36 +324,45 @@ export const CombinePDFsView: React.FC = () => {
                     )}
                   </div>
                   
+                  {/* Order Number */}
+                  <div className="flex-shrink-0">
+                    <span className="inline-flex items-center justify-center w-8 h-8 bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200 rounded-full text-sm font-medium">
+                      {index + 1}
+                    </span>
+                  </div>
+                  
                   {/* Controls */}
-                  <div className="flex items-center space-x-2">
-                    {!fileObj.error && index > 0 && (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => reorderFiles(index, index - 1)}
-                        disabled={processing.isProcessing}
-                      >
-                        ↑
-                      </Button>
-                    )}
-                    {!fileObj.error && index < validFiles.length - 1 && (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => reorderFiles(index, index + 1)}
-                        disabled={processing.isProcessing}
-                      >
-                        ↓
-                      </Button>
-                    )}
-                    <Button
-                      variant="secondary"
-                      size="sm"
+                  <div className="flex-shrink-0 flex space-x-1">
+                    <button
+                      onClick={() => moveFileUp(index)}
+                      disabled={index === 0 || processing.isProcessing}
+                      className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Move up"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => moveFileDown(index)}
+                      disabled={index === uploadedFiles.length - 1 || processing.isProcessing}
+                      className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Move down"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <button
                       onClick={() => removeFile(fileObj.id)}
                       disabled={processing.isProcessing}
+                      className="p-1 text-red-400 hover:text-red-600 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Remove file"
                     >
-                      ✕
-                    </Button>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -326,22 +371,24 @@ export const CombinePDFsView: React.FC = () => {
         )}
       </div>
 
-      {/* Status Modal */}
+      {/* Error Modal */}
       <Modal 
         isOpen={showModal} 
         onClose={() => setShowModal(false)}
-        title={processing.error ? 'Error' : 'Success'}
+        title="Error"
       >
-        <div className="text-gray-600 dark:text-gray-400">
-          {processing.error ? (
-            <div className="text-red-600 dark:text-red-400">
-              {processing.error}
-            </div>
-          ) : (
-            processing.progress
-          )}
+        <div className="text-red-600 dark:text-red-400">
+          {processing.error}
         </div>
       </Modal>
+
+      {/* Success Toast */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+      />
     </div>
   );
 }; 

@@ -10,11 +10,11 @@ describe('CombinePDFsView', () => {
     expect(screen.getByText('📄 Combine PDFs')).toBeInTheDocument();
     
     // Check for description
-    expect(screen.getByText(/Upload multiple PDF files and merge them into a single document/)).toBeInTheDocument();
+    expect(screen.getByText(/Merge multiple PDF files into a single document/)).toBeInTheDocument();
     
     // Check for dropzone
     expect(screen.getByText('Drop PDF files here')).toBeInTheDocument();
-    expect(screen.getByText('or click to browse (max 20MB per file)')).toBeInTheDocument();
+    expect(screen.getByText('or click to browse (max 20MB each)')).toBeInTheDocument();
   });
 
   it('shows file size limit in description', () => {

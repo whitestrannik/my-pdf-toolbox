@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal } from '../components';
+import { Card, Dropzone, Button, Modal, Toast } from '../components';
 import { compressPDF } from '../pdf-utils';
 import { saveAs } from 'file-saver';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -13,23 +13,27 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 interface UploadedFile {
   file: File;
   id: string;
-  thumbnail?: string;
+  thumbnail: string;
   error?: string;
-  pageCount?: number;
 }
 
 interface ProcessingState {
   isProcessing: boolean;
   progress: string;
   error?: string;
-  result?: {
-    originalSize: number;
-    compressedSize: number;
-    compressionRatio: number;
-  };
 }
 
-type CompressionLevel = 'low' | 'medium' | 'high';
+interface CompressionResult {
+  originalSize: number;
+  compressedSize: number;
+  reductionPercentage: number;
+}
+
+interface ToastState {
+  isVisible: boolean;
+  message: string;
+  type: 'success' | 'error';
+}
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
@@ -39,17 +43,21 @@ export const CompressPDFView: React.FC = () => {
     isProcessing: false,
     progress: ''
   });
-  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>('medium');
+  const [compressionLevel, setCompressionLevel] = useState<'low' | 'medium' | 'high'>('medium');
+  const [compressionResult, setCompressionResult] = useState<CompressionResult | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
 
-  const generateThumbnail = useCallback(async (file: File): Promise<{ thumbnail: string; pageCount: number }> => {
+  const generatePDFThumbnail = useCallback(async (file: File): Promise<string> => {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const pageCount = pdf.numPages;
-      const page = await pdf.getPage(1); // Get first page
-      
-      const scale = 0.5; // Smaller scale for thumbnail
+      const page = await pdf.getPage(1);
+      const scale = 0.5;
       const viewport = page.getViewport({ scale });
       
       const canvas = document.createElement('canvas');
@@ -62,14 +70,10 @@ export const CompressPDFView: React.FC = () => {
         viewport: viewport
       }).promise;
       
-      const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
-      return { thumbnail, pageCount };
+      return canvas.toDataURL('image/jpeg', 0.8);
     } catch (error) {
-      console.error('Failed to generate thumbnail:', error);
-      return { 
-        thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEwMCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTI4IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zMCAzNkg3MFY0Nkg2MFY0Nkg0MFY0Nkg3MFY1Nkg3MFY2Nkg0MFY2Nkg2MFY2Nkg3MFY3Nkg3MFY4Nkg0MFY4Nkg2MFY4Nkg3MFY5NkgzMFYzNloiIGZpbGw9IiM2QjczODAiLz4KPC9zdmc+',
-        pageCount: 0
-      };
+      console.error('PDF thumbnail generation failed:', error);
+      return '';
     }
   }, []);
 
@@ -94,36 +98,56 @@ export const CompressPDFView: React.FC = () => {
       setUploadedFile({
         file,
         id: `${file.name}-${Date.now()}`,
+        thumbnail: '',
         error
       });
       return;
     }
     
-    setProcessing({ isProcessing: true, progress: 'Analyzing PDF...' });
-    
     try {
-      const { thumbnail, pageCount } = await generateThumbnail(file);
+      const thumbnail = await generatePDFThumbnail(file);
       setUploadedFile({
         file,
         id: `${file.name}-${Date.now()}`,
         thumbnail,
-        pageCount
+        error: undefined
       });
+      setCompressionResult(null); // Reset previous results
     } catch (err) {
       console.error('Failed to process PDF:', err);
       setUploadedFile({
         file,
         id: `${file.name}-${Date.now()}`,
+        thumbnail: '',
         error: 'Failed to process PDF file'
       });
     }
-    
-    setProcessing({ isProcessing: false, progress: '' });
-  }, [generateThumbnail]);
+  }, [generatePDFThumbnail]);
 
   const removeFile = () => {
     setUploadedFile(null);
-    setProcessing({ isProcessing: false, progress: '' });
+    setCompressionResult(null);
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const getCompressionDescription = (level: 'low' | 'medium' | 'high') => {
+    switch (level) {
+      case 'low':
+        return 'Minimal compression - Keeps high quality, smaller file size reduction';
+      case 'medium':
+        return 'Balanced compression - Good quality with moderate file size reduction';
+      case 'high':
+        return 'Maximum compression - Significant file size reduction, may reduce quality';
+      default:
+        return '';
+    }
   };
 
   const handleCompress = async () => {
@@ -139,7 +163,7 @@ export const CompressPDFView: React.FC = () => {
 
     setProcessing({
       isProcessing: true,
-      progress: 'Preparing to compress PDF...'
+      progress: 'Analyzing PDF structure...'
     });
 
     try {
@@ -156,7 +180,18 @@ export const CompressPDFView: React.FC = () => {
 
       setProcessing(prev => ({ ...prev, progress: 'Preparing download...' }));
       
-      // Generate filename with compression level and timestamp
+      // Calculate compression stats
+      const originalSize = uploadedFile.file.size;
+      const compressedSize = result.pdfBlob.size;
+      const reductionPercentage = Math.round(((originalSize - compressedSize) / originalSize) * 100);
+      
+      setCompressionResult({
+        originalSize,
+        compressedSize,
+        reductionPercentage
+      });
+      
+      // Generate filename with timestamp and compression level
       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
       const baseFilename = uploadedFile.file.name.replace('.pdf', '');
       const filename = `${baseFilename}-compressed-${compressionLevel}-${timestamp}.pdf`;
@@ -164,24 +199,17 @@ export const CompressPDFView: React.FC = () => {
       // Download the file
       saveAs(result.pdfBlob, filename);
       
-      const compressionRatio = ((uploadedFile.file.size - result.compressedSize) / uploadedFile.file.size) * 100;
-      
       setProcessing({
         isProcessing: false,
-        progress: `Successfully compressed PDF`,
-        result: {
-          originalSize: uploadedFile.file.size,
-          compressedSize: result.compressedSize,
-          compressionRatio
-        }
+        progress: ''
       });
-      setShowModal(true);
       
-      // Clear file after successful compression
-      setTimeout(() => {
-        setUploadedFile(null);
-        setProcessing({ isProcessing: false, progress: '' });
-      }, 3000);
+      // Show success toast with compression details
+      setToast({
+        isVisible: true,
+        message: `PDF compressed successfully! ${reductionPercentage}% size reduction`,
+        type: 'success'
+      });
 
     } catch (error) {
       setProcessing({
@@ -191,22 +219,6 @@ export const CompressPDFView: React.FC = () => {
       });
       setShowModal(true);
     }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const canCompress = uploadedFile && !uploadedFile.error;
-
-  const compressionDescriptions = {
-    low: 'Small file size reduction, highest quality',
-    medium: 'Balanced compression and quality',
-    high: 'Maximum compression, lower quality'
   };
 
   return (
@@ -273,40 +285,69 @@ export const CompressPDFView: React.FC = () => {
               </Button>
             </div>
             
-            <div className={`flex items-center space-x-4 p-3 border rounded-lg ${
-              uploadedFile.error 
-                ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10' 
-                : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50'
-            }`}>
-              {/* Thumbnail */}
-              <div className="flex-shrink-0">
-                {uploadedFile.thumbnail ? (
-                  <img 
-                    src={uploadedFile.thumbnail} 
-                    alt={`${uploadedFile.file.name} thumbnail`}
-                    className="w-12 h-16 object-cover rounded border"
-                  />
-                ) : (
-                  <div className="w-12 h-16 bg-gray-200 dark:bg-gray-600 rounded border flex items-center justify-center">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">PDF</span>
-                  </div>
-                )}
+            {uploadedFile.error ? (
+              <div className="p-3 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10 rounded-lg">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {uploadedFile.error}
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4 p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                {/* Thumbnail */}
+                <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
+                  {uploadedFile.thumbnail ? (
+                    <img 
+                      src={uploadedFile.thumbnail} 
+                      alt={`${uploadedFile.file.name} thumbnail`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">PDF</span>
+                    </div>
+                  )}
+                </div>
+                
+                {/* File Info */}
+                <div className="flex-grow min-w-0">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    {uploadedFile.file.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {formatFileSize(uploadedFile.file.size)}
+                  </p>
+                </div>
+              </div>
+            )}
+          </Card>
+        )}
+
+        {compressionResult && (
+          <Card>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              Compression Results
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Original Size</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {formatFileSize(compressionResult.originalSize)}
+                </p>
               </div>
               
-              {/* File Info */}
-              <div className="flex-grow min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  {uploadedFile.file.name}
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Compressed Size</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {formatFileSize(compressionResult.compressedSize)}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {formatFileSize(uploadedFile.file.size)}
-                  {uploadedFile.pageCount && ` • ${uploadedFile.pageCount} pages`}
+              </div>
+              
+              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <p className="text-sm text-green-600 dark:text-green-400">Size Reduction</p>
+                <p className="text-lg font-semibold text-green-700 dark:text-green-300">
+                  {compressionResult.reductionPercentage}%
                 </p>
-                {uploadedFile.error && (
-                  <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-                    {uploadedFile.error}
-                  </p>
-                )}
               </div>
             </div>
           </Card>
@@ -324,81 +365,62 @@ export const CompressPDFView: React.FC = () => {
                   Compression Level
                 </label>
                 <div className="space-y-3">
-                  {(['low', 'medium', 'high'] as CompressionLevel[]).map(level => (
+                  {(['low', 'medium', 'high'] as const).map((level) => (
                     <label key={level} className="flex items-start space-x-3 cursor-pointer">
                       <input
                         type="radio"
                         name="compressionLevel"
                         value={level}
                         checked={compressionLevel === level}
-                        onChange={(e) => setCompressionLevel(e.target.value as CompressionLevel)}
+                        onChange={(e) => setCompressionLevel(e.target.value as 'low' | 'medium' | 'high')}
                         className="mt-1"
                       />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
-                            {level} Compression
-                          </span>
-                          {level === 'medium' && (
-                            <span className="text-xs bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200 px-2 py-1 rounded">
-                              Recommended
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {compressionDescriptions[level]}
+                      <div className="flex-grow">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+                          {level} Compression
+                        </span>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {getCompressionDescription(level)}
                         </p>
                       </div>
                     </label>
                   ))}
                 </div>
               </div>
-            </div>
 
-            <div className="mt-6 flex justify-end">
-              <Button 
-                variant="primary" 
-                disabled={!canCompress || processing.isProcessing}
-                onClick={handleCompress}
-                isLoading={processing.isProcessing}
-              >
-                {processing.isProcessing ? processing.progress : 'Compress & Download'}
-              </Button>
+              <div className="flex justify-end pt-4">
+                <Button 
+                  variant="primary" 
+                  disabled={processing.isProcessing}
+                  onClick={handleCompress}
+                  isLoading={processing.isProcessing}
+                >
+                  {processing.isProcessing ? processing.progress : 'Compress & Download'}
+                </Button>
+              </div>
             </div>
           </Card>
         )}
       </div>
 
-      {/* Status Modal */}
+      {/* Error Modal */}
       <Modal 
         isOpen={showModal} 
         onClose={() => setShowModal(false)}
-        title={processing.error ? 'Error' : 'Success'}
+        title="Error"
       >
-        <div className="text-gray-600 dark:text-gray-400">
-          {processing.error ? (
-            <div className="text-red-600 dark:text-red-400">
-              {processing.error}
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <p>{processing.progress}</p>
-              {processing.result && (
-                <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-                  <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
-                    Compression Results:
-                  </h4>
-                  <div className="text-sm text-green-600 dark:text-green-300 space-y-1">
-                    <p>Original size: {formatFileSize(processing.result.originalSize)}</p>
-                    <p>Compressed size: {formatFileSize(processing.result.compressedSize)}</p>
-                    <p>Size reduction: {processing.result.compressionRatio.toFixed(1)}%</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+        <div className="text-red-600 dark:text-red-400">
+          {processing.error}
         </div>
       </Modal>
+
+      {/* Success Toast */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+      />
     </div>
   );
 }; 

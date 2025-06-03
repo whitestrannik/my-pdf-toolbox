@@ -4,4 +4,6 @@ export { Toggle } from './Toggle';
 export { Dropzone } from './Dropzone';
 export { Modal } from './Modal';
 export { Header } from './Header';
-export { Navigation } from './Navigation'; 
+export { Footer } from './Footer';
+export { Navigation } from './Navigation';
+export { Toast } from './Toast'; 

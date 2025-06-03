@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal } from '../components';
+import { Card, Dropzone, Button, Modal, Toast } from '../components';
 import { convertImagesToPDF } from '../pdf-utils';
 import { saveAs } from 'file-saver';
 
@@ -23,6 +23,12 @@ interface ConversionSettings {
   quality: number; // 0.1 to 1.0
 }
 
+interface ToastState {
+  isVisible: boolean;
+  message: string;
+  type: 'success' | 'error';
+}
+
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB per image
 const SUPPORTED_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'];
 
@@ -39,6 +45,11 @@ export const ImagesToPDFView: React.FC = () => {
     quality: 0.9
   });
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
 
   const generateImageThumbnail = useCallback((file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -173,15 +184,15 @@ export const ImagesToPDFView: React.FC = () => {
       
       setProcessing({
         isProcessing: false,
-        progress: `Successfully converted ${validImages.length} images to PDF`
+        progress: ''
       });
-      setShowModal(true);
       
-      // Clear images after successful conversion
-      setTimeout(() => {
-        setUploadedImages([]);
-        setProcessing({ isProcessing: false, progress: '' });
-      }, 2000);
+      // Show success toast instead of modal
+      setToast({
+        isVisible: true,
+        message: `Successfully converted ${validImages.length} images to PDF!`,
+        type: 'success'
+      });
 
     } catch (error) {
       setProcessing({
@@ -475,6 +486,14 @@ export const ImagesToPDFView: React.FC = () => {
           )}
         </div>
       </Modal>
+
+      {/* Success Toast */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+      />
     </div>
   );
 }; 

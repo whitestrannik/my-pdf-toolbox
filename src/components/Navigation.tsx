@@ -15,15 +15,9 @@ const tools = [
   },
   { 
     id: 'split-pdfs', 
-    name: 'Split to PDFs', 
+    name: 'Split PDFs', 
     icon: '✂️',
     path: '/split-pdfs' 
-  },
-  { 
-    id: 'split-images', 
-    name: 'Split to Images', 
-    icon: '🖨️',
-    path: '/split-images' 
   },
   { 
     id: 'compress', 

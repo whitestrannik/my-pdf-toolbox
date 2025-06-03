@@ -1,36 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
-import { Header, Navigation } from './components';
-import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, ImagesToPDFView, ReorderPagesView, PlaceholderView } from './views';
+import { Header, Navigation, Footer } from './components';
+import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, ImagesToPDFView, ReorderPagesView } from './views';
 
 function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
           <Header />
           <Navigation />
           
-          <main>
+          <main className="flex-grow">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/combine" element={<CombinePDFsView />} />
               <Route path="/images-to-pdf" element={<ImagesToPDFView />} />
               <Route path="/split-pdfs" element={<SplitPDFsView />} />
-              <Route 
-                path="/split-images" 
-                element={
-                  <PlaceholderView 
-                    title="Split to Images"
-                    icon="🖨️"
-                    description="Convert PDF pages to individual image files"
-                  />
-                } 
-              />
               <Route path="/compress" element={<CompressPDFView />} />
               <Route path="/reorder" element={<ReorderPagesView />} />
             </Routes>
           </main>
+
+          <Footer />
         </div>
       </Router>
     </ThemeProvider>

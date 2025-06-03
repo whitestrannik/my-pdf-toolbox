@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal } from '../components';
+import { Card, Dropzone, Button, Modal, Toast } from '../components';
 import { reorderPDF } from '../pdf-utils';
 import { saveAs } from 'file-saver';
 import * as pdfjsLib from 'pdfjs-dist';
@@ -34,6 +34,12 @@ interface DragState {
   dropTargetIndex: number | null;
 }
 
+interface ToastState {
+  isVisible: boolean;
+  message: string;
+  type: 'success' | 'error';
+}
+
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
 export const ReorderPagesView: React.FC = () => {
@@ -49,6 +55,11 @@ export const ReorderPagesView: React.FC = () => {
     dropTargetIndex: null
   });
   const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
 
   const generatePageThumbnails = useCallback(async (file: File): Promise<PageInfo[]> => {
     try {
@@ -268,16 +279,15 @@ export const ReorderPagesView: React.FC = () => {
       
       setProcessing({
         isProcessing: false,
-        progress: `Successfully reordered ${pages.length} pages`
+        progress: ''
       });
-      setShowModal(true);
       
-      // Clear file after successful reorder
-      setTimeout(() => {
-        setUploadedFile(null);
-        setPages([]);
-        setProcessing({ isProcessing: false, progress: '' });
-      }, 2000);
+      // Show success toast
+      setToast({
+        isVisible: true,
+        message: `Successfully reordered ${pages.length} pages!`,
+        type: 'success'
+      });
 
     } catch (error) {
       setProcessing({
@@ -489,6 +499,14 @@ export const ReorderPagesView: React.FC = () => {
           )}
         </div>
       </Modal>
+
+      {/* Success Toast */}
+      <Toast
+        isVisible={toast.isVisible}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+      />
     </div>
   );
 }; 

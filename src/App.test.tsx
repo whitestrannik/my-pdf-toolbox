@@ -11,8 +11,8 @@ describe('App', () => {
 
   it('renders homepage with privacy section', () => {
     render(<App />);
-    const privacySection = screen.getByText(/Privacy First/i);
-    expect(privacySection).toBeInTheDocument();
+    const privacySections = screen.getAllByText(/Privacy First/i);
+    expect(privacySections.length).toBeGreaterThan(0);
   });
 
   it('renders navigation', () => {
