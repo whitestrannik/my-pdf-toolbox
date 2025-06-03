@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
@@ -200,15 +198,15 @@ h6 {
   background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 50%, #f1f5f9 100%);
 }
 
-/* Glass Effect */
+/* Glass Effect with Better Contrast */
 .glass-effect {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Elevation System */
+/* Modern Elevation */
 .elevation-1 {
   box-shadow: var(--shadow-sm);
 }
@@ -229,9 +227,10 @@ h6 {
   box-shadow: var(--shadow-2xl);
 }
 
-/* Tooltip System */
+/* Tooltip Styles */
 .tooltip-container {
   position: relative;
+  display: inline-block;
 }
 
 .tooltip {
@@ -239,21 +238,25 @@ h6 {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
+  margin-top: 8px;
+  padding: 12px 16px;
   background: rgba(0, 0, 0, 0.9);
   color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
   white-space: nowrap;
+  z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.2s ease;
-  z-index: 1000;
-  margin-top: 5px;
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+  transform: translateX(-50%) translateY(4px);
+  max-width: 280px;
+  white-space: normal;
+  text-align: center;
 }
 
 .tooltip::before {
@@ -262,7 +265,7 @@ h6 {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 5px solid transparent;
+  border: 6px solid transparent;
   border-bottom-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -272,20 +275,19 @@ h6 {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Mobile tooltip positioning */
+/* Responsive tooltip positioning */
 @media (max-width: 640px) {
   .tooltip {
-    position: fixed;
-    top: auto;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    left: 0;
+    right: 0;
     transform: none;
-    text-align: center;
+    margin-left: -50px;
+    margin-right: -50px;
   }
 
   .tooltip::before {
-    display: none;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .tooltip-container:hover .tooltip {

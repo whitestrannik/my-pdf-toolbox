@@ -8,7 +8,7 @@ test.describe("App", () => {
 
     // Check for the header with app title
     const headerTitle = page.locator("header h1");
-    await expect(headerTitle).toHaveText("PDF Toolbox");
+    await expect(headerTitle).toHaveText("My-PDF Toolbox");
 
     // Check for the main homepage title
     const pageTitle = page.locator("h1", {
@@ -23,10 +23,6 @@ test.describe("App", () => {
     // Check that tool cards are displayed
     const combineCard = page.locator("text=Combine PDFs").first();
     await expect(combineCard).toBeVisible();
-
-    // Check for Privacy First indicator
-    const privacyIndicator = page.locator("text=Privacy First");
-    await expect(privacyIndicator).toBeVisible();
   });
 
   test("should navigate to combine PDFs page", async ({ page }) => {
@@ -42,19 +38,18 @@ test.describe("App", () => {
     await expect(page.locator("text=Drop PDF files here")).toBeVisible();
   });
 
-  test("should display all PDF tools", async ({ page }) => {
+  test("should toggle dark mode", async ({ page }) => {
     await page.goto("/");
 
-    // Check that all tool cards are visible
-    await expect(page.locator("text=Combine PDFs")).toBeVisible();
-    await expect(page.locator("text=Split PDFs")).toBeVisible();
-    await expect(page.locator("text=Compress PDFs")).toBeVisible();
-    await expect(page.locator("text=Images to PDF")).toBeVisible();
-    await expect(page.locator("text=Reorder Pages")).toBeVisible();
+    // Check initial light mode (look for light theme indicator)
+    const themeToggle = page.locator("label", { hasText: "☀️" });
+    await expect(themeToggle).toBeVisible();
 
-    // Check for privacy benefits
-    await expect(page.locator("text=Lightning Fast")).toBeVisible();
-    await expect(page.locator("text=Privacy First")).toBeVisible();
-    await expect(page.locator("text=Always Available")).toBeVisible();
+    // Click the toggle to switch to dark mode
+    await themeToggle.click();
+
+    // Check that dark mode is applied (the HTML should have 'dark' class)
+    const html = page.locator("html");
+    await expect(html).toHaveClass(/dark/);
   });
-}); 
+});

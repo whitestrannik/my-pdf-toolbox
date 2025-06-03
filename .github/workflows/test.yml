@@ -29,8 +29,7 @@ jobs:
         run: npm test
       - name: Run build
         run: npm run build
-      # Temporarily disabled due to local caching issues
-      # - name: Install Playwright browsers
-      #   run: npx playwright install --with-deps
-      # - name: Run E2E tests
-      #   run: npm run e2e
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      - name: Run E2E tests
+        run: npm run e2e
