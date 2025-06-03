@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header, Navigation } from './components';
-import { HomePage, CombinePDFsView, PlaceholderView } from './views';
+import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, PlaceholderView } from './views';
 
 function App() {
   return (
@@ -25,16 +25,7 @@ function App() {
                   />
                 } 
               />
-              <Route 
-                path="/split-pdfs" 
-                element={
-                  <PlaceholderView 
-                    title="Split to PDFs"
-                    icon="✂️"
-                    description="Split a PDF into multiple separate documents"
-                  />
-                } 
-              />
+              <Route path="/split-pdfs" element={<SplitPDFsView />} />
               <Route 
                 path="/split-images" 
                 element={
@@ -45,16 +36,7 @@ function App() {
                   />
                 } 
               />
-              <Route 
-                path="/compress" 
-                element={
-                  <PlaceholderView 
-                    title="Compress PDF"
-                    icon="🗜️"
-                    description="Reduce PDF file size while maintaining quality"
-                  />
-                } 
-              />
+              <Route path="/compress" element={<CompressPDFView />} />
               <Route 
                 path="/reorder" 
                 element={
