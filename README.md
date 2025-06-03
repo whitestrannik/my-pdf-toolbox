@@ -1,54 +1,121 @@
-# React + TypeScript + Vite
+# 📄 PDF Toolbox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful, privacy-focused PDF processing application built with React, TypeScript, and Vite. All processing happens locally in your browser - no uploads, no server-side processing, complete privacy.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Visit the application: **[https://YOUR_USERNAME.github.io/my-pdf-toolbox/](https://YOUR_USERNAME.github.io/my-pdf-toolbox/)**
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **🔗 Merge PDFs** - Combine multiple PDF files into one
+- **✂️ Split PDFs** - Extract pages or convert to images  
+- **🗜️ Compress PDFs** - Reduce file size with quality options
+- **📄 Images to PDF** - Convert JPEG/PNG images to PDF
+- **🔀 Reorder Pages** - Rearrange PDF pages with drag & drop
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 🔒 Privacy First
+- **100% Client-Side Processing** - No uploads, no server
+- **Local File Processing** - Files never leave your device
+- **No Data Collection** - Zero tracking or analytics
+- **Secure & Fast** - Modern browser-based PDF utilities
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 19 + TypeScript + Vite
+- **Styling**: TailwindCSS 4 + Custom Design System
+- **PDF Processing**: pdf-lib, pdfjs-dist
+- **Testing**: Vitest + React Testing Library + Playwright
+- **Deployment**: GitHub Pages + GitHub Actions
+
+## 🏗️ Development
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/my-pdf-toolbox.git
+cd my-pdf-toolbox
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### Available Scripts
+```bash
+npm run dev        # Start development server
+npm run build      # Build for production
+npm run preview    # Preview production build
+npm run test       # Run unit tests
+npm run e2e        # Run E2E tests
+npm run lint       # Run ESLint
 ```
+
+## 🚀 Deployment
+
+### GitHub Pages (Recommended)
+
+1. **Push to GitHub**: Ensure your code is pushed to the `main` branch
+2. **Enable Pages**: Go to repository Settings → Pages → Source: GitHub Actions
+3. **Auto Deploy**: Every push to `main` triggers automatic deployment via GitHub Actions
+
+### Manual Deployment
+```bash
+# Build the application
+npm run build
+
+# Deploy the dist/ folder to your hosting provider
+```
+
+## 🧪 Testing
+
+- **Unit Tests**: Vitest with React Testing Library (91 tests)
+- **E2E Tests**: Playwright for full user workflows
+- **Coverage**: Comprehensive test coverage for PDF utilities
+
+```bash
+npm test           # Unit tests
+npm run e2e        # E2E tests  
+npm run coverage   # Test coverage report
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── views/          # Page components for each tool
+├── pdf-utils/      # Core PDF processing utilities
+├── context/        # React contexts (theme, etc.)
+├── styles/         # Global styles and design system
+└── assets/         # Static assets
+
+tests/
+├── unit/           # Unit tests
+└── e2e/            # End-to-end tests
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [pdf-lib](https://pdf-lib.js.org/) - PDF creation and modification
+- [PDF.js](https://mozilla.github.io/pdf.js/) - PDF rendering and parsing
+- [Lucide](https://lucide.dev/) - Beautiful icons
+- [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
