@@ -4,7 +4,7 @@ A powerful, privacy-focused PDF processing application built with React, TypeScr
 
 ## 🚀 Live Demo
 
-Visit the application: **[https://YOUR_USERNAME.github.io/my-pdf-toolbox/](https://YOUR_USERNAME.github.io/my-pdf-toolbox/)**
+Visit the application: **[https://whitestrannik.github.io/my-pdf-toolbox/](https://YOUR_USERNAME.github.io/my-pdf-toolbox/)**
 
 ## ✨ Features
 
