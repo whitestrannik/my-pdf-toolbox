@@ -1,17 +1,25 @@
 import React from 'react';
+import { Shield } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 py-6 mt-8">
+    <footer className="glass-effect border-t border-white/20 py-8 mt-12">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col items-center justify-center space-y-2 text-gray-600 dark:text-gray-400">
-          <div className="flex items-center space-x-2">
-            <span className="text-lg">🔒</span>
-            <span className="font-medium">Privacy First</span>
+        <div className="flex flex-col items-center justify-center space-y-3 text-slate-600">
+          <div className="flex items-center space-x-3">
+            <div className="bg-emerald-100 rounded-xl p-2">
+              <Shield className="w-5 h-5 text-emerald-600" strokeWidth={2} />
+            </div>
+            <span className="font-semibold text-slate-700 text-lg">Privacy First</span>
           </div>
-          <p className="text-sm text-center">
-          All processing happens locally in your browser. Your files never leave your device, ensuring complete privacy and security for your documents.
+          <p className="text-center max-w-md leading-relaxed">
+            All processing happens locally in your browser. Your files never leave your device, ensuring complete privacy and security for your documents.
           </p>
+          <div className="pt-2 text-center">
+            <p className="text-sm text-slate-400">
+              © 2024 PDF Toolbox • Professional PDF Processing
+            </p>
+          </div>
         </div>
       </div>
     </footer>

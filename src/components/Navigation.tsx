@@ -1,59 +1,63 @@
 import { NavLink } from 'react-router-dom';
+import { FileText, ImageIcon, Scissors, Minimize2, RotateCcw } from 'lucide-react';
 
 const tools = [
   { 
     id: 'combine', 
     name: 'Combine PDFs', 
-    icon: '📄',
+    icon: FileText,
     path: '/combine' 
   },
   { 
     id: 'images-to-pdf', 
     name: 'Images to PDF', 
-    icon: '🖼️',
+    icon: ImageIcon,
     path: '/images-to-pdf' 
   },
   { 
     id: 'split-pdfs', 
     name: 'Split PDFs', 
-    icon: '✂️',
+    icon: Scissors,
     path: '/split-pdfs' 
   },
   { 
     id: 'compress', 
     name: 'Compress PDF', 
-    icon: '🗜️',
+    icon: Minimize2,
     path: '/compress' 
   },
   { 
     id: 'reorder', 
     name: 'Reorder Pages', 
-    icon: '🔃',
+    icon: RotateCcw,
     path: '/reorder' 
   }
 ];
 
 export const Navigation: React.FC = () => {
   return (
-    <nav className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+    <nav className="glass-effect border-b border-white/20 py-2">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex space-x-8 overflow-x-auto">
-          {tools.map((tool) => (
-            <NavLink
-              key={tool.id}
-              to={tool.path}
-              className={({ isActive }) =>
-                `flex items-center space-x-2 py-4 px-2 border-b-2 whitespace-nowrap transition-colors ${
-                  isActive
-                    ? 'border-sky-500 text-sky-600 dark:text-sky-400'
-                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300'
-                }`
-              }
-            >
-              <span className="text-lg">{tool.icon}</span>
-              <span className="font-medium">{tool.name}</span>
-            </NavLink>
-          ))}
+        <div className="flex space-x-1 overflow-x-auto">
+          {tools.map((tool) => {
+            const IconComponent = tool.icon;
+            return (
+              <NavLink
+                key={tool.id}
+                to={tool.path}
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-800 hover:bg-white/60 hover:shadow-sm'
+                  }`
+                }
+              >
+                <IconComponent className="w-5 h-5" strokeWidth={2} />
+                <span>{tool.name}</span>
+              </NavLink>
+            );
+          })}
         </div>
       </div>
     </nav>

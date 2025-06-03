@@ -1,30 +1,34 @@
 import { Link } from 'react-router-dom';
-import { Toggle } from './Toggle';
-import { useTheme } from '../context/ThemeContext';
+import { FileText } from 'lucide-react';
 
 export const Header: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
-
   return (
-    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+    <header className="glass-effect sticky top-0 z-50 px-6 py-4 border-b border-white/20">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-          <div className="bg-sky-600 dark:bg-sky-500 rounded-lg p-2">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+        <Link 
+          to="/" 
+          className="flex items-center space-x-3 hover:opacity-80 transition-all duration-200 group"
+        >
+          <div className="bg-gradient-primary rounded-2xl p-3 shadow-lg shadow-blue-500/25 group-hover:shadow-xl group-hover:shadow-blue-500/30 transition-all duration-200 group-hover:-translate-y-0.5">
+            <FileText className="w-6 h-6 text-white" strokeWidth={2} />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            My-PDF Toolbox
-          </h1>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
+              PDF Toolbox
+            </h1>
+            <p className="text-sm text-slate-500 font-medium">
+              Professional PDF Tools
+            </p>
+          </div>
         </Link>
 
-        <div className="flex items-center space-x-4">
-          <Toggle
-            checked={theme === 'dark'}
-            onChange={toggleTheme}
-            label={theme === 'dark' ? '🌙' : '☀️'}
-          />
+        <div className="flex items-center space-x-3">
+          <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium text-emerald-700">
+              Privacy First
+            </span>
+          </div>
         </div>
       </div>
     </header>

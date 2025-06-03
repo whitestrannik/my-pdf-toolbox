@@ -2,32 +2,29 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { describe, it, expect } from 'vitest';
-import { ThemeProvider } from './context/ThemeContext';
 import { Header, Navigation, Footer } from './components';
 import { CombinePDFsView } from './views';
 
 // Test component that renders the app content without the outer Router
 const TestAppContent = ({ initialPath = '/' }: { initialPath?: string }) => {
   return (
-    <ThemeProvider>
-      <MemoryRouter initialEntries={[initialPath]}>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-          <Header />
-          {initialPath !== '/' && <Navigation />}
-          <main className="flex-grow">
-            {initialPath === '/combine' ? <CombinePDFsView /> : <div>Test Page</div>}
-          </main>
-          <Footer />
-        </div>
-      </MemoryRouter>
-    </ThemeProvider>
+    <MemoryRouter initialEntries={[initialPath]}>
+      <div className="min-h-screen bg-gradient-hero flex flex-col">
+        <Header />
+        {initialPath !== '/' && <Navigation />}
+        <main className="flex-grow">
+          {initialPath === '/combine' ? <CombinePDFsView /> : <div>Test Page</div>}
+        </main>
+        <Footer />
+      </div>
+    </MemoryRouter>
   );
 };
 
 describe('App', () => {
   it('renders app title in header', () => {
     render(<App />);
-    const headline = screen.getByText(/My-PDF Toolbox/i);
+    const headline = screen.getByRole('heading', { name: 'PDF Toolbox' });
     expect(headline).toBeInTheDocument();
   });
 
