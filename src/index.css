@@ -65,7 +65,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #f8fafc 100%);
+  background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 50%, #f1f5f9 100%);
   min-height: 100vh;
 }
 
@@ -173,7 +173,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-gradient-hero {
-  background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #f8fafc 100%);
+  background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 50%, #f1f5f9 100%);
 }
 
 /* Glass Effect with Better Contrast */
@@ -213,10 +213,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .tooltip {
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 8px;
+  margin-top: 8px;
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.9);
   color: white;
@@ -228,21 +228,44 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-  transform: translateX(-50%) translateY(-4px);
+  transform: translateX(-50%) translateY(4px);
+  max-width: 280px;
+  white-space: normal;
+  text-align: center;
 }
 
-.tooltip::after {
+.tooltip::before {
   content: '';
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.9);
+  border-bottom-color: rgba(0, 0, 0, 0.9);
 }
 
 .tooltip-container:hover .tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Responsive tooltip positioning */
+@media (max-width: 640px) {
+  .tooltip {
+    left: 0;
+    right: 0;
+    transform: none;
+    margin-left: -50px;
+    margin-right: -50px;
+  }
+  
+  .tooltip::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .tooltip-container:hover .tooltip {
+    transform: none;
+  }
 }

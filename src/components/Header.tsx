@@ -24,8 +24,8 @@ export const Header: React.FC = () => {
 
         <div className="flex items-center space-x-3">
           <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full tooltip-container">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-emerald-700">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></div>
+            <span className="text-sm font-medium text-emerald-700 leading-none">
               Privacy First
             </span>
             <div className="tooltip">

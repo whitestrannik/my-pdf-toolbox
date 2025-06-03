@@ -49,7 +49,7 @@ export const Navigation: React.FC = () => {
                   `flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium ${
                     isActive
                       ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-800 hover:bg-white/60 hover:shadow-sm'
+                      : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50 hover:shadow-sm hover:border hover:border-slate-200'
                   }`
                 }
               >
