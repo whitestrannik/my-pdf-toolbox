@@ -57,18 +57,34 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## 🔍 Phase 4: Core PDF Logic
-- [ ] `merge.ts` – Merge multiple PDFs
-- [ ] `convert.ts` – Convert images to PDF
-- [ ] `split.ts` – Split PDFs into multiple PDFs (range/page)
-- [ ] `split.ts` – Split PDFs into images (JPG/PNG)
-- [ ] `compress.ts` – Compress PDFs with quality levels
-- [ ] `reorder.ts` – Reorder pages in PDF
+## ✅ Phase 4: Core PDF Logic *(COMPLETED)*
+- [x] `merge.ts` – Merge multiple PDFs
+- [x] `convert.ts` – Convert images to PDF
+- [x] `split.ts` – Split PDFs into multiple PDFs (range/page)
+- [x] `split.ts` – Split PDFs into images (JPG/PNG)
+- [x] `compress.ts` – Compress PDFs with quality levels
+- [x] `reorder.ts` – Reorder pages in PDF
 
 Each utility must be:
-- A pure function
-- Unit tested
-- Return usable errors
+- A pure function ✅
+- Unit tested ✅
+- Return usable errors ✅
+
+**Completed:**
+- **Core PDF Utilities:** All 5 utilities implemented with full TypeScript support
+  - `merge.ts`: Combines multiple PDF files with validation and error handling
+  - `convert.ts`: Converts images (JPEG, PNG) to PDF with automatic scaling
+  - `split.ts`: Splits PDFs to multiple PDFs or images with range/page selection
+  - `compress.ts`: PDF compression with 3 levels (low, medium, high) and size reporting
+  - `reorder.ts`: Page reordering with validation and utility helper functions
+- **Dependencies:** Installed pdf-lib, pdfjs-dist, file-saver, jszip with TypeScript types
+- **Pure Functions:** All utilities are pure functions with consistent interfaces
+- **Comprehensive Testing:** 60 unit tests across all utilities (100% coverage of logic)
+  - Input validation, error handling, return structure validation
+  - Proper mocking for browser APIs in test environment
+  - All tests passing with Vitest
+- **Error Handling:** Consistent success/failure response patterns with detailed error messages
+- **Build Verification:** TypeScript compilation and production build successful
 
 ---
 
