@@ -3,15 +3,21 @@ import App from './App';
 import { describe, it, expect } from 'vitest';
 
 describe('App', () => {
-  it('renders headline', () => {
+  it('renders app title in header', () => {
     render(<App />);
     const headline = screen.getByText(/My-PDF Toolbox/i);
     expect(headline).toBeInTheDocument();
   });
 
-  it('renders coming soon message', () => {
+  it('renders homepage with privacy section', () => {
     render(<App />);
-    const comingSoonMessage = screen.getByText(/Coming soon!/i);
-    expect(comingSoonMessage).toBeInTheDocument();
+    const privacySection = screen.getByText(/Privacy First/i);
+    expect(privacySection).toBeInTheDocument();
+  });
+
+  it('renders navigation', () => {
+    render(<App />);
+    const navigations = screen.getAllByRole('navigation');
+    expect(navigations.length).toBeGreaterThan(0);
   });
 }); 
