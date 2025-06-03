@@ -7,6 +7,7 @@ interface DropzoneProps {
   multiple?: boolean;
   children?: ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export const Dropzone: React.FC<DropzoneProps> = ({
@@ -14,7 +15,8 @@ export const Dropzone: React.FC<DropzoneProps> = ({
   accept,
   multiple = true,
   children,
-  className = ''
+  className = '',
+  disabled = false
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -33,16 +35,21 @@ export const Dropzone: React.FC<DropzoneProps> = ({
     e.preventDefault();
     setIsDragOver(false);
     
+    if (disabled) return;
+    
     const files = Array.from(e.dataTransfer.files);
     onFilesDrop(files);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
+    
     const files = Array.from(e.target.files || []);
     onFilesDrop(files);
   };
 
   const handleClick = () => {
+    if (disabled) return;
     fileInputRef.current?.click();
   };
 
@@ -50,17 +57,19 @@ export const Dropzone: React.FC<DropzoneProps> = ({
     <div
       data-testid="dropzone-container"
       className={`
-        relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-        ${isDragOver 
-          ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20' 
-          : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+        relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
+        ${disabled 
+          ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed opacity-50'
+          : isDragOver 
+            ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20 cursor-pointer' 
+            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer'
         }
         ${className}
       `}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      onClick={handleClick}
+      onDragOver={disabled ? undefined : handleDragOver}
+      onDragLeave={disabled ? undefined : handleDragLeave}
+      onDrop={disabled ? undefined : handleDrop}
+      onClick={disabled ? undefined : handleClick}
     >
       <input
         ref={fileInputRef}
@@ -70,6 +79,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
         onChange={handleFileSelect}
         className="hidden"
         data-testid="file-input"
+        disabled={disabled}
       />
       
       {children || (

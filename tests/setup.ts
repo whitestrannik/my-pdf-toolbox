@@ -35,6 +35,37 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
+// Mock DOMMatrix for pdfjs-dist
+global.DOMMatrix = class DOMMatrix {
+  constructor() {
+    // Mock implementation
+  }
+  
+  static fromMatrix() {
+    return new DOMMatrix();
+  }
+  
+  static fromFloat32Array() {
+    return new DOMMatrix();
+  }
+  
+  static fromFloat64Array() {
+    return new DOMMatrix();
+  }
+  
+  multiply() {
+    return new DOMMatrix();
+  }
+  
+  translate() {
+    return new DOMMatrix();
+  }
+  
+  scale() {
+    return new DOMMatrix();
+  }
+};
+
 // Global cleanup after each test to prevent DOM accumulation
 afterEach(() => {
   cleanup();
