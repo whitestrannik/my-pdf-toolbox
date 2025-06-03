@@ -9,7 +9,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   checked,
   onChange,
   label,
-  className = ''
+  className = "",
 }) => {
   return (
     <label className={`inline-flex items-center cursor-pointer ${className}`}>
@@ -20,14 +20,18 @@ export const Toggle: React.FC<ToggleProps> = ({
           onChange={(e) => onChange(e.target.checked)}
           className="sr-only"
         />
-        <div className={`block w-14 h-8 rounded-full transition-colors ${
-          checked 
-            ? 'bg-sky-600 dark:bg-sky-500' 
-            : 'bg-gray-300 dark:bg-gray-600'
-        }`}></div>
-        <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${
-          checked ? 'transform translate-x-6' : ''
-        }`}></div>
+        <div
+          className={`block w-14 h-8 rounded-full transition-colors ${
+            checked
+              ? "bg-sky-600 dark:bg-sky-500"
+              : "bg-gray-300 dark:bg-gray-600"
+          }`}
+        ></div>
+        <div
+          className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${
+            checked ? "transform translate-x-6" : ""
+          }`}
+        ></div>
       </div>
       {label && (
         <span className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -36,4 +40,4 @@ export const Toggle: React.FC<ToggleProps> = ({
       )}
     </label>
   );
-}; 
+};

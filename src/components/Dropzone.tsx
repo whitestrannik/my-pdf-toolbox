@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import type { ReactNode } from 'react';
+import { useState, useRef } from "react";
+import type { ReactNode } from "react";
 
 interface DropzoneProps {
   onFilesDrop: (files: File[]) => void;
@@ -15,8 +15,8 @@ export const Dropzone: React.FC<DropzoneProps> = ({
   accept,
   multiple = true,
   children,
-  className = '',
-  disabled = false
+  className = "",
+  disabled = false,
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,16 +34,16 @@ export const Dropzone: React.FC<DropzoneProps> = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    
+
     if (disabled) return;
-    
+
     const files = Array.from(e.dataTransfer.files);
     onFilesDrop(files);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
-    
+
     const files = Array.from(e.target.files || []);
     onFilesDrop(files);
   };
@@ -58,11 +58,12 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       data-testid="dropzone-container"
       className={`
         relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
-        ${disabled 
-          ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed opacity-50'
-          : isDragOver 
-            ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20 cursor-pointer' 
-            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer'
+        ${
+          disabled
+            ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed opacity-50"
+            : isDragOver
+              ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 cursor-pointer"
+              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer"
         }
         ${className}
       `}
@@ -81,7 +82,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
         data-testid="file-input"
         disabled={disabled}
       />
-      
+
       {children || (
         <div className="space-y-2">
           <svg
@@ -105,4 +106,4 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       )}
     </div>
   );
-}; 
+};

@@ -1,4 +1,4 @@
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
 
 export interface ReorderPDFOptions {
   file: File;
@@ -25,25 +25,27 @@ export type ReorderPDFResponse = ReorderPDFResult | ReorderPDFError;
  * @param options - Configuration object containing file and desired page order
  * @returns Promise that resolves to reordered PDF blob or error
  */
-export async function reorderPDF(options: ReorderPDFOptions): Promise<ReorderPDFResponse> {
+export async function reorderPDF(
+  options: ReorderPDFOptions,
+): Promise<ReorderPDFResponse> {
   try {
     const { file, pageOrder } = options;
 
     // Validate input
     if (!file) {
-      return { success: false, error: 'No file provided' };
+      return { success: false, error: "No file provided" };
     }
 
-    if (file.type !== 'application/pdf') {
-      return { 
-        success: false, 
-        error: 'Invalid file type. Only PDF files are supported.',
-        details: `Expected 'application/pdf', got '${file.type}'`
+    if (file.type !== "application/pdf") {
+      return {
+        success: false,
+        error: "Invalid file type. Only PDF files are supported.",
+        details: `Expected 'application/pdf', got '${file.type}'`,
       };
     }
 
     if (!pageOrder || pageOrder.length === 0) {
-      return { success: false, error: 'No page order provided' };
+      return { success: false, error: "No page order provided" };
     }
 
     // Load the source PDF
@@ -52,7 +54,7 @@ export async function reorderPDF(options: ReorderPDFOptions): Promise<ReorderPDF
     const totalPages = sourcePdf.getPageCount();
 
     if (totalPages === 0) {
-      return { success: false, error: 'PDF file has no pages' };
+      return { success: false, error: "PDF file has no pages" };
     }
 
     // Validate page order
@@ -69,40 +71,41 @@ export async function reorderPDF(options: ReorderPDFOptions): Promise<ReorderPDF
       try {
         // Convert to 0-based index
         const pageIndex = pageNum - 1;
-        
+
         // Copy the page from source to destination
-        const [copiedPage] = await reorderedPdf.copyPages(sourcePdf, [pageIndex]);
-        
+        const [copiedPage] = await reorderedPdf.copyPages(sourcePdf, [
+          pageIndex,
+        ]);
+
         // Add the copied page to the reordered document
         reorderedPdf.addPage(copiedPage);
-        
       } catch (pageError) {
         return {
           success: false,
           error: `Failed to reorder page ${pageNum}`,
-          details: pageError instanceof Error ? pageError.message : String(pageError)
+          details:
+            pageError instanceof Error ? pageError.message : String(pageError),
         };
       }
     }
 
     // Generate the final PDF bytes
     const pdfBytes = await reorderedPdf.save();
-    
+
     // Create blob for download
-    const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
 
     return {
       success: true,
       pdfBlob,
       totalPages,
-      reorderedPages: pageOrder.length
+      reorderedPages: pageOrder.length,
     };
-
   } catch (error) {
     return {
       success: false,
-      error: 'Failed to reorder PDF pages',
-      details: error instanceof Error ? error.message : String(error)
+      error: "Failed to reorder PDF pages",
+      details: error instanceof Error ? error.message : String(error),
     };
   }
 }
@@ -110,10 +113,13 @@ export async function reorderPDF(options: ReorderPDFOptions): Promise<ReorderPDF
 /**
  * Validates the page order array
  */
-function validatePageOrder(pageOrder: number[], totalPages: number): string | null {
+function validatePageOrder(
+  pageOrder: number[],
+  totalPages: number,
+): string | null {
   // Check for empty array
   if (pageOrder.length === 0) {
-    return 'Page order cannot be empty';
+    return "Page order cannot be empty";
   }
 
   // Check for invalid page numbers
@@ -126,7 +132,7 @@ function validatePageOrder(pageOrder: number[], totalPages: number): string | nu
   // Check if all pages are included (no missing pages)
   const uniquePages = [...new Set(pageOrder)];
   if (uniquePages.length !== pageOrder.length) {
-    return 'Duplicate page numbers found in page order';
+    return "Duplicate page numbers found in page order";
   }
 
   // Optional: Check if all original pages are included
@@ -161,13 +167,13 @@ export function reversePageOrder(totalPages: number): number[] {
  */
 export function randomizePageOrder(totalPages: number): number[] {
   const pages = getDefaultPageOrder(totalPages);
-  
+
   // Fisher-Yates shuffle algorithm
   for (let i = pages.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pages[i], pages[j]] = [pages[j], pages[i]];
   }
-  
+
   return pages;
 }
 
@@ -181,4 +187,4 @@ export function isReorderNecessary(pageOrder: number[]): boolean {
     }
   }
   return false; // Order is the same as default (1, 2, 3, ...)
-} 
+}

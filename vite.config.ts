@@ -6,18 +6,18 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/my-pdf-toolbox/',
+  base: "/my-pdf-toolbox/",
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: './tests/setup.ts', // Or a string for a single file
+    environment: "jsdom",
+    setupFiles: "./tests/setup.ts", // Or a string for a single file
     css: true, // If you have CSS imports in your components
-    pool: 'threads',
+    pool: "threads",
     poolOptions: {
       threads: {
-        singleThread: true
-      }
+        singleThread: true,
+      },
     },
-    exclude: ['**/e2e/**', '**/node_modules/**'],
+    exclude: ["**/e2e/**", "**/node_modules/**"],
   },
 });

@@ -4,7 +4,8 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## ✅ Phase 1: Project Setup *(COMPLETED)*
+## ✅ Phase 1: Project Setup _(COMPLETED)_
+
 - [x] Initialize project with Vite + React + TypeScript
   - `npm create vite@latest my-pdf-toolbox --template react-ts`
 - [x] Configure TailwindCSS
@@ -22,13 +23,15 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## ✅ Phase 2: Tooling & Test Infrastructure *(COMPLETED)*
+## ✅ Phase 2: Tooling & Test Infrastructure _(COMPLETED)_
+
 - [x] Install Vitest + React Testing Library
 - [x] Install Playwright (headless + headed)
 - [x] Add test scripts: `npm run test`, `npm run e2e`, `npm run e2e:ui`
 - [x] Create sample unit test and E2E sanity test
 
-**Completed:** 
+**Completed:**
+
 - Upgraded to Vitest 3.2.0 with React Testing Library
 - Configured Playwright for E2E testing
 - Fixed memory issues and test execution
@@ -37,7 +40,8 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## ✅ Phase 3: UI Foundation *(COMPLETED)*
+## ✅ Phase 3: UI Foundation _(COMPLETED)_
+
 - [x] Header with title + dark/light toggle
 - [x] Dashboard or toolbar layout
 - [x] Create reusable UI components:
@@ -47,6 +51,7 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 - [x] Add animated drag-and-drop support
 
 **Completed:**
+
 - **Core Components:** Button (variants, sizes, loading), Card, Toggle, Dropzone, Modal
 - **Layout:** Header with branding and theme toggle, Navigation with tool tabs
 - **Theme System:** Complete dark/light mode with localStorage and system detection
@@ -57,7 +62,8 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## ✅ Phase 4: Core PDF Logic *(COMPLETED)*
+## ✅ Phase 4: Core PDF Logic _(COMPLETED)_
+
 - [x] `merge.ts` – Merge multiple PDFs
 - [x] `convert.ts` – Convert images to PDF
 - [x] `split.ts` – Split PDFs into multiple PDFs (range/page)
@@ -66,11 +72,13 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 - [x] `reorder.ts` – Reorder pages in PDF
 
 Each utility must be:
+
 - A pure function ✅
 - Unit tested ✅
 - Return usable errors ✅
 
 **Completed:**
+
 - **Core PDF Utilities:** All 5 utilities implemented with full TypeScript support
   - `merge.ts`: Combines multiple PDF files with validation and error handling
   - `convert.ts`: Converts images (JPEG, PNG) to PDF with automatic scaling
@@ -88,7 +96,8 @@ Each utility must be:
 
 ---
 
-## ✅ Phase 5: Feature Integration *(COMPLETED)*
+## ✅ Phase 5: Feature Integration _(COMPLETED)_
+
 - [x] Connect UI with PDF utilities
   - [x] Combine PDFs - Complete with file validation, thumbnails, reordering, merging, downloads
   - [x] Split PDF - Complete with PDF/image output, ZIP packaging, page ranges
@@ -112,6 +121,7 @@ Each utility must be:
   - [x] Proper file naming and organization
 
 **Completed: 5/5 utilities** - All Phase 5 requirements fulfilled
+
 - **Combine PDFs:** Multi-file upload, thumbnails, reordering, merge with validation
 - **Split PDF:** Single file input, range selection, PDF/image output, ZIP packaging
 - **Compress PDF:** Three compression levels with size comparison and recommendations
@@ -121,6 +131,7 @@ Each utility must be:
 ---
 
 ## 🧪 Phase 6: Testing
+
 - [ ] Unit tests for each PDF utility
 - [ ] Component tests for all UI logic
 - [ ] E2E tests for each user flow:
@@ -132,6 +143,7 @@ Each utility must be:
 ---
 
 ## 📦 Phase 7: Build & Distribute
+
 - [ ] Optimize production build with Vite
 - [ ] Deploy to GitHub Pages / Netlify
 - [ ] Package as desktop Electron app

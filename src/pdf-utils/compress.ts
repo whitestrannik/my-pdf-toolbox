@@ -1,8 +1,8 @@
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from "pdf-lib";
 
 export interface CompressPDFOptions {
   file: File;
-  compressionLevel: 'low' | 'medium' | 'high';
+  compressionLevel: "low" | "medium" | "high";
 }
 
 export interface CompressPDFResult {
@@ -26,27 +26,29 @@ export type CompressPDFResponse = CompressPDFResult | CompressPDFError;
  * @param options - Configuration object containing file and compression level
  * @returns Promise that resolves to compressed PDF blob or error
  */
-export async function compressPDF(options: CompressPDFOptions): Promise<CompressPDFResponse> {
+export async function compressPDF(
+  options: CompressPDFOptions,
+): Promise<CompressPDFResponse> {
   try {
     const { file, compressionLevel } = options;
 
     // Validate input
     if (!file) {
-      return { success: false, error: 'No file provided' };
+      return { success: false, error: "No file provided" };
     }
 
-    if (file.type !== 'application/pdf') {
-      return { 
-        success: false, 
-        error: 'Invalid file type. Only PDF files are supported.',
-        details: `Expected 'application/pdf', got '${file.type}'`
+    if (file.type !== "application/pdf") {
+      return {
+        success: false,
+        error: "Invalid file type. Only PDF files are supported.",
+        details: `Expected 'application/pdf', got '${file.type}'`,
       };
     }
 
-    if (!['low', 'medium', 'high'].includes(compressionLevel)) {
-      return { 
-        success: false, 
-        error: 'Invalid compression level. Supported levels: low, medium, high' 
+    if (!["low", "medium", "high"].includes(compressionLevel)) {
+      return {
+        success: false,
+        error: "Invalid compression level. Supported levels: low, medium, high",
       };
     }
 
@@ -66,31 +68,32 @@ export async function compressPDF(options: CompressPDFOptions): Promise<Compress
     const saveOptions = {
       useObjectStreams: compressionSettings.useObjectStreams,
       addDefaultPage: false,
-      objectsPerTick: compressionSettings.objectsPerTick
+      objectsPerTick: compressionSettings.objectsPerTick,
     };
 
     const compressedBytes = await pdfDoc.save(saveOptions);
     const compressedSize = compressedBytes.length;
 
     // Calculate compression ratio
-    const compressionRatio = Math.round(((originalSize - compressedSize) / originalSize) * 100);
+    const compressionRatio = Math.round(
+      ((originalSize - compressedSize) / originalSize) * 100,
+    );
 
     // Create blob for download
-    const pdfBlob = new Blob([compressedBytes], { type: 'application/pdf' });
+    const pdfBlob = new Blob([compressedBytes], { type: "application/pdf" });
 
     return {
       success: true,
       pdfBlob,
       originalSize,
       compressedSize,
-      compressionRatio: Math.max(0, compressionRatio) // Ensure non-negative
+      compressionRatio: Math.max(0, compressionRatio), // Ensure non-negative
     };
-
   } catch (error) {
     return {
       success: false,
-      error: 'Failed to compress PDF',
-      details: error instanceof Error ? error.message : String(error)
+      error: "Failed to compress PDF",
+      details: error instanceof Error ? error.message : String(error),
     };
   }
 }
@@ -98,35 +101,35 @@ export async function compressPDF(options: CompressPDFOptions): Promise<Compress
 /**
  * Get compression settings based on compression level
  */
-function getCompressionSettings(level: 'low' | 'medium' | 'high') {
+function getCompressionSettings(level: "low" | "medium" | "high") {
   switch (level) {
-    case 'low':
+    case "low":
       return {
         useObjectStreams: false,
         objectsPerTick: 500, // Process more objects per tick for speed
         removeUnusedObjects: false,
-        optimizeImages: false
+        optimizeImages: false,
       };
-    case 'medium':
+    case "medium":
       return {
         useObjectStreams: true,
         objectsPerTick: 200,
         removeUnusedObjects: true,
-        optimizeImages: false
+        optimizeImages: false,
       };
-    case 'high':
+    case "high":
       return {
         useObjectStreams: true,
         objectsPerTick: 100, // Process fewer objects per tick for maximum compression
         removeUnusedObjects: true,
-        optimizeImages: true
+        optimizeImages: true,
       };
     default:
       return {
         useObjectStreams: true,
         objectsPerTick: 200,
         removeUnusedObjects: true,
-        optimizeImages: false
+        optimizeImages: false,
       };
   }
 }
@@ -135,18 +138,18 @@ function getCompressionSettings(level: 'low' | 'medium' | 'high') {
  * Apply various compression optimizations to the PDF document
  */
 async function applyCompressionOptimizations(
-  pdfDoc: PDFDocument, 
-  settings: ReturnType<typeof getCompressionSettings>
+  pdfDoc: PDFDocument,
+  settings: ReturnType<typeof getCompressionSettings>,
 ): Promise<void> {
   try {
     // Remove metadata that might be taking up space (optional optimization)
     if (settings.removeUnusedObjects) {
       // Remove creation date, modification date, and other metadata to save space
-      pdfDoc.setTitle('');
-      pdfDoc.setAuthor('');
-      pdfDoc.setSubject('');
-      pdfDoc.setProducer('');
-      pdfDoc.setCreator('');
+      pdfDoc.setTitle("");
+      pdfDoc.setAuthor("");
+      pdfDoc.setSubject("");
+      pdfDoc.setProducer("");
+      pdfDoc.setCreator("");
       pdfDoc.setKeywords([]);
     }
 
@@ -159,10 +162,9 @@ async function applyCompressionOptimizations(
     // 2. Compressing them using canvas APIs
     // 3. Re-embedding the compressed images
     // This would require more complex image processing logic
-
   } catch (error) {
     // Don't fail the entire compression if optimization fails
-    console.warn('Some compression optimizations failed:', error);
+    console.warn("Some compression optimizations failed:", error);
   }
 }
 
@@ -170,19 +172,25 @@ async function applyCompressionOptimizations(
  * Utility function to format file size for display
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
-  
+  if (bytes === 0) return "0 Bytes";
+
   const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
 /**
  * Calculate compression percentage
  */
-export function calculateCompressionPercentage(originalSize: number, compressedSize: number): number {
+export function calculateCompressionPercentage(
+  originalSize: number,
+  compressedSize: number,
+): number {
   if (originalSize === 0) return 0;
-  return Math.max(0, Math.round(((originalSize - compressedSize) / originalSize) * 100));
-} 
+  return Math.max(
+    0,
+    Math.round(((originalSize - compressedSize) / originalSize) * 100),
+  );
+}

@@ -1,16 +1,28 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Header, Navigation, Footer } from './components';
-import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, ImagesToPDFView, ReorderPagesView } from './views';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { Header, Navigation, Footer } from "./components";
+import {
+  HomePage,
+  CombinePDFsView,
+  SplitPDFsView,
+  CompressPDFView,
+  ImagesToPDFView,
+  ReorderPagesView,
+} from "./views";
 
 function AppContent() {
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
+  const isHomePage = location.pathname === "/";
 
   return (
     <div className="min-h-screen bg-gradient-hero flex flex-col">
       <Header />
       {!isHomePage && <Navigation />}
-      
+
       <main className="flex-grow">
         <div className="bg-white/95 min-h-full">
           <Routes>

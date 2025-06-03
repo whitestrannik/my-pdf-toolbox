@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal, Toast } from '../components';
-import { splitPDFToPDFs, splitPDFToImages } from '../pdf-utils';
-import { saveAs } from 'file-saver';
-import JSZip from 'jszip';
-import * as pdfjsLib from 'pdfjs-dist';
+import React, { useState, useCallback } from "react";
+import { Card, Dropzone, Button, Modal, Toast } from "../components";
+import { splitPDFToPDFs, splitPDFToImages } from "../pdf-utils";
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import * as pdfjsLib from "pdfjs-dist";
 
 // Configure PDF.js worker for offline use
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
+  "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url,
 ).toString();
 
@@ -25,16 +25,16 @@ interface ProcessingState {
 }
 
 interface SplitSettings {
-  outputType: 'pdfs' | 'images';
+  outputType: "pdfs" | "images";
   pageRange: string;
-  imageFormat: 'jpeg' | 'png';
+  imageFormat: "jpeg" | "png";
   imageQuality: number;
 }
 
 interface ToastState {
   isVisible: boolean;
   message: string;
-  type: 'success' | 'error';
+  type: "success" | "error";
 }
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -43,48 +43,51 @@ export const SplitPDFsView: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
   const [processing, setProcessing] = useState<ProcessingState>({
     isProcessing: false,
-    progress: ''
+    progress: "",
   });
   const [splitSettings, setSplitSettings] = useState<SplitSettings>({
-    outputType: 'pdfs',
-    pageRange: 'all',
-    imageFormat: 'jpeg',
-    imageQuality: 0.9
+    outputType: "pdfs",
+    pageRange: "all",
+    imageFormat: "jpeg",
+    imageQuality: 0.9,
   });
   const [showModal, setShowModal] = useState(false);
   const [toast, setToast] = useState<ToastState>({
     isVisible: false,
-    message: '',
-    type: 'success'
+    message: "",
+    type: "success",
   });
 
-  const generatePDFThumbnail = useCallback(async (file: File): Promise<string> => {
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const page = await pdf.getPage(1);
-      const scale = 0.5;
-      const viewport = page.getViewport({ scale });
-      
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d')!;
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      
-      await page.render({
-        canvasContext: context,
-        viewport: viewport
-      }).promise;
-      
-      return canvas.toDataURL('image/jpeg', 0.8);
-    } catch (error) {
-      console.error('PDF thumbnail generation failed:', error);
-      return '';
-    }
-  }, []);
+  const generatePDFThumbnail = useCallback(
+    async (file: File): Promise<string> => {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const page = await pdf.getPage(1);
+        const scale = 0.5;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d")!;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({
+          canvasContext: context,
+          viewport: viewport,
+        }).promise;
+
+        return canvas.toDataURL("image/jpeg", 0.8);
+      } catch (error) {
+        console.error("PDF thumbnail generation failed:", error);
+        return "";
+      }
+    },
+    [],
+  );
 
   const validateFile = (file: File): string | null => {
-    if (file.type !== 'application/pdf') {
+    if (file.type !== "application/pdf") {
       return `${file.name}: Only PDF files are supported`;
     }
     if (file.size > MAX_FILE_SIZE) {
@@ -93,70 +96,84 @@ export const SplitPDFsView: React.FC = () => {
     return null;
   };
 
-  const handleFilesDrop = useCallback(async (files: File[]) => {
-    if (files.length === 0) return;
-    
-    // Only take the first file for splitting
-    const file = files[0];
-    const error = validateFile(file);
-    
-    if (error) {
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        thumbnail: '',
-        error
-      });
-      return;
-    }
-    
-    try {
-      const thumbnail = await generatePDFThumbnail(file);
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        thumbnail,
-        error: undefined
-      });
-    } catch (err) {
-      console.error('Failed to process PDF:', err);
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        thumbnail: '',
-        error: 'Failed to process PDF file'
-      });
-    }
-  }, [generatePDFThumbnail]);
+  const handleFilesDrop = useCallback(
+    async (files: File[]) => {
+      if (files.length === 0) return;
+
+      // Only take the first file for splitting
+      const file = files[0];
+      const error = validateFile(file);
+
+      if (error) {
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          thumbnail: "",
+          error,
+        });
+        return;
+      }
+
+      try {
+        const thumbnail = await generatePDFThumbnail(file);
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          thumbnail,
+          error: undefined,
+        });
+      } catch (err) {
+        console.error("Failed to process PDF:", err);
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          thumbnail: "",
+          error: "Failed to process PDF file",
+        });
+      }
+    },
+    [generatePDFThumbnail],
+  );
 
   const removeFile = () => {
     setUploadedFile(null);
   };
 
   const parsePageRange = (range: string, totalPages: number): number[] => {
-    if (range.toLowerCase() === 'all') {
+    if (range.toLowerCase() === "all") {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-    
+
     const pages: number[] = [];
-    const parts = range.split(',').map(part => part.trim());
-    
+    const parts = range.split(",").map((part) => part.trim());
+
     for (const part of parts) {
-      if (part.includes('-')) {
-        const [start, end] = part.split('-').map(num => parseInt(num.trim()));
-        if (!isNaN(start) && !isNaN(end) && start >= 1 && end <= totalPages && start <= end) {
+      if (part.includes("-")) {
+        const [start, end] = part.split("-").map((num) => parseInt(num.trim()));
+        if (
+          !isNaN(start) &&
+          !isNaN(end) &&
+          start >= 1 &&
+          end <= totalPages &&
+          start <= end
+        ) {
           for (let i = start; i <= end; i++) {
             if (!pages.includes(i)) pages.push(i);
           }
         }
       } else {
         const pageNum = parseInt(part);
-        if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages && !pages.includes(pageNum)) {
+        if (
+          !isNaN(pageNum) &&
+          pageNum >= 1 &&
+          pageNum <= totalPages &&
+          !pages.includes(pageNum)
+        ) {
           pages.push(pageNum);
         }
       }
     }
-    
+
     return pages.sort((a, b) => a - b);
   };
 
@@ -164,8 +181,8 @@ export const SplitPDFsView: React.FC = () => {
     if (!uploadedFile || uploadedFile.error) {
       setProcessing({
         isProcessing: false,
-        progress: '',
-        error: 'Please upload a valid PDF file'
+        progress: "",
+        error: "Please upload a valid PDF file",
       });
       setShowModal(true);
       return;
@@ -173,7 +190,7 @@ export const SplitPDFsView: React.FC = () => {
 
     setProcessing({
       isProcessing: true,
-      progress: 'Analyzing PDF...'
+      progress: "Analyzing PDF...",
     });
 
     try {
@@ -181,116 +198,141 @@ export const SplitPDFsView: React.FC = () => {
       const arrayBuffer = await uploadedFile.file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       const totalPages = pdf.numPages;
-      
+
       // Parse page range
       const pagesToSplit = parsePageRange(splitSettings.pageRange, totalPages);
-      
+
       if (pagesToSplit.length === 0) {
-        throw new Error(`Invalid page range: ${splitSettings.pageRange}. Please use format like "1-5, 7, 10-12" or "all"`);
+        throw new Error(
+          `Invalid page range: ${splitSettings.pageRange}. Please use format like "1-5, 7, 10-12" or "all"`,
+        );
       }
 
-      if (splitSettings.outputType === 'pdfs') {
-        setProcessing(prev => ({ ...prev, progress: `Splitting into ${pagesToSplit.length} PDF files...` }));
-        
+      if (splitSettings.outputType === "pdfs") {
+        setProcessing((prev) => ({
+          ...prev,
+          progress: `Splitting into ${pagesToSplit.length} PDF files...`,
+        }));
+
         const result = await splitPDFToPDFs({
           file: uploadedFile.file,
-          splitMethod: 'ranges',
-          ranges: pagesToSplit.join(',')
+          splitMethod: "ranges",
+          ranges: pagesToSplit.join(","),
         });
 
         if (!result.success) {
           throw new Error(result.error);
         }
 
-        setProcessing(prev => ({ ...prev, progress: 'Creating ZIP archive...' }));
-        
+        setProcessing((prev) => ({
+          ...prev,
+          progress: "Creating ZIP archive...",
+        }));
+
         // Create ZIP file for multiple PDFs
         const zip = new JSZip();
-        const baseFilename = uploadedFile.file.name.replace('.pdf', '');
-        
+        const baseFilename = uploadedFile.file.name.replace(".pdf", "");
+
         result.pdfBlobs.forEach((blob, index) => {
           const pageNum = pagesToSplit[index];
           zip.file(`${baseFilename}-page-${pageNum}.pdf`, blob);
         });
-        
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
-        
-        setProcessing(prev => ({ ...prev, progress: 'Preparing download...' }));
-        
+
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+
+        setProcessing((prev) => ({
+          ...prev,
+          progress: "Preparing download...",
+        }));
+
         // Generate filename with timestamp
-        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        const timestamp = new Date()
+          .toISOString()
+          .slice(0, 19)
+          .replace(/:/g, "-");
         const filename = `${baseFilename}-split-pdfs-${timestamp}.zip`;
-        
+
         // Download the ZIP file
         saveAs(zipBlob, filename);
-        
+
         setProcessing({
           isProcessing: false,
-          progress: ''
+          progress: "",
         });
-        
+
         // Show success toast
         setToast({
           isVisible: true,
           message: `Successfully split into ${pagesToSplit.length} PDF files!`,
-          type: 'success'
+          type: "success",
         });
-
       } else {
-        setProcessing(prev => ({ ...prev, progress: `Converting ${pagesToSplit.length} pages to images...` }));
-        
+        setProcessing((prev) => ({
+          ...prev,
+          progress: `Converting ${pagesToSplit.length} pages to images...`,
+        }));
+
         const result = await splitPDFToImages({
           file: uploadedFile.file,
           format: splitSettings.imageFormat,
           quality: splitSettings.imageQuality,
-          extractRange: pagesToSplit.join(',')
+          extractRange: pagesToSplit.join(","),
         });
 
         if (!result.success) {
           throw new Error(result.error);
         }
 
-        setProcessing(prev => ({ ...prev, progress: 'Creating ZIP archive...' }));
-        
+        setProcessing((prev) => ({
+          ...prev,
+          progress: "Creating ZIP archive...",
+        }));
+
         // Create ZIP file for images
         const zip = new JSZip();
-        const baseFilename = uploadedFile.file.name.replace('.pdf', '');
-        
+        const baseFilename = uploadedFile.file.name.replace(".pdf", "");
+
         result.imageBlobs.forEach((blob, index) => {
           const pageNum = pagesToSplit[index];
-          const extension = splitSettings.imageFormat === 'jpeg' ? 'jpg' : 'png';
+          const extension =
+            splitSettings.imageFormat === "jpeg" ? "jpg" : "png";
           zip.file(`${baseFilename}-page-${pageNum}.${extension}`, blob);
         });
-        
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
-        
-        setProcessing(prev => ({ ...prev, progress: 'Preparing download...' }));
-        
+
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+
+        setProcessing((prev) => ({
+          ...prev,
+          progress: "Preparing download...",
+        }));
+
         // Generate filename with timestamp
-        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        const timestamp = new Date()
+          .toISOString()
+          .slice(0, 19)
+          .replace(/:/g, "-");
         const filename = `${baseFilename}-split-images-${timestamp}.zip`;
-        
+
         // Download the ZIP file
         saveAs(zipBlob, filename);
-        
+
         setProcessing({
           isProcessing: false,
-          progress: ''
+          progress: "",
         });
-        
+
         // Show success toast
         setToast({
           isVisible: true,
           message: `Successfully converted ${pagesToSplit.length} pages to ${splitSettings.imageFormat.toUpperCase()} images!`,
-          type: 'success'
+          type: "success",
         });
       }
-
     } catch (error) {
       setProcessing({
         isProcessing: false,
-        progress: '',
-        error: error instanceof Error ? error.message : 'Failed to split PDF'
+        progress: "",
+        error: error instanceof Error ? error.message : "Failed to split PDF",
       });
       setShowModal(true);
     }
@@ -303,7 +345,8 @@ export const SplitPDFsView: React.FC = () => {
           ✂️ Split PDFs
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Split a PDF into multiple documents or convert pages to images. Maximum file size: 20MB.
+          Split a PDF into multiple documents or convert pages to images.
+          Maximum file size: 20MB.
         </p>
       </div>
 
@@ -334,10 +377,14 @@ export const SplitPDFsView: React.FC = () => {
               </svg>
               <div className="text-gray-600 dark:text-gray-400">
                 <p className="text-lg font-medium">
-                  {processing.isProcessing ? 'Processing...' : 'Drop PDF file here'}
+                  {processing.isProcessing
+                    ? "Processing..."
+                    : "Drop PDF file here"}
                 </p>
                 <p className="text-sm">
-                  {processing.isProcessing ? processing.progress : 'or click to browse (max 20MB)'}
+                  {processing.isProcessing
+                    ? processing.progress
+                    : "or click to browse (max 20MB)"}
                 </p>
               </div>
             </div>
@@ -350,8 +397,8 @@ export const SplitPDFsView: React.FC = () => {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 PDF File
               </h2>
-              <Button 
-                variant="secondary" 
+              <Button
+                variant="secondary"
                 size="sm"
                 onClick={removeFile}
                 disabled={processing.isProcessing}
@@ -359,7 +406,7 @@ export const SplitPDFsView: React.FC = () => {
                 Remove
               </Button>
             </div>
-            
+
             {uploadedFile.error ? (
               <div className="p-3 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10 rounded-lg">
                 <p className="text-sm text-red-600 dark:text-red-400">
@@ -371,18 +418,20 @@ export const SplitPDFsView: React.FC = () => {
                 {/* Thumbnail */}
                 <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
                   {uploadedFile.thumbnail ? (
-                    <img 
-                      src={uploadedFile.thumbnail} 
+                    <img
+                      src={uploadedFile.thumbnail}
                       alt={`${uploadedFile.file.name} thumbnail`}
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">PDF</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        PDF
+                      </span>
                     </div>
                   )}
                 </div>
-                
+
                 {/* File Info */}
                 <div className="flex-grow min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -402,7 +451,7 @@ export const SplitPDFsView: React.FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Split Settings
             </h2>
-            
+
             <div className="space-y-6">
               {/* Output Type */}
               <div>
@@ -415,22 +464,36 @@ export const SplitPDFsView: React.FC = () => {
                       type="radio"
                       name="outputType"
                       value="pdfs"
-                      checked={splitSettings.outputType === 'pdfs'}
-                      onChange={(e) => setSplitSettings(prev => ({ ...prev, outputType: e.target.value as 'pdfs' | 'images' }))}
+                      checked={splitSettings.outputType === "pdfs"}
+                      onChange={(e) =>
+                        setSplitSettings((prev) => ({
+                          ...prev,
+                          outputType: e.target.value as "pdfs" | "images",
+                        }))
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Split to PDF documents</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Split to PDF documents
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input
                       type="radio"
                       name="outputType"
                       value="images"
-                      checked={splitSettings.outputType === 'images'}
-                      onChange={(e) => setSplitSettings(prev => ({ ...prev, outputType: e.target.value as 'pdfs' | 'images' }))}
+                      checked={splitSettings.outputType === "images"}
+                      onChange={(e) =>
+                        setSplitSettings((prev) => ({
+                          ...prev,
+                          outputType: e.target.value as "pdfs" | "images",
+                        }))
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Convert to images</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Convert to images
+                    </span>
                   </label>
                 </div>
               </div>
@@ -443,17 +506,23 @@ export const SplitPDFsView: React.FC = () => {
                 <input
                   type="text"
                   value={splitSettings.pageRange}
-                  onChange={(e) => setSplitSettings(prev => ({ ...prev, pageRange: e.target.value }))}
+                  onChange={(e) =>
+                    setSplitSettings((prev) => ({
+                      ...prev,
+                      pageRange: e.target.value,
+                    }))
+                  }
                   placeholder="e.g., 1-5, 7, 10-12 or 'all'"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
                 />
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Enter page numbers or ranges separated by commas. Use "all" for all pages.
+                  Enter page numbers or ranges separated by commas. Use "all"
+                  for all pages.
                 </p>
               </div>
 
               {/* Image Settings (when outputType is 'images') */}
-              {splitSettings.outputType === 'images' && (
+              {splitSettings.outputType === "images" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -461,7 +530,12 @@ export const SplitPDFsView: React.FC = () => {
                     </label>
                     <select
                       value={splitSettings.imageFormat}
-                      onChange={(e) => setSplitSettings(prev => ({ ...prev, imageFormat: e.target.value as 'jpeg' | 'png' }))}
+                      onChange={(e) =>
+                        setSplitSettings((prev) => ({
+                          ...prev,
+                          imageFormat: e.target.value as "jpeg" | "png",
+                        }))
+                      }
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="jpeg">JPEG (smaller files)</option>
@@ -471,7 +545,8 @@ export const SplitPDFsView: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Image Quality: {Math.round(splitSettings.imageQuality * 100)}%
+                      Image Quality:{" "}
+                      {Math.round(splitSettings.imageQuality * 100)}%
                     </label>
                     <input
                       type="range"
@@ -479,7 +554,12 @@ export const SplitPDFsView: React.FC = () => {
                       max="1"
                       step="0.1"
                       value={splitSettings.imageQuality}
-                      onChange={(e) => setSplitSettings(prev => ({ ...prev, imageQuality: parseFloat(e.target.value) }))}
+                      onChange={(e) =>
+                        setSplitSettings((prev) => ({
+                          ...prev,
+                          imageQuality: parseFloat(e.target.value),
+                        }))
+                      }
                       className="w-full"
                     />
                   </div>
@@ -488,13 +568,15 @@ export const SplitPDFsView: React.FC = () => {
 
               {/* Split Button */}
               <div className="flex justify-end">
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   disabled={processing.isProcessing}
                   onClick={handleSplit}
                   isLoading={processing.isProcessing}
                 >
-                  {processing.isProcessing ? processing.progress : `Split to ${splitSettings.outputType === 'pdfs' ? 'PDFs' : 'Images'}`}
+                  {processing.isProcessing
+                    ? processing.progress
+                    : `Split to ${splitSettings.outputType === "pdfs" ? "PDFs" : "Images"}`}
                 </Button>
               </div>
             </div>
@@ -503,14 +585,12 @@ export const SplitPDFsView: React.FC = () => {
       </div>
 
       {/* Error Modal */}
-      <Modal 
-        isOpen={showModal} 
+      <Modal
+        isOpen={showModal}
         onClose={() => setShowModal(false)}
         title="Error"
       >
-        <div className="text-red-600 dark:text-red-400">
-          {processing.error}
-        </div>
+        <div className="text-red-600 dark:text-red-400">{processing.error}</div>
       </Modal>
 
       {/* Success Toast */}
@@ -518,8 +598,8 @@ export const SplitPDFsView: React.FC = () => {
         isVisible={toast.isVisible}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+        onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
       />
     </div>
   );
-}; 
+};

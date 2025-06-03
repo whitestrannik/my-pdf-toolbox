@@ -1,12 +1,12 @@
-import React, { useState, useCallback } from 'react';
-import { Card, Dropzone, Button, Modal, Toast } from '../components';
-import { reorderPDF } from '../pdf-utils';
-import { saveAs } from 'file-saver';
-import * as pdfjsLib from 'pdfjs-dist';
+import React, { useState, useCallback } from "react";
+import { Card, Dropzone, Button, Modal, Toast } from "../components";
+import { reorderPDF } from "../pdf-utils";
+import { saveAs } from "file-saver";
+import * as pdfjsLib from "pdfjs-dist";
 
 // Configure PDF.js worker for offline use
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
+  "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url,
 ).toString();
 
@@ -37,7 +37,7 @@ interface DragState {
 interface ToastState {
   isVisible: boolean;
   message: string;
-  type: 'success' | 'error';
+  type: "success" | "error";
 }
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -47,58 +47,61 @@ export const ReorderPagesView: React.FC = () => {
   const [pages, setPages] = useState<PageInfo[]>([]);
   const [processing, setProcessing] = useState<ProcessingState>({
     isProcessing: false,
-    progress: ''
+    progress: "",
   });
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,
     draggedIndex: null,
-    dropTargetIndex: null
+    dropTargetIndex: null,
   });
   const [showModal, setShowModal] = useState(false);
   const [toast, setToast] = useState<ToastState>({
     isVisible: false,
-    message: '',
-    type: 'success'
+    message: "",
+    type: "success",
   });
 
-  const generatePageThumbnails = useCallback(async (file: File): Promise<PageInfo[]> => {
-    try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const pageCount = pdf.numPages;
-      const pageInfos: PageInfo[] = [];
-      
-      for (let i = 1; i <= pageCount; i++) {
-        const page = await pdf.getPage(i);
-        const scale = 0.3; // Smaller scale for thumbnails in grid
-        const viewport = page.getViewport({ scale });
-        
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d')!;
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        
-        await page.render({
-          canvasContext: context,
-          viewport: viewport
-        }).promise;
-        
-        pageInfos.push({
-          index: i - 1, // 0-based index for our UI
-          originalIndex: i - 1, // Remember original position
-          thumbnail: canvas.toDataURL('image/jpeg', 0.8)
-        });
+  const generatePageThumbnails = useCallback(
+    async (file: File): Promise<PageInfo[]> => {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const pageCount = pdf.numPages;
+        const pageInfos: PageInfo[] = [];
+
+        for (let i = 1; i <= pageCount; i++) {
+          const page = await pdf.getPage(i);
+          const scale = 0.3; // Smaller scale for thumbnails in grid
+          const viewport = page.getViewport({ scale });
+
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d")!;
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          await page.render({
+            canvasContext: context,
+            viewport: viewport,
+          }).promise;
+
+          pageInfos.push({
+            index: i - 1, // 0-based index for our UI
+            originalIndex: i - 1, // Remember original position
+            thumbnail: canvas.toDataURL("image/jpeg", 0.8),
+          });
+        }
+
+        return pageInfos;
+      } catch (error) {
+        console.error("Failed to generate page thumbnails:", error);
+        throw error;
       }
-      
-      return pageInfos;
-    } catch (error) {
-      console.error('Failed to generate page thumbnails:', error);
-      throw error;
-    }
-  }, []);
+    },
+    [],
+  );
 
   const validateFile = (file: File): string | null => {
-    if (file.type !== 'application/pdf') {
+    if (file.type !== "application/pdf") {
       return `${file.name}: Only PDF files are supported`;
     }
     if (file.size > MAX_FILE_SIZE) {
@@ -107,43 +110,46 @@ export const ReorderPagesView: React.FC = () => {
     return null;
   };
 
-  const handleFilesDrop = useCallback(async (files: File[]) => {
-    if (files.length === 0) return;
-    
-    // Only take the first file for reordering
-    const file = files[0];
-    const error = validateFile(file);
-    
-    if (error) {
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        error
-      });
-      return;
-    }
-    
-    setProcessing({ isProcessing: true, progress: 'Analyzing PDF pages...' });
-    
-    try {
-      const pageInfos = await generatePageThumbnails(file);
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`
-      });
-      setPages(pageInfos);
-    } catch (err) {
-      console.error('Failed to process PDF:', err);
-      setUploadedFile({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        error: 'Failed to process PDF file'
-      });
-      setPages([]);
-    }
-    
-    setProcessing({ isProcessing: false, progress: '' });
-  }, [generatePageThumbnails]);
+  const handleFilesDrop = useCallback(
+    async (files: File[]) => {
+      if (files.length === 0) return;
+
+      // Only take the first file for reordering
+      const file = files[0];
+      const error = validateFile(file);
+
+      if (error) {
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          error,
+        });
+        return;
+      }
+
+      setProcessing({ isProcessing: true, progress: "Analyzing PDF pages..." });
+
+      try {
+        const pageInfos = await generatePageThumbnails(file);
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+        });
+        setPages(pageInfos);
+      } catch (err) {
+        console.error("Failed to process PDF:", err);
+        setUploadedFile({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          error: "Failed to process PDF file",
+        });
+        setPages([]);
+      }
+
+      setProcessing({ isProcessing: false, progress: "" });
+    },
+    [generatePageThumbnails],
+  );
 
   const removeFile = () => {
     setUploadedFile(null);
@@ -151,64 +157,64 @@ export const ReorderPagesView: React.FC = () => {
   };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.currentTarget.outerHTML);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", e.currentTarget.outerHTML);
     e.dataTransfer.setDragImage(e.currentTarget as Element, 0, 0);
-    
+
     setDragState({
       isDragging: true,
       draggedIndex: index,
-      dropTargetIndex: null
+      dropTargetIndex: null,
     });
   };
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    
-    setDragState(prev => ({
+    e.dataTransfer.dropEffect = "move";
+
+    setDragState((prev) => ({
       ...prev,
-      dropTargetIndex: index
+      dropTargetIndex: index,
     }));
   };
 
   const handleDragLeave = () => {
-    setDragState(prev => ({
+    setDragState((prev) => ({
       ...prev,
-      dropTargetIndex: null
+      dropTargetIndex: null,
     }));
   };
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
-    
+
     const { draggedIndex } = dragState;
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDragState({
         isDragging: false,
         draggedIndex: null,
-        dropTargetIndex: null
+        dropTargetIndex: null,
       });
       return;
     }
-    
+
     // Reorder pages
-    setPages(prev => {
+    setPages((prev) => {
       const newPages = [...prev];
       const [draggedPage] = newPages.splice(draggedIndex, 1);
       newPages.splice(dropIndex, 0, draggedPage);
-      
+
       // Update indices
       return newPages.map((page, idx) => ({
         ...page,
-        index: idx
+        index: idx,
       }));
     });
-    
+
     setDragState({
       isDragging: false,
       draggedIndex: null,
-      dropTargetIndex: null
+      dropTargetIndex: null,
     });
   };
 
@@ -216,23 +222,21 @@ export const ReorderPagesView: React.FC = () => {
     setDragState({
       isDragging: false,
       draggedIndex: null,
-      dropTargetIndex: null
+      dropTargetIndex: null,
     });
   };
 
   const resetOrder = () => {
-    setPages(prev => 
+    setPages((prev) =>
       [...prev]
         .sort((a, b) => a.originalIndex - b.originalIndex)
-        .map((page, idx) => ({ ...page, index: idx }))
+        .map((page, idx) => ({ ...page, index: idx })),
     );
   };
 
   const reverseOrder = () => {
-    setPages(prev => 
-      [...prev]
-        .reverse()
-        .map((page, idx) => ({ ...page, index: idx }))
+    setPages((prev) =>
+      [...prev].reverse().map((page, idx) => ({ ...page, index: idx })),
     );
   };
 
@@ -240,8 +244,8 @@ export const ReorderPagesView: React.FC = () => {
     if (!uploadedFile || uploadedFile.error || pages.length === 0) {
       setProcessing({
         isProcessing: false,
-        progress: '',
-        error: 'Please upload a valid PDF file'
+        progress: "",
+        error: "Please upload a valid PDF file",
       });
       setShowModal(true);
       return;
@@ -249,51 +253,57 @@ export const ReorderPagesView: React.FC = () => {
 
     setProcessing({
       isProcessing: true,
-      progress: 'Preparing to reorder pages...'
+      progress: "Preparing to reorder pages...",
     });
 
     try {
-      setProcessing(prev => ({ ...prev, progress: 'Reordering PDF pages...' }));
-      
+      setProcessing((prev) => ({
+        ...prev,
+        progress: "Reordering PDF pages...",
+      }));
+
       // Get the new page order (convert from 0-based to 1-based for the utility)
-      const newOrder = pages.map(page => page.originalIndex + 1);
-      
+      const newOrder = pages.map((page) => page.originalIndex + 1);
+
       const result = await reorderPDF({
         file: uploadedFile.file,
-        pageOrder: newOrder
+        pageOrder: newOrder,
       });
 
       if (!result.success) {
         throw new Error(result.error);
       }
 
-      setProcessing(prev => ({ ...prev, progress: 'Preparing download...' }));
-      
+      setProcessing((prev) => ({ ...prev, progress: "Preparing download..." }));
+
       // Generate filename with timestamp
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-      const baseFilename = uploadedFile.file.name.replace('.pdf', '');
+      const timestamp = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/:/g, "-");
+      const baseFilename = uploadedFile.file.name.replace(".pdf", "");
       const filename = `${baseFilename}-reordered-${timestamp}.pdf`;
-      
+
       // Download the file
       saveAs(result.pdfBlob, filename);
-      
+
       setProcessing({
         isProcessing: false,
-        progress: ''
+        progress: "",
       });
-      
+
       // Show success toast
       setToast({
         isVisible: true,
         message: `Successfully reordered ${pages.length} pages!`,
-        type: 'success'
+        type: "success",
       });
-
     } catch (error) {
       setProcessing({
         isProcessing: false,
-        progress: '',
-        error: error instanceof Error ? error.message : 'Failed to reorder pages'
+        progress: "",
+        error:
+          error instanceof Error ? error.message : "Failed to reorder pages",
       });
       setShowModal(true);
     }
@@ -308,7 +318,8 @@ export const ReorderPagesView: React.FC = () => {
           🔃 Reorder Pages
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Rearrange pages in your PDF using drag and drop. Maximum file size: 20MB.
+          Rearrange pages in your PDF using drag and drop. Maximum file size:
+          20MB.
         </p>
       </div>
 
@@ -339,10 +350,14 @@ export const ReorderPagesView: React.FC = () => {
               </svg>
               <div className="text-gray-600 dark:text-gray-400">
                 <p className="text-lg font-medium">
-                  {processing.isProcessing ? 'Processing...' : 'Drop PDF file here'}
+                  {processing.isProcessing
+                    ? "Processing..."
+                    : "Drop PDF file here"}
                 </p>
                 <p className="text-sm">
-                  {processing.isProcessing ? processing.progress : 'or click to browse (max 20MB)'}
+                  {processing.isProcessing
+                    ? processing.progress
+                    : "or click to browse (max 20MB)"}
                 </p>
               </div>
             </div>
@@ -355,8 +370,8 @@ export const ReorderPagesView: React.FC = () => {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 PDF File ({pages.length} pages)
               </h2>
-              <Button 
-                variant="secondary" 
+              <Button
+                variant="secondary"
                 size="sm"
                 onClick={removeFile}
                 disabled={processing.isProcessing}
@@ -364,7 +379,7 @@ export const ReorderPagesView: React.FC = () => {
                 Remove
               </Button>
             </div>
-            
+
             {uploadedFile.error ? (
               <div className="p-3 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10 rounded-lg">
                 <p className="text-sm text-red-600 dark:text-red-400">
@@ -378,7 +393,8 @@ export const ReorderPagesView: React.FC = () => {
                     {uploadedFile.file.name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB • {pages.length} pages
+                    {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB •{" "}
+                    {pages.length} pages
                   </p>
                 </div>
               </div>
@@ -393,44 +409,49 @@ export const ReorderPagesView: React.FC = () => {
                 Page Order
               </h2>
               <div className="flex space-x-2">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
                   onClick={resetOrder}
                   disabled={processing.isProcessing}
                 >
                   Reset Order
                 </Button>
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
                   onClick={reverseOrder}
                   disabled={processing.isProcessing}
                 >
                   Reverse Order
                 </Button>
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   disabled={!hasChanges || processing.isProcessing}
                   onClick={handleReorder}
                   isLoading={processing.isProcessing}
                 >
-                  {processing.isProcessing ? processing.progress : 'Apply Reorder & Download'}
+                  {processing.isProcessing
+                    ? processing.progress
+                    : "Apply Reorder & Download"}
                 </Button>
               </div>
             </div>
-            
+
             <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                💡 <strong>Tip:</strong> Drag and drop pages to reorder them. The page number shows the current position.
-                {hasChanges ? " Changes detected - click 'Apply Reorder' to save." : " No changes made yet."}
+                💡 <strong>Tip:</strong> Drag and drop pages to reorder them.
+                The page number shows the current position.
+                {hasChanges
+                  ? " Changes detected - click 'Apply Reorder' to save."
+                  : " No changes made yet."}
               </p>
             </div>
-            
+
             {/* Page Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {pages.map((page, index) => (
-                <div 
+                <div
                   key={`${page.originalIndex}-${index}`}
                   draggable
                   onDragStart={(e) => handleDragStart(e, index)}
@@ -440,24 +461,24 @@ export const ReorderPagesView: React.FC = () => {
                   onDragEnd={handleDragEnd}
                   className={`relative group cursor-grab active:cursor-grabbing border-2 rounded-lg overflow-hidden transition-all ${
                     dragState.draggedIndex === index
-                      ? 'opacity-50 scale-95'
+                      ? "opacity-50 scale-95"
                       : dragState.dropTargetIndex === index
-                      ? 'border-sky-500 bg-sky-50 dark:bg-sky-900/20 scale-105'
-                      : page.originalIndex !== index
-                      ? 'border-orange-300 dark:border-orange-600 bg-orange-50 dark:bg-orange-900/20'
-                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-gray-300 dark:hover:border-gray-600'
+                        ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 scale-105"
+                        : page.originalIndex !== index
+                          ? "border-orange-300 dark:border-orange-600 bg-orange-50 dark:bg-orange-900/20"
+                          : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-gray-300 dark:hover:border-gray-600"
                   }`}
                 >
                   {/* Page Thumbnail */}
                   <div className="aspect-w-3 aspect-h-4">
-                    <img 
-                      src={page.thumbnail} 
+                    <img
+                      src={page.thumbnail}
                       alt={`Page ${index + 1} thumbnail`}
                       className="w-full h-32 object-cover pointer-events-none"
                       draggable={false}
                     />
                   </div>
-                  
+
                   {/* Page Info */}
                   <div className="p-2 text-center">
                     <p className="text-xs font-medium text-gray-900 dark:text-white">
@@ -469,7 +490,7 @@ export const ReorderPagesView: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  
+
                   {/* Drag Handle Indicator */}
                   <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="w-6 h-6 bg-black bg-opacity-50 text-white rounded text-xs flex items-center justify-center">
@@ -484,10 +505,10 @@ export const ReorderPagesView: React.FC = () => {
       </div>
 
       {/* Status Modal */}
-      <Modal 
-        isOpen={showModal} 
+      <Modal
+        isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title={processing.error ? 'Error' : 'Success'}
+        title={processing.error ? "Error" : "Success"}
       >
         <div className="text-gray-600 dark:text-gray-400">
           {processing.error ? (
@@ -505,8 +526,8 @@ export const ReorderPagesView: React.FC = () => {
         isVisible={toast.isVisible}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+        onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
       />
     </div>
   );
-}; 
+};

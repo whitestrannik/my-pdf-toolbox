@@ -1,5 +1,5 @@
-import React from 'react';
-import { Shield } from 'lucide-react';
+import React from "react";
+import { Shield } from "lucide-react";
 
 export const Footer: React.FC = () => {
   return (
@@ -13,7 +13,9 @@ export const Footer: React.FC = () => {
             <span className="font-semibold text-slate-700">Privacy First</span>
           </div>
           <p className="text-center max-w-md leading-relaxed text-sm">
-            All processing happens locally in your browser. Your files never leave your device, ensuring complete privacy and security for your documents.
+            All processing happens locally in your browser. Your files never
+            leave your device, ensuring complete privacy and security for your
+            documents.
           </p>
           <div className="pt-1 text-center">
             <p className="text-xs text-slate-400">
@@ -24,4 +26,4 @@ export const Footer: React.FC = () => {
       </div>
     </footer>
   );
-}; 
+};

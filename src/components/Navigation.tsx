@@ -1,37 +1,43 @@
-import { NavLink } from 'react-router-dom';
-import { FileText, ImageIcon, Scissors, Minimize2, RotateCcw } from 'lucide-react';
+import { NavLink } from "react-router-dom";
+import {
+  FileText,
+  ImageIcon,
+  Scissors,
+  Minimize2,
+  RotateCcw,
+} from "lucide-react";
 
 const tools = [
-  { 
-    id: 'combine', 
-    name: 'Combine PDFs', 
+  {
+    id: "combine",
+    name: "Combine PDFs",
     icon: FileText,
-    path: '/combine' 
+    path: "/combine",
   },
-  { 
-    id: 'images-to-pdf', 
-    name: 'Images to PDF', 
+  {
+    id: "images-to-pdf",
+    name: "Images to PDF",
     icon: ImageIcon,
-    path: '/images-to-pdf' 
+    path: "/images-to-pdf",
   },
-  { 
-    id: 'split-pdfs', 
-    name: 'Split PDFs', 
+  {
+    id: "split-pdfs",
+    name: "Split PDFs",
     icon: Scissors,
-    path: '/split-pdfs' 
+    path: "/split-pdfs",
   },
-  { 
-    id: 'compress', 
-    name: 'Compress PDF', 
+  {
+    id: "compress",
+    name: "Compress PDF",
     icon: Minimize2,
-    path: '/compress' 
+    path: "/compress",
   },
-  { 
-    id: 'reorder', 
-    name: 'Reorder Pages', 
+  {
+    id: "reorder",
+    name: "Reorder Pages",
     icon: RotateCcw,
-    path: '/reorder' 
-  }
+    path: "/reorder",
+  },
 ];
 
 export const Navigation: React.FC = () => {
@@ -48,8 +54,8 @@ export const Navigation: React.FC = () => {
                 className={({ isActive }) =>
                   `flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50 hover:shadow-sm hover:border hover:border-slate-200'
+                      ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
+                      : "text-slate-600 hover:text-slate-800 hover:bg-slate-50 hover:shadow-sm hover:border hover:border-slate-200"
                   }`
                 }
               >
@@ -62,4 +68,4 @@ export const Navigation: React.FC = () => {
       </div>
     </nav>
   );
-}; 
+};

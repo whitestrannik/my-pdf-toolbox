@@ -9,12 +9,13 @@ Visit the application: **[https://whitestrannik.github.io/my-pdf-toolbox/](https
 ## ✨ Features
 
 - **🔗 Merge PDFs** - Combine multiple PDF files into one
-- **✂️ Split PDFs** - Extract pages or convert to images  
+- **✂️ Split PDFs** - Extract pages or convert to images
 - **🗜️ Compress PDFs** - Reduce file size with quality options
 - **📄 Images to PDF** - Convert JPEG/PNG images to PDF
 - **🔀 Reorder Pages** - Rearrange PDF pages with drag & drop
 
 ### 🔒 Privacy First
+
 - **100% Client-Side Processing** - No uploads, no server
 - **Local File Processing** - Files never leave your device
 - **No Data Collection** - Zero tracking or analytics
@@ -31,10 +32,12 @@ Visit the application: **[https://whitestrannik.github.io/my-pdf-toolbox/](https
 ## 🏗️ Development
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/YOUR_USERNAME/my-pdf-toolbox.git
@@ -48,6 +51,7 @@ npm run dev
 ```
 
 ### Available Scripts
+
 ```bash
 npm run dev        # Start development server
 npm run build      # Build for production
@@ -66,6 +70,7 @@ npm run lint       # Run ESLint
 3. **Auto Deploy**: Every push to `main` triggers automatic deployment via GitHub Actions
 
 ### Manual Deployment
+
 ```bash
 # Build the application
 npm run build
@@ -81,7 +86,7 @@ npm run build
 
 ```bash
 npm test           # Unit tests
-npm run e2e        # E2E tests  
+npm run e2e        # E2E tests
 npm run coverage   # Test coverage report
 ```
 
