@@ -36,7 +36,7 @@ const tools = [
 
 export const Navigation: React.FC = () => {
   return (
-    <nav className="glass-effect border-b border-white/20 py-2">
+    <nav className="glass-effect border-b border-white/20 py-2 sticky top-[73px] z-[90]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex space-x-1 overflow-x-auto">
           {tools.map((tool) => {

@@ -76,11 +76,6 @@ export const HomePage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-6">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium text-blue-700">Professional PDF Tools</span>
-        </div>
-        
         <h1 className="text-5xl font-bold text-slate-800 mb-6 tracking-tight">
           PDF Tools at Your
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Fingertips</span>
