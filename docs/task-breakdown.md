@@ -4,31 +4,40 @@ This document outlines the step-by-step development tasks for the MVP (P0) relea
 
 ---
 
-## 🚧 Phase 1: Project Setup
-- [ ] Initialize project with Vite + React + TypeScript
+## ✅ Phase 1: Project Setup *(COMPLETED)*
+- [x] Initialize project with Vite + React + TypeScript
   - `npm create vite@latest my-pdf-toolbox --template react-ts`
-- [ ] Configure TailwindCSS
+- [x] Configure TailwindCSS
   - `npm install -D tailwindcss postcss autoprefixer`
   - `npx tailwindcss init -p`
   - Add Tailwind setup in `tailwind.config.ts` and `index.css`
-- [ ] Set up folder structure
+- [x] Set up folder structure
   - `components`, `views`, `pdf-utils`, `hooks`, `context`, `assets`, `styles`
-- [ ] Add ESLint + Prettier config
+- [x] Add ESLint + Prettier config
   - Add `.eslintrc`, `.prettierrc`, and install dependencies
-- [ ] Create GitHub repo & CI placeholder
+- [x] Create GitHub repo & CI placeholder
   - `.github/workflows/test.yml`
 
----
-
-## 🧪 Phase 2: Tooling & Test Infrastructure
-- [ ] Install Vitest + React Testing Library
-- [ ] Install Playwright (headless + headed)
-- [ ] Add test scripts: `npm run test`, `npm run e2e`, `npm run e2e:ui`
-- [ ] Create sample unit test and E2E sanity test
+**Completed:** Cleaned up default Vite files, set up project structure, configured ESLint/Prettier integration, created CI workflow.
 
 ---
 
-## 🎨 Phase 3: UI Foundation
+## ✅ Phase 2: Tooling & Test Infrastructure *(COMPLETED)*
+- [x] Install Vitest + React Testing Library
+- [x] Install Playwright (headless + headed)
+- [x] Add test scripts: `npm run test`, `npm run e2e`, `npm run e2e:ui`
+- [x] Create sample unit test and E2E sanity test
+
+**Completed:** 
+- Upgraded to Vitest 3.2.0 with React Testing Library
+- Configured Playwright for E2E testing
+- Fixed memory issues and test execution
+- All tests passing: 2 unit tests, 1 E2E test
+- Proper test separation (Vitest for unit, Playwright for E2E)
+
+---
+
+## 🎨 Phase 3: UI Foundation *(NEXT)*
 - [ ] Header with title + dark/light toggle
 - [ ] Dashboard or toolbar layout
 - [ ] Create reusable UI components:
