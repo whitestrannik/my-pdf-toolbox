@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header, Navigation } from './components';
-import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, PlaceholderView } from './views';
+import { HomePage, CombinePDFsView, SplitPDFsView, CompressPDFView, ImagesToPDFView, ReorderPagesView, PlaceholderView } from './views';
 
 function App() {
   return (
@@ -15,16 +15,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/combine" element={<CombinePDFsView />} />
-              <Route 
-                path="/images-to-pdf" 
-                element={
-                  <PlaceholderView 
-                    title="Images to PDF"
-                    icon="🖼️"
-                    description="Convert multiple images into a single PDF file"
-                  />
-                } 
-              />
+              <Route path="/images-to-pdf" element={<ImagesToPDFView />} />
               <Route path="/split-pdfs" element={<SplitPDFsView />} />
               <Route 
                 path="/split-images" 
@@ -37,16 +28,7 @@ function App() {
                 } 
               />
               <Route path="/compress" element={<CompressPDFView />} />
-              <Route 
-                path="/reorder" 
-                element={
-                  <PlaceholderView 
-                    title="Reorder Pages"
-                    icon="🔃"
-                    description="Rearrange pages in your PDF using drag and drop"
-                  />
-                } 
-              />
+              <Route path="/reorder" element={<ReorderPagesView />} />
             </Routes>
           </main>
         </div>
