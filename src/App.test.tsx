@@ -1,21 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import App from "./App";
 import { describe, it, expect } from "vitest";
 import { Header, Navigation, Footer } from "./components";
-import { CombinePDFsView, HomePage } from "./views";
+import { CombinePDFsView } from "./views";
 
 // Test component that renders the app content without the outer Router
 const TestAppContent = ({ initialPath = "/" }: { initialPath?: string }) => {
-  const fullPath = `/my-pdf-toolbox${initialPath}`;
   return (
-    <MemoryRouter initialEntries={[fullPath]} basename="/my-pdf-toolbox">
+    <MemoryRouter initialEntries={[initialPath]}>
       <div className="min-h-screen bg-gradient-hero flex flex-col">
         <Header />
         {initialPath !== "/" && <Navigation />}
         <main className="flex-grow">
-          <div className="bg-white/95 min-h-full">
-            {initialPath === "/combine" ? <CombinePDFsView /> : <HomePage />}
-          </div>
+          {initialPath === "/combine" ? (
+            <CombinePDFsView />
+          ) : (
+            <div>Test Page</div>
+          )}
         </main>
         <Footer />
       </div>
@@ -25,13 +27,13 @@ const TestAppContent = ({ initialPath = "/" }: { initialPath?: string }) => {
 
 describe("App", () => {
   it("renders app title in header", () => {
-    render(<TestAppContent initialPath="/" />);
+    render(<App />);
     const headline = screen.getByRole("heading", { name: "PDF Toolbox" });
     expect(headline).toBeInTheDocument();
   });
 
   it("renders homepage with privacy section", () => {
-    render(<TestAppContent initialPath="/" />);
+    render(<App />);
     const privacySections = screen.getAllByText(/Privacy First/i);
     expect(privacySections.length).toBeGreaterThan(0);
   });
