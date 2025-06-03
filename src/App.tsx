@@ -1,13 +1,10 @@
 function App() {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
-        <h2 className="text-2xl font-bold text-gray-800">Tailwind Card</h2>
-        <p className="text-gray-600 mt-3">
-            This is a simple card layout built with Tailwind CSS.
-        </p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Learn More
-        </button>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center dark:bg-gray-900">
+      <h1 className="text-3xl font-bold text-sky-700 dark:text-sky-400">
+        My-PDF Toolbox
+      </h1>
+      <p className="text-gray-600 dark:text-gray-300">Coming soon!</p>
     </div>
   );
 }

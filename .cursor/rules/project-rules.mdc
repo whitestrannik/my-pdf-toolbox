@@ -1,0 +1,6 @@
+---
+description: The files contain project documentation: PRD, feature spec, architecture, tasks break down and are helpful for implementing any project's features
+
+globs: docs/*.md
+alwaysApply: false
+---
