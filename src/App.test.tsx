@@ -6,9 +6,8 @@ import { CombinePDFsView, HomePage } from "./views";
 
 // Test component that renders the app content without the outer Router
 const TestAppContent = ({ initialPath = "/" }: { initialPath?: string }) => {
-  const fullPath = `/my-pdf-toolbox${initialPath}`;
   return (
-    <MemoryRouter initialEntries={[fullPath]} basename="/my-pdf-toolbox">
+    <MemoryRouter initialEntries={[initialPath]}>
       <div className="min-h-screen bg-gradient-hero flex flex-col">
         <Header />
         {initialPath !== "/" && <Navigation />}
