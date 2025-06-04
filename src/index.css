@@ -275,6 +275,52 @@ h6 {
   transform: translateX(-50%) translateY(0);
 }
 
+/* Enhanced visibility for homepage content */
+.homepage-hero {
+  position: relative;
+  z-index: 10;
+  color: #1e293b !important;
+}
+
+.homepage-hero h1 {
+  color: #0f172a !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-hero p {
+  color: #334155 !important;
+}
+
+/* Force hover effects to work */
+a:hover,
+button:hover,
+.hover-effect:hover {
+  transition: all 0.2s ease !important;
+}
+
+/* Navigation specific hover fixes */
+nav a {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+}
+
+nav a:hover {
+  background-color: rgb(248 250 252) !important;
+  box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.12), 0 0 0 1px rgb(226 232 240) !important;
+  color: rgb(30 41 59) !important;
+  border-radius: 12px !important;
+}
+
+/* Hide navigation scrollbars */
+.nav-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 /* Responsive tooltip positioning */
 @media (max-width: 640px) {
   .tooltip {

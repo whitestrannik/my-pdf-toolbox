@@ -86,10 +86,10 @@ const features = [
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
       {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-slate-800 mb-6 tracking-tight">
+      <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 homepage-hero">
+        <h1 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight drop-shadow-sm">
           PDF Tools at Your
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             {" "}
@@ -97,7 +97,7 @@ export const HomePage: React.FC = () => {
           </span>
         </h1>
 
-        <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed mb-8">
           A powerful, client-side PDF toolbox for all your document processing
           needs. No uploads required - everything happens securely in your
           browser.
@@ -110,7 +110,7 @@ export const HomePage: React.FC = () => {
             return (
               <div
                 key={index}
-                className="flex items-center space-x-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200"
+                className="flex items-center space-x-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200 hover:shadow-md hover:scale-105 transition-all duration-200 hover-effect"
               >
                 <IconComponent
                   className="w-4 h-4 text-slate-600"
@@ -130,11 +130,11 @@ export const HomePage: React.FC = () => {
         {tools.map((tool, index) => {
           const IconComponent = tool.icon;
           return (
-            <Link key={tool.id} to={tool.path} className="group">
+            <Link key={tool.id} to={tool.path} className="group hover-effect">
               <Card
                 variant="elevated"
                 hoverable
-                className="h-full animate-slide-in-up border-slate-200/60"
+                className="h-full animate-slide-in-up border-slate-200/60 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex items-start space-x-4">

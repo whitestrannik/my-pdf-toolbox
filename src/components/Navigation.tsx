@@ -42,9 +42,9 @@ const tools = [
 
 export const Navigation: React.FC = () => {
   return (
-    <nav className="glass-effect border-b border-white/20 py-2 sticky top-[73px] z-[90]">
+    <nav className="glass-effect border-b border-white/20 py-4 sticky top-[73px] z-[90]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex space-x-1 overflow-x-auto">
+        <div className="flex space-x-2 overflow-x-auto pb-2 pt-1 px-1 nav-scrollbar-hidden">
           {tools.map((tool) => {
             const IconComponent = tool.icon;
             return (
@@ -52,11 +52,9 @@ export const Navigation: React.FC = () => {
                 key={tool.id}
                 to={tool.path}
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium ${
-                    isActive
-                      ? "bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"
-                      : "text-slate-600 hover:text-slate-800 hover:bg-slate-50 hover:shadow-sm hover:border hover:border-slate-200"
-                  }`
+                  isActive
+                    ? "flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-300 font-medium bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex-shrink-0"
+                    : "flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-300 font-medium text-slate-600 flex-shrink-0"
                 }
               >
                 <IconComponent className="w-5 h-5" strokeWidth={2} />
