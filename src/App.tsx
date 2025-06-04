@@ -26,8 +26,8 @@ function AppContent() {
       <main className="flex-grow">
         <div
           className={
-            isHomePage 
-              ? "bg-transparent min-h-full pb-8" 
+            isHomePage
+              ? "bg-transparent min-h-full pb-8"
               : "bg-white/95 min-h-full pb-8"
           }
         >
@@ -49,7 +49,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/my-pdf-toolbox">
       <AppContent />
     </Router>
   );

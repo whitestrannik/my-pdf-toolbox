@@ -6,21 +6,23 @@ export const Header: React.FC = () => {
   const isHomePage = location.pathname === "/";
 
   return (
-    <header className={`glass-effect px-6 py-4 border-b border-white/20 ${!isHomePage ? "sticky top-0 z-[100]" : ""}`}>
+    <header
+      className={`glass-effect px-6 py-4 border-b border-white/20 ${!isHomePage ? "sticky top-0 z-[100]" : ""}`}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link
           to="/"
           className="flex items-center space-x-3 transition-all duration-200 group"
           style={{
-            transition: 'all 0.2s ease',
+            transition: "all 0.2s ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = '0.9';
-            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.opacity = "0.9";
+            e.currentTarget.style.transform = "translateY(-1px)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.opacity = '1';
-            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.opacity = "1";
+            e.currentTarget.style.transform = "translateY(0)";
           }}
         >
           <div className="bg-gradient-primary rounded-2xl p-3 shadow-lg shadow-blue-500/25 transition-all duration-200">
