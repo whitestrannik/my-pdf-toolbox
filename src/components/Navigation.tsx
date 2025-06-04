@@ -22,7 +22,7 @@ const tools = [
   },
   {
     id: "split-pdfs",
-    name: "Split PDFs",
+    name: "Split & Extract",
     icon: Scissors,
     path: "/split-pdfs",
   },

@@ -34,8 +34,9 @@ const tools = [
   },
   {
     id: "split-pdfs",
-    name: "Split to PDFs",
-    description: "Split a PDF into multiple separate documents by page ranges",
+    name: "Split & Extract PDFs",
+    description:
+      "Split PDFs into separate files or extract specific pages into a single document",
     icon: Scissors,
     path: "/split-pdfs",
     color: "from-emerald-500 to-emerald-600",

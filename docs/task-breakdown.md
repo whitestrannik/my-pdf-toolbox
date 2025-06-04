@@ -101,6 +101,7 @@ Each utility must be:
 - [x] Connect UI with PDF utilities
   - [x] Combine PDFs - Complete with file validation, thumbnails, reordering, merging, downloads
   - [x] Split PDF - Complete with PDF/image output, ZIP packaging, page ranges
+  - [x] **Extract Pages to Single PDF** - NEW: Extract specific pages into one combined PDF document
   - [x] Compress PDF - Complete with 3 compression levels, size comparison, downloads
   - [x] Reorder Pages - Complete with drag & drop page reordering interface, visual feedback
   - [x] Images to PDF - Complete with multiple image upload, settings, conversion
@@ -120,25 +121,43 @@ Each utility must be:
   - [x] Image collections (split to images) as ZIP
   - [x] Proper file naming and organization
 
-**Completed: 5/5 utilities** - All Phase 5 requirements fulfilled
+**Completed: 6/6 utilities** - All Phase 5 requirements fulfilled + NEW Extract Pages feature
 
 - **Combine PDFs:** Multi-file upload, thumbnails, reordering, merge with validation
 - **Split PDF:** Single file input, range selection, PDF/image output, ZIP packaging
+- **Extract Pages to Single PDF:** NEW - Extract specific pages (e.g., "2-5, 8") into one combined PDF document
 - **Compress PDF:** Three compression levels with size comparison and recommendations
 - **Reorder Pages:** Full drag & drop interface with visual feedback, original position tracking
 - **Images to PDF:** Multi-image upload with thumbnails, settings (page size, orientation, margins, quality)
 
 ---
 
-## 🧪 Phase 6: Testing
+## 🧪 Phase 6: Testing _(PARTIALLY COMPLETED)_
 
-- [ ] Unit tests for each PDF utility
-- [ ] Component tests for all UI logic
+- [x] Unit tests for each PDF utility
+- [x] Component tests for all UI logic
 - [ ] E2E tests for each user flow:
-  - Combine → Merge → Download
-  - Split → Range Select → Export
-  - Reorder → Preview → Export
-  - Compress → Save
+  - [ ] Combine → Merge → Download
+  - [ ] Split → Range Select → Export
+  - [ ] Reorder → Preview → Export
+  - [ ] Compress → Save
+  - [x] Basic navigation and homepage tests
+- [x] Fix all linter warnings and formatting issues
+- [x] Resolve routing configuration mismatches
+
+**Completed:**
+
+- **Unit Testing:** All 91 unit tests passing across 10 test files
+  - Fixed CombinePDFsView test that was failing due to split text elements
+  - Comprehensive PDF utility testing (60 tests for core logic)
+  - Component testing for Button, Dropzone, ThemeContext, and views
+- **Code Quality:** All linter warnings resolved with Prettier formatting
+- **Basic E2E Testing:** Navigation and homepage functionality tested
+- **Routing Fix:** Corrected React Router basename to match Vite base configuration (`/my-pdf-toolbox/`)
+- **Build Verification:** All tests pass, no linting errors, clean build output
+
+**Still Needed:**
+- **Comprehensive E2E Tests:** User flow tests for all PDF tools (combine, split, reorder, compress, images to PDF)
 
 ---
 

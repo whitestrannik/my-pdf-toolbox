@@ -25,7 +25,7 @@ interface ProcessingState {
 }
 
 interface SplitSettings {
-  outputType: "pdfs" | "images";
+  outputType: "pdfs" | "images" | "single-pdf";
   pageRange: string;
   imageFormat: "jpeg" | "png";
   imageQuality: number;
@@ -266,6 +266,49 @@ export const SplitPDFsView: React.FC = () => {
           message: `Successfully split into ${pagesToSplit.length} PDF files!`,
           type: "success",
         });
+      } else if (splitSettings.outputType === "single-pdf") {
+        setProcessing((prev) => ({
+          ...prev,
+          progress: `Extracting ${pagesToSplit.length} pages to single PDF...`,
+        }));
+
+        const result = await splitPDFToPDFs({
+          file: uploadedFile.file,
+          splitMethod: "extract",
+          extractRange: pagesToSplit.join(","),
+        });
+
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+
+        setProcessing((prev) => ({
+          ...prev,
+          progress: "Preparing download...",
+        }));
+
+        // Download the single PDF file
+        const baseFilename = uploadedFile.file.name.replace(".pdf", "");
+        const timestamp = new Date()
+          .toISOString()
+          .slice(0, 19)
+          .replace(/:/g, "-");
+        const filename = `${baseFilename}-extracted-pages-${timestamp}.pdf`;
+
+        // Download the single PDF file
+        saveAs(result.pdfBlobs[0], filename);
+
+        setProcessing({
+          isProcessing: false,
+          progress: "",
+        });
+
+        // Show success toast
+        setToast({
+          isVisible: true,
+          message: `Successfully extracted ${pagesToSplit.length} pages to single PDF!`,
+          type: "success",
+        });
       } else {
         setProcessing((prev) => ({
           ...prev,
@@ -344,12 +387,12 @@ export const SplitPDFsView: React.FC = () => {
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
           ✂️{" "}
           <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            Split to PDFs
+            Split & Extract PDFs
           </span>
         </h1>
         <p className="text-lg text-slate-700 leading-relaxed">
-          Split a PDF document into separate files by page ranges with
-          professional quality output.
+          Split PDF documents into separate files or extract specific pages into
+          a single PDF with professional quality output.
         </p>
       </div>
 
@@ -507,7 +550,10 @@ export const SplitPDFsView: React.FC = () => {
                       onChange={(e) =>
                         setSplitSettings((prev) => ({
                           ...prev,
-                          outputType: e.target.value as "pdfs" | "images",
+                          outputType: e.target.value as
+                            | "pdfs"
+                            | "images"
+                            | "single-pdf",
                         }))
                       }
                       className="mr-2"
@@ -525,13 +571,37 @@ export const SplitPDFsView: React.FC = () => {
                       onChange={(e) =>
                         setSplitSettings((prev) => ({
                           ...prev,
-                          outputType: e.target.value as "pdfs" | "images",
+                          outputType: e.target.value as
+                            | "pdfs"
+                            | "images"
+                            | "single-pdf",
                         }))
                       }
                       className="mr-2"
                     />
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       Convert to images
+                    </span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="outputType"
+                      value="single-pdf"
+                      checked={splitSettings.outputType === "single-pdf"}
+                      onChange={(e) =>
+                        setSplitSettings((prev) => ({
+                          ...prev,
+                          outputType: e.target.value as
+                            | "pdfs"
+                            | "images"
+                            | "single-pdf",
+                        }))
+                      }
+                      className="mr-2"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Extract to Single PDF
                     </span>
                   </label>
                 </div>
@@ -615,7 +685,7 @@ export const SplitPDFsView: React.FC = () => {
                 >
                   {processing.isProcessing
                     ? processing.progress
-                    : `Split to ${splitSettings.outputType === "pdfs" ? "PDFs" : "Images"}`}
+                    : `Split to ${splitSettings.outputType === "pdfs" ? "PDFs" : splitSettings.outputType === "images" ? "Images" : "Single PDF"}`}
                 </Button>
               </div>
             </div>
