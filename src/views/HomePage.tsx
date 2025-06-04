@@ -86,7 +86,7 @@ const features = [
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       {/* Hero Section */}
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 homepage-hero">
         <h1 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight drop-shadow-sm">

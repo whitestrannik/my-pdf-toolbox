@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Card, Dropzone, Button, Modal, Toast } from "../components";
+import { Dropzone, Button, Modal, Toast } from "../components";
 import { reorderPDF } from "../pdf-utils";
 import { saveAs } from "file-saver";
 import * as pdfjsLib from "pdfjs-dist";
@@ -312,7 +312,7 @@ export const ReorderPagesView: React.FC = () => {
   const hasChanges = pages.some((page, index) => page.originalIndex !== index);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
           🔄 <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Reorder Pages</span>
@@ -323,6 +323,7 @@ export const ReorderPagesView: React.FC = () => {
       </div>
 
       <div className="space-y-8">
+        {/* Upload Section - Full width like header/footer */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
           <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
@@ -347,21 +348,9 @@ export const ReorderPagesView: React.FC = () => {
             accept=".pdf"
             multiple={false}
             disabled={processing.isProcessing}
+            className="w-full min-h-[200px]"
           >
             <div className="space-y-2">
-              <svg
-                className="mx-auto h-12 w-12 text-gray-400"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
               <div className="text-gray-600 dark:text-gray-400">
                 <p className="text-lg font-medium">
                   {processing.isProcessing
@@ -378,7 +367,8 @@ export const ReorderPagesView: React.FC = () => {
           </Dropzone>
         </div>
 
-        {uploadedFile && (
+        {/* Pages Management Section - Full width like header/footer */}
+        {uploadedFile && pages.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-800 flex items-center">
@@ -400,7 +390,7 @@ export const ReorderPagesView: React.FC = () => {
               </Button>
             </div>
 
-            {uploadedFile.error ? (
+            {uploadedFile?.error ? (
               <div className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
                 <p className="text-sm font-medium text-red-700 flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -413,10 +403,10 @@ export const ReorderPagesView: React.FC = () => {
               <div className="flex items-center space-x-4 p-4 bg-slate-50/60 border border-slate-200/60 backdrop-blur-sm rounded-2xl transition-all duration-200">
                 <div className="flex-grow min-w-0">
                   <p className="text-sm font-semibold text-slate-800 truncate mb-1">
-                    {uploadedFile.file.name}
+                    {uploadedFile?.file.name}
                   </p>
                   <p className="text-xs text-slate-600">
-                    {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB • {pages.length} pages
+                    {(uploadedFile?.file.size / 1024 / 1024).toFixed(2)} MB • {pages.length} pages
                   </p>
                 </div>
               </div>

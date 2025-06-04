@@ -42,26 +42,28 @@ const tools = [
 
 export const Navigation: React.FC = () => {
   return (
-    <nav className="glass-effect border-b border-white/20 py-4 sticky top-[73px] z-[90]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex space-x-2 overflow-x-auto pb-2 pt-1 px-1 nav-scrollbar-hidden">
-          {tools.map((tool) => {
-            const IconComponent = tool.icon;
-            return (
-              <NavLink
-                key={tool.id}
-                to={tool.path}
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-300 font-medium bg-blue-50 text-blue-700 border border-blue-200 shadow-sm flex-shrink-0"
-                    : "flex items-center space-x-3 py-3 px-4 rounded-xl whitespace-nowrap transition-all duration-300 font-medium text-slate-600 flex-shrink-0"
-                }
-              >
-                <IconComponent className="w-5 h-5" strokeWidth={2} />
-                <span>{tool.name}</span>
-              </NavLink>
-            );
-          })}
+    <nav className="px-6 py-2">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 p-2">
+          <div className="flex space-x-1 overflow-x-auto nav-scrollbar-hidden">
+            {tools.map((tool) => {
+              const IconComponent = tool.icon;
+              return (
+                <NavLink
+                  key={tool.id}
+                  to={tool.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center space-x-3 py-3 px-5 rounded-2xl whitespace-nowrap transition-all duration-300 font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg flex-shrink-0 transform hover:scale-105"
+                      : "flex items-center space-x-3 py-3 px-5 rounded-2xl whitespace-nowrap transition-all duration-300 font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-50/80 flex-shrink-0 transform hover:scale-105"
+                  }
+                >
+                  <IconComponent className="w-5 h-5" strokeWidth={2} />
+                  <span>{tool.name}</span>
+                </NavLink>
+              );
+            })}
+          </div>
         </div>
       </div>
     </nav>

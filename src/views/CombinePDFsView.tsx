@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Card, Dropzone, Button, Modal, Toast } from "../components";
+import { Dropzone, Button, Modal, Toast } from "../components";
 import { mergePDFs } from "../pdf-utils";
 import { saveAs } from "file-saver";
 import * as pdfjsLib from "pdfjs-dist";
@@ -213,7 +213,7 @@ export const CombinePDFsView: React.FC = () => {
   const hasErrors = uploadedFiles.some((file) => file.error);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
           📄 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Combine PDFs</span>
@@ -224,6 +224,7 @@ export const CombinePDFsView: React.FC = () => {
       </div>
 
       <div className="space-y-8">
+        {/* Upload Section - Full width like header/footer */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
           <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-3 shadow-lg mr-4">
@@ -248,6 +249,7 @@ export const CombinePDFsView: React.FC = () => {
             accept=".pdf"
             multiple={true}
             disabled={processing.isProcessing}
+            className="w-full min-h-[200px]"
           >
             <div className="space-y-2">
               <div className="text-gray-600 dark:text-gray-400">
@@ -266,6 +268,7 @@ export const CombinePDFsView: React.FC = () => {
           </Dropzone>
         </div>
 
+        {/* Files Management Section - Full width like header/footer */}
         {uploadedFiles.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-6">

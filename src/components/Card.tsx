@@ -28,7 +28,7 @@ export const Card: React.FC<CardProps> = ({
   const variantStyles = {
     default: "bg-white border-slate-200 shadow-sm",
     elevated: "bg-white border-slate-200/80 shadow-lg shadow-slate-200/60",
-    glass: "glass-effect border-white/20",
+    glass: "bg-white/90 backdrop-blur-sm border-white/20 shadow-lg",
     gradient: "bg-gradient-soft border-slate-200 shadow-md",
   };
 

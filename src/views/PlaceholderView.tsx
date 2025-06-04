@@ -1,18 +1,13 @@
-import { Card } from "../components";
+import React from "react";
 
 interface PlaceholderViewProps {
   title: string;
-  icon: string;
   description: string;
 }
 
-export const PlaceholderView: React.FC<PlaceholderViewProps> = ({
-  title,
-  icon,
-  description,
-}) => {
+export const PlaceholderView: React.FC<PlaceholderViewProps> = ({ title, description }) => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center bg-white/90 backdrop-blur-sm rounded-3xl p-12 shadow-lg border border-white/20">
         <div className="mb-6">
           <span className="bg-gradient-to-r from-slate-500 to-slate-600 rounded-2xl p-4 shadow-lg inline-block">
