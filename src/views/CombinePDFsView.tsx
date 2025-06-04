@@ -213,31 +213,22 @@ export const CombinePDFsView: React.FC = () => {
   const hasErrors = uploadedFiles.some((file) => file.error);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          📄 Combine PDFs
+    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+      <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+          📄 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Combine PDFs</span>
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Merge multiple PDF files into a single document. Maximum file size:
-          20MB per file.
+        <p className="text-lg text-slate-700 leading-relaxed">
+          Merge multiple PDF files into a single document with professional quality. Maximum file size: 20MB per file.
         </p>
       </div>
 
-      <div className="space-y-6">
-        <Card>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Upload PDF Files
-          </h2>
-          <Dropzone
-            onFilesDrop={handleFilesDrop}
-            accept=".pdf"
-            multiple={true}
-            disabled={processing.isProcessing}
-          >
-            <div className="space-y-2">
+      <div className="space-y-8">
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+            <span className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
-                className="mx-auto h-12 w-12 text-gray-400"
+                className="w-6 h-6 text-white"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -249,6 +240,16 @@ export const CombinePDFsView: React.FC = () => {
                   strokeLinejoin="round"
                 />
               </svg>
+            </span>
+            Upload PDF Files
+          </h2>
+          <Dropzone
+            onFilesDrop={handleFilesDrop}
+            accept=".pdf"
+            multiple={true}
+            disabled={processing.isProcessing}
+          >
+            <div className="space-y-2">
               <div className="text-gray-600 dark:text-gray-400">
                 <p className="text-lg font-medium">
                   {processing.isProcessing
@@ -263,20 +264,26 @@ export const CombinePDFsView: React.FC = () => {
               </div>
             </div>
           </Dropzone>
-        </Card>
+        </div>
 
         {uploadedFiles.length > 0 && (
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+                <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </span>
                 Files to Combine ({validFiles.length} valid)
               </h2>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={clearAllFiles}
                   disabled={processing.isProcessing}
+                  className="hover:shadow-md hover:scale-105 transition-all duration-200"
                 >
                   Clear All
                 </Button>
@@ -285,6 +292,7 @@ export const CombinePDFsView: React.FC = () => {
                   disabled={validFiles.length < 2 || processing.isProcessing}
                   onClick={handleMerge}
                   isLoading={processing.isProcessing}
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   {processing.isProcessing
                     ? processing.progress
@@ -294,32 +302,37 @@ export const CombinePDFsView: React.FC = () => {
             </div>
 
             {hasErrors && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
-                <h3 className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">
+              <div className="mb-6 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
+                <h3 className="text-sm font-semibold text-red-800 mb-2 flex items-center">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
                   Some files have errors:
                 </h3>
-                <ul className="text-sm text-red-600 dark:text-red-300 space-y-1">
+                <ul className="text-sm text-red-700 space-y-1 ml-6">
                   {uploadedFiles
                     .filter((file) => file.error)
                     .map((file) => (
-                      <li key={file.id}>• {file.error}</li>
+                      <li key={file.id} className="list-disc">
+                        {file.error}
+                      </li>
                     ))}
                 </ul>
               </div>
             )}
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {uploadedFiles.map((fileObj, index) => (
                 <div
                   key={fileObj.id}
-                  className={`flex items-center space-x-4 p-3 border rounded-lg ${
+                  className={`flex items-center space-x-4 p-4 rounded-2xl transition-all duration-200 hover:shadow-md ${
                     fileObj.error
-                      ? "border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10"
-                      : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+                      ? "bg-red-50/60 border border-red-200/60 backdrop-blur-sm"
+                      : "bg-slate-50/60 border border-slate-200/60 backdrop-blur-sm hover:bg-slate-50/80"
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
+                  <div className="flex-shrink-0 w-16 h-20 bg-slate-100 rounded-xl overflow-hidden shadow-sm">
                     {fileObj.thumbnail ? (
                       <img
                         src={fileObj.thumbnail}
@@ -328,7 +341,7 @@ export const CombinePDFsView: React.FC = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs font-medium text-slate-500">
                           PDF
                         </span>
                       </div>
@@ -337,14 +350,14 @@ export const CombinePDFsView: React.FC = () => {
 
                   {/* File Info */}
                   <div className="flex-grow min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    <p className="text-sm font-semibold text-slate-800 truncate mb-1">
                       {fileObj.file.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-slate-600">
                       {(fileObj.file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                     {fileObj.error && (
-                      <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                      <p className="text-xs text-red-600 mt-1 font-medium">
                         {fileObj.error}
                       </p>
                     )}
@@ -352,7 +365,7 @@ export const CombinePDFsView: React.FC = () => {
 
                   {/* Order Number */}
                   <div className="flex-shrink-0">
-                    <span className="inline-flex items-center justify-center w-8 h-8 bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200 rounded-full text-sm font-medium">
+                    <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-full text-sm font-semibold shadow-lg">
                       {index + 1}
                     </span>
                   </div>
@@ -362,7 +375,7 @@ export const CombinePDFsView: React.FC = () => {
                     <button
                       onClick={() => moveFileUp(index)}
                       disabled={index === 0 || processing.isProcessing}
-                      className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-sm"
                       title="Move up"
                     >
                       <svg
@@ -385,7 +398,7 @@ export const CombinePDFsView: React.FC = () => {
                         index === uploadedFiles.length - 1 ||
                         processing.isProcessing
                       }
-                      className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-sm"
                       title="Move down"
                     >
                       <svg
@@ -405,7 +418,7 @@ export const CombinePDFsView: React.FC = () => {
                     <button
                       onClick={() => removeFile(fileObj.id)}
                       disabled={processing.isProcessing}
-                      className="p-1 text-red-400 hover:text-red-600 dark:hover:text-red-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-sm"
                       title="Remove file"
                     >
                       <svg
@@ -418,7 +431,7 @@ export const CombinePDFsView: React.FC = () => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         />
                       </svg>
                     </button>
@@ -426,7 +439,7 @@ export const CombinePDFsView: React.FC = () => {
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
         )}
       </div>
 

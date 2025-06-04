@@ -312,20 +312,34 @@ export const ReorderPagesView: React.FC = () => {
   const hasChanges = pages.some((page, index) => page.originalIndex !== index);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          🔃 Reorder Pages
+    <div className="max-w-4xl mx-auto px-6 py-12 relative z-10">
+      <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+          🔄 <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Reorder Pages</span>
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Rearrange pages in your PDF using drag and drop. Maximum file size:
-          20MB.
+        <p className="text-lg text-slate-700 leading-relaxed">
+          Rearrange PDF pages using intuitive drag and drop functionality with real-time preview.
         </p>
       </div>
 
-      <div className="space-y-6">
-        <Card>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="space-y-8">
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+            <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </span>
             Upload PDF File
           </h2>
           <Dropzone
@@ -362,12 +376,17 @@ export const ReorderPagesView: React.FC = () => {
               </div>
             </div>
           </Dropzone>
-        </Card>
+        </div>
 
         {uploadedFile && (
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+                <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </span>
                 PDF File ({pages.length} pages)
               </h2>
               <Button
@@ -375,45 +394,54 @@ export const ReorderPagesView: React.FC = () => {
                 size="sm"
                 onClick={removeFile}
                 disabled={processing.isProcessing}
+                className="hover:shadow-md hover:scale-105 transition-all duration-200"
               >
                 Remove
               </Button>
             </div>
 
             {uploadedFile.error ? (
-              <div className="p-3 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/10 rounded-lg">
-                <p className="text-sm text-red-600 dark:text-red-400">
+              <div className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
+                <p className="text-sm font-medium text-red-700 flex items-center">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
                   {uploadedFile.error}
                 </p>
               </div>
             ) : (
-              <div className="flex items-center space-x-4 p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="flex items-center space-x-4 p-4 bg-slate-50/60 border border-slate-200/60 backdrop-blur-sm rounded-2xl transition-all duration-200">
                 <div className="flex-grow min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-semibold text-slate-800 truncate mb-1">
                     {uploadedFile.file.name}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB •{" "}
-                    {pages.length} pages
+                  <p className="text-xs text-slate-600">
+                    {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB • {pages.length} pages
                   </p>
                 </div>
               </div>
             )}
-          </Card>
+          </div>
         )}
 
         {pages.length > 0 && (
-          <Card>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+                <span className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-3 shadow-lg mr-4">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                  </svg>
+                </span>
                 Page Order
               </h2>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={resetOrder}
                   disabled={processing.isProcessing}
+                  className="hover:shadow-md hover:scale-105 transition-all duration-200"
                 >
                   Reset Order
                 </Button>
@@ -422,6 +450,7 @@ export const ReorderPagesView: React.FC = () => {
                   size="sm"
                   onClick={reverseOrder}
                   disabled={processing.isProcessing}
+                  className="hover:shadow-md hover:scale-105 transition-all duration-200"
                 >
                   Reverse Order
                 </Button>
@@ -430,6 +459,7 @@ export const ReorderPagesView: React.FC = () => {
                   disabled={!hasChanges || processing.isProcessing}
                   onClick={handleReorder}
                   isLoading={processing.isProcessing}
+                  className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   {processing.isProcessing
                     ? processing.progress
@@ -438,13 +468,15 @@ export const ReorderPagesView: React.FC = () => {
               </div>
             </div>
 
-            <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
-                💡 <strong>Tip:</strong> Drag and drop pages to reorder them.
-                The page number shows the current position.
-                {hasChanges
-                  ? " Changes detected - click 'Apply Reorder' to save."
-                  : " No changes made yet."}
+            <div className="mb-6 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200/60 rounded-2xl shadow-sm">
+              <p className="text-sm text-blue-800 flex items-start">
+                <span className="text-blue-600 mr-2">💡</span>
+                <span>
+                  <strong>Tip:</strong> Drag and drop pages to reorder them. The page number shows the current position.
+                  {hasChanges
+                    ? " Changes detected - click 'Apply Reorder' to save."
+                    : " No changes made yet."}
+                </span>
               </p>
             </div>
 
@@ -500,7 +532,7 @@ export const ReorderPagesView: React.FC = () => {
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
         )}
       </div>
 
