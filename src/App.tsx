@@ -24,13 +24,7 @@ function AppContent() {
       {!isHomePage && <Navigation />}
 
       <main className="flex-grow">
-        <div
-          className={
-            isHomePage
-              ? "bg-transparent min-h-full pb-8"
-              : "bg-white/95 min-h-full pb-8"
-          }
-        >
+        <div className="bg-transparent min-h-full pb-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/combine" element={<CombinePDFsView />} />
