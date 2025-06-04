@@ -43,7 +43,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/my-pdf-toolbox">
+    <Router basename="/my-pdf-toolbox/">
       <AppContent />
     </Router>
   );
