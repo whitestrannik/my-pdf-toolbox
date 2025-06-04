@@ -4,7 +4,6 @@ import {
   FileText,
   ImageIcon,
   Scissors,
-  ScanLine,
   Minimize2,
   RotateCcw,
   ArrowRight,
@@ -41,14 +40,7 @@ const tools = [
     path: "/split-pdfs",
     color: "from-emerald-500 to-emerald-600",
   },
-  {
-    id: "split-images",
-    name: "Split to Images",
-    description: "Convert PDF pages to individual high-quality image files",
-    icon: ScanLine,
-    path: "/split-images",
-    color: "from-orange-500 to-orange-600",
-  },
+
   {
     id: "compress",
     name: "Compress PDF",
