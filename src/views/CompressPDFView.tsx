@@ -239,10 +239,14 @@ export const CompressPDFView: React.FC = () => {
     <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
-          🗜️ <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Compress PDF</span>
+          🗜️{" "}
+          <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+            Compress PDF
+          </span>
         </h1>
         <p className="text-lg text-slate-700 leading-relaxed">
-          Reduce PDF file size while maintaining optimal quality for faster sharing and storage.
+          Reduce PDF file size while maintaining optimal quality for faster
+          sharing and storage.
         </p>
       </div>
 
@@ -297,8 +301,18 @@ export const CompressPDFView: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-800 flex items-center">
                 <span className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-3 shadow-lg mr-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                 </span>
                 PDF File
@@ -357,8 +371,18 @@ export const CompressPDFView: React.FC = () => {
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 mt-8">
             <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
               <span className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-3 shadow-lg mr-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </span>
               Compression Results

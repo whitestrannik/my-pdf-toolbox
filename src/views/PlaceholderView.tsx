@@ -5,7 +5,10 @@ interface PlaceholderViewProps {
   description: string;
 }
 
-export const PlaceholderView: React.FC<PlaceholderViewProps> = ({ title, description }) => {
+export const PlaceholderView: React.FC<PlaceholderViewProps> = ({
+  title,
+  description,
+}) => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center bg-white/90 backdrop-blur-sm rounded-3xl p-12 shadow-lg border border-white/20">

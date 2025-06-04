@@ -315,10 +315,14 @@ export const ReorderPagesView: React.FC = () => {
     <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
-          🔄 <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Reorder Pages</span>
+          🔄{" "}
+          <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+            Reorder Pages
+          </span>
         </h1>
         <p className="text-lg text-slate-700 leading-relaxed">
-          Rearrange PDF pages using intuitive drag and drop functionality with real-time preview.
+          Rearrange PDF pages using intuitive drag and drop functionality with
+          real-time preview.
         </p>
       </div>
 
@@ -373,8 +377,18 @@ export const ReorderPagesView: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-800 flex items-center">
                 <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                 </span>
                 PDF File ({pages.length} pages)
@@ -393,8 +407,16 @@ export const ReorderPagesView: React.FC = () => {
             {uploadedFile?.error ? (
               <div className="p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
                 <p className="text-sm font-medium text-red-700 flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   {uploadedFile.error}
                 </p>
@@ -406,7 +428,8 @@ export const ReorderPagesView: React.FC = () => {
                     {uploadedFile?.file.name}
                   </p>
                   <p className="text-xs text-slate-600">
-                    {(uploadedFile?.file.size / 1024 / 1024).toFixed(2)} MB • {pages.length} pages
+                    {(uploadedFile?.file.size / 1024 / 1024).toFixed(2)} MB •{" "}
+                    {pages.length} pages
                   </p>
                 </div>
               </div>
@@ -419,8 +442,18 @@ export const ReorderPagesView: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-800 flex items-center">
                 <span className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-3 shadow-lg mr-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                    />
                   </svg>
                 </span>
                 Page Order
@@ -462,7 +495,8 @@ export const ReorderPagesView: React.FC = () => {
               <p className="text-sm text-blue-800 flex items-start">
                 <span className="text-blue-600 mr-2">💡</span>
                 <span>
-                  <strong>Tip:</strong> Drag and drop pages to reorder them. The page number shows the current position.
+                  <strong>Tip:</strong> Drag and drop pages to reorder them. The
+                  page number shows the current position.
                   {hasChanges
                     ? " Changes detected - click 'Apply Reorder' to save."
                     : " No changes made yet."}

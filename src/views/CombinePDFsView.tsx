@@ -216,10 +216,14 @@ export const CombinePDFsView: React.FC = () => {
     <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
       <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
-          📄 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Combine PDFs</span>
+          📄{" "}
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Combine PDFs
+          </span>
         </h1>
         <p className="text-lg text-slate-700 leading-relaxed">
-          Merge multiple PDF files into a single document with professional quality. Maximum file size: 20MB per file.
+          Merge multiple PDF files into a single document with professional
+          quality. Maximum file size: 20MB per file.
         </p>
       </div>
 
@@ -274,8 +278,18 @@ export const CombinePDFsView: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-slate-800 flex items-center">
                 <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                 </span>
                 Files to Combine ({validFiles.length} valid)
@@ -307,8 +321,16 @@ export const CombinePDFsView: React.FC = () => {
             {hasErrors && (
               <div className="mb-6 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
                 <h3 className="text-sm font-semibold text-red-800 mb-2 flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Some files have errors:
                 </h3>

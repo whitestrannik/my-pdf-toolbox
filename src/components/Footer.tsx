@@ -11,7 +11,9 @@ export const Footer: React.FC = () => {
               <div className="bg-emerald-100 rounded-xl p-1.5">
                 <Shield className="w-4 h-4 text-emerald-600" strokeWidth={2} />
               </div>
-              <span className="font-semibold text-slate-700">Privacy First</span>
+              <span className="font-semibold text-slate-700">
+                Privacy First
+              </span>
             </div>
             <p className="text-center max-w-md leading-relaxed text-sm">
               All processing happens locally in your browser. Your files never

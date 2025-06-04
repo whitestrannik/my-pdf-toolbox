@@ -6,8 +6,8 @@ describe("CombinePDFsView", () => {
   it("renders the combine PDFs interface", () => {
     render(<CombinePDFsView />);
 
-    // Check for main heading
-    expect(screen.getByText("📄 Combine PDFs")).toBeInTheDocument();
+    // Check for main heading - look for the span content since emoji and text are split
+    expect(screen.getByText("Combine PDFs")).toBeInTheDocument();
 
     // Check for description
     expect(
