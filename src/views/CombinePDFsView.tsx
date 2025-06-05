@@ -221,7 +221,7 @@ export const CombinePDFsView: React.FC = () => {
             Combine PDFs
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed">
+        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
           Merge multiple PDF files into a single document with professional
           quality. Maximum file size: 20MB per file.
         </p>

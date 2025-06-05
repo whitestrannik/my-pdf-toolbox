@@ -512,7 +512,7 @@ export const SplitPDFsView: React.FC = () => {
             Split & Extract PDFs
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed">
+        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
           Split PDF documents into separate files or extract specific pages into
           a single PDF with professional quality output.
         </p>

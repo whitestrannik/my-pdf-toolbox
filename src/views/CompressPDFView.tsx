@@ -244,7 +244,7 @@ export const CompressPDFView: React.FC = () => {
             Compress PDF
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed">
+        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
           Reduce PDF file size while maintaining optimal quality for faster
           sharing and storage.
         </p>

@@ -320,7 +320,7 @@ export const ReorderPagesView: React.FC = () => {
             Reorder Pages
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed">
+        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
           Rearrange PDF pages using intuitive drag and drop functionality with
           real-time preview.
         </p>

@@ -235,7 +235,7 @@ export const ImagesToPDFView: React.FC = () => {
             Images to PDF
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed">
+        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
           Convert multiple images into a single PDF document with custom layout
           and quality settings.
         </p>
