@@ -6,9 +6,9 @@ export const Header: React.FC = () => {
   const isHomePage = location.pathname === "/";
 
   return (
-    <header className="px-6 pt-4">
+    <header className="px-6 pt-2">
       <div
-        className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 px-6 py-4 max-w-7xl mx-auto ${!isHomePage ? "sticky top-4 z-[100]" : ""}`}
+        className={`bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 px-6 py-4 max-w-7xl mx-auto ${!isHomePage ? "sticky top-2 z-[100]" : ""}`}
       >
         <div className="flex items-center justify-between">
           <Link

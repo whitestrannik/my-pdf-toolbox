@@ -3,8 +3,8 @@ import { Shield } from "lucide-react";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="px-6 pb-4">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 py-6 max-w-7xl mx-auto">
+    <footer className="px-6 pb-2">
+      <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 pt-4 pb-6 max-w-7xl mx-auto">
         <div className="px-6">
           <div className="flex flex-col items-center justify-center space-y-2 text-slate-600">
             <div className="flex items-center space-x-3">

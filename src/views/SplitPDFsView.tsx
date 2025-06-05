@@ -63,12 +63,14 @@ export const SplitPDFsView: React.FC = () => {
     message: "",
     type: "success",
   });
-  const [pageRangeValidation, setPageRangeValidation] = useState<PageRangeValidation>({
-    isValid: true,
-  });
+  const [pageRangeValidation, setPageRangeValidation] =
+    useState<PageRangeValidation>({
+      isValid: true,
+    });
 
   // Debounced validation for page range
-  const [validationTimeout, setValidationTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [validationTimeout, setValidationTimeout] =
+    useState<NodeJS.Timeout | null>(null);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -160,7 +162,9 @@ export const SplitPDFsView: React.FC = () => {
     setUploadedFile(null);
   };
 
-  const validatePageRange = async (range: string): Promise<PageRangeValidation> => {
+  const validatePageRange = async (
+    range: string,
+  ): Promise<PageRangeValidation> => {
     if (!range.trim()) {
       return {
         isValid: false,
@@ -180,7 +184,8 @@ export const SplitPDFsView: React.FC = () => {
     if (!validPattern.test(range.trim())) {
       return {
         isValid: false,
-        error: "Invalid format. Use numbers, ranges (1-5), or comma-separated values (1,2,3)",
+        error:
+          "Invalid format. Use numbers, ranges (1-5), or comma-separated values (1,2,3)",
       };
     }
 
@@ -190,9 +195,9 @@ export const SplitPDFsView: React.FC = () => {
         const arrayBuffer = await uploadedFile.file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const totalPages = pdf.numPages;
-        
+
         const parsedPages = parsePageRange(range, totalPages);
-        
+
         if (parsedPages.length === 0) {
           return {
             isValid: false,
@@ -204,7 +209,7 @@ export const SplitPDFsView: React.FC = () => {
           isValid: true,
           parsedPages,
         };
-      } catch (error) {
+      } catch {
         return {
           isValid: false,
           error: "Unable to validate against document",
@@ -499,8 +504,8 @@ export const SplitPDFsView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-      <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+    <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
+      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
           ✂️{" "}
           <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
@@ -513,7 +518,7 @@ export const SplitPDFsView: React.FC = () => {
         </p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
           <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
@@ -680,7 +685,8 @@ export const SplitPDFsView: React.FC = () => {
                         Split to separate PDF documents
                       </span>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Creates individual PDF files for each specified page (e.g., page 1, page 2, etc.)
+                        Creates individual PDF files for each specified page
+                        (e.g., page 1, page 2, etc.)
                       </p>
                     </div>
                   </label>
@@ -706,7 +712,8 @@ export const SplitPDFsView: React.FC = () => {
                         Convert to image files
                       </span>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Converts each page to JPEG or PNG images with customizable quality
+                        Converts each page to JPEG or PNG images with
+                        customizable quality
                       </p>
                     </div>
                   </label>
@@ -732,7 +739,8 @@ export const SplitPDFsView: React.FC = () => {
                         Extract to single PDF document
                       </span>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Extracts specified pages and combines them into one new PDF document
+                        Extracts specified pages and combines them into one new
+                        PDF document
                       </p>
                     </div>
                   </label>
@@ -765,16 +773,18 @@ export const SplitPDFsView: React.FC = () => {
                     Valid examples:
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {["all", "1,2,3", "2-5", "7", "1-3,5,8-10"].map((example) => (
-                      <button
-                        key={example}
-                        type="button"
-                        onClick={() => handlePageRangeChange(example)}
-                        className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                      >
-                        {example}
-                      </button>
-                    ))}
+                    {["all", "1,2,3", "2-5", "7", "1-3,5,8-10"].map(
+                      (example) => (
+                        <button
+                          key={example}
+                          type="button"
+                          onClick={() => handlePageRangeChange(example)}
+                          className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        >
+                          {example}
+                        </button>
+                      ),
+                    )}
                   </div>
                 </div>
               </div>
@@ -828,7 +838,9 @@ export const SplitPDFsView: React.FC = () => {
               <div className="flex justify-end">
                 <Button
                   variant="primary"
-                  disabled={processing.isProcessing || !pageRangeValidation.isValid}
+                  disabled={
+                    processing.isProcessing || !pageRangeValidation.isValid
+                  }
                   onClick={handleSplit}
                   isLoading={processing.isProcessing}
                 >
@@ -841,8 +853,6 @@ export const SplitPDFsView: React.FC = () => {
           </div>
         )}
       </div>
-
-
 
       {/* Success Toast */}
       <Toast

@@ -312,8 +312,8 @@ export const ReorderPagesView: React.FC = () => {
   const hasChanges = pages.some((page, index) => page.originalIndex !== index);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-      <div className="text-center mb-16 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+    <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
+      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
           🔄{" "}
           <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
@@ -326,7 +326,7 @@ export const ReorderPagesView: React.FC = () => {
         </p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
           <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
