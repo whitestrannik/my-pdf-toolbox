@@ -44,8 +44,8 @@ export const Navigation: React.FC = () => {
   return (
     <nav className="px-6 py-1">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-white/20 p-2">
-          <div className="flex space-x-1 overflow-x-auto nav-scrollbar-hidden">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-100 p-2">
+          <div className="flex space-x-1 overflow-x-auto scrollbar-hide">
             {tools.map((tool) => {
               const IconComponent = tool.icon;
               return (
@@ -54,12 +54,12 @@ export const Navigation: React.FC = () => {
                   to={tool.path}
                   className={({ isActive }) =>
                     isActive
-                      ? "flex items-center space-x-3 py-3 px-5 rounded-2xl whitespace-nowrap transition-all duration-300 font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg flex-shrink-0 transform hover:scale-105"
-                      : "flex items-center space-x-3 py-3 px-5 rounded-2xl whitespace-nowrap transition-all duration-300 font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-50/80 flex-shrink-0 transform hover:scale-105"
+                      ? "flex items-center space-x-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium bg-slate-900 text-white shadow-sm flex-shrink-0"
+                      : "flex items-center space-x-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all duration-200 font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-50 flex-shrink-0"
                   }
                 >
-                  <IconComponent className="w-5 h-5" strokeWidth={2} />
-                  <span>{tool.name}</span>
+                  <IconComponent className="w-4 h-4" strokeWidth={2} />
+                  <span className="text-sm">{tool.name}</span>
                 </NavLink>
               );
             })}
