@@ -842,7 +842,7 @@ export const SplitPDFsView: React.FC = () => {
                     processing.isProcessing || !pageRangeValidation.isValid
                   }
                   onClick={handleSplit}
-                  isLoading={processing.isProcessing}
+                  loading={processing.isProcessing}
                 >
                   {processing.isProcessing
                     ? processing.progress

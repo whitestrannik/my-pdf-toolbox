@@ -308,7 +308,7 @@ export const CombinePDFsView: React.FC = () => {
                   variant="primary"
                   disabled={validFiles.length < 2 || processing.isProcessing}
                   onClick={handleMerge}
-                  isLoading={processing.isProcessing}
+                  loading={processing.isProcessing}
                   className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   {processing.isProcessing

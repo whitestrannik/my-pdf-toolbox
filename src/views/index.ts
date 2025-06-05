@@ -1,4 +1,4 @@
-export { HomePage } from "./HomePage";
+export { default as HomePage } from "./HomePage";
 export { CombinePDFsView } from "./CombinePDFsView";
 export { SplitPDFsView } from "./SplitPDFsView";
 export { CompressPDFView } from "./CompressPDFView";

@@ -322,7 +322,7 @@ export const ImagesToPDFView: React.FC = () => {
                   variant="primary"
                   disabled={validImages.length === 0 || processing.isProcessing}
                   onClick={handleConvert}
-                  isLoading={processing.isProcessing}
+                  loading={processing.isProcessing}
                   className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   {processing.isProcessing

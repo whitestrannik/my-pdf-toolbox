@@ -466,7 +466,7 @@ export const CompressPDFView: React.FC = () => {
                   variant="primary"
                   disabled={processing.isProcessing}
                   onClick={handleCompress}
-                  isLoading={processing.isProcessing}
+                  loading={processing.isProcessing}
                 >
                   {processing.isProcessing
                     ? processing.progress

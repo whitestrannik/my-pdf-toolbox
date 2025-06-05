@@ -481,7 +481,7 @@ export const ReorderPagesView: React.FC = () => {
                   variant="primary"
                   disabled={!hasChanges || processing.isProcessing}
                   onClick={handleReorder}
-                  isLoading={processing.isProcessing}
+                  loading={processing.isProcessing}
                   className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:scale-105 transition-all duration-200"
                 >
                   {processing.isProcessing

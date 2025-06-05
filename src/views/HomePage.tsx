@@ -1,61 +1,33 @@
+import { ChevronRight, FileText, Scissors, SplitSquareHorizontal, Zap, Shield, Download } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Card } from "../components";
-import {
-  FileText,
-  ImageIcon,
-  Scissors,
-  Minimize2,
-  RotateCcw,
-  ArrowRight,
-  Zap,
-  Shield,
-  Clock,
-} from "lucide-react";
 
 const tools = [
   {
-    id: "combine",
-    name: "Combine PDFs",
-    description:
-      "Merge multiple PDF files into a single document with professional quality",
+    name: "Merge PDFs",
+    description: "Combine multiple PDF files into a single document",
+    path: "/merge",
     icon: FileText,
-    path: "/combine",
-    color: "from-blue-500 to-blue-600",
+    gradient: "from-blue-50 to-indigo-50",
+    iconColor: "text-blue-600",
+    hoverColor: "hover:border-blue-200"
   },
   {
-    id: "images-to-pdf",
-    name: "Images to PDF",
-    description:
-      "Convert multiple images into a single PDF file with custom settings",
-    icon: ImageIcon,
-    path: "/images-to-pdf",
-    color: "from-purple-500 to-purple-600",
-  },
-  {
-    id: "split-pdfs",
-    name: "Split & Extract PDFs",
-    description:
-      "Split PDFs into separate files or extract specific pages into a single document",
+    name: "Split PDF",
+    description: "Extract pages or split PDF into separate files",
+    path: "/split",
     icon: Scissors,
-    path: "/split-pdfs",
-    color: "from-emerald-500 to-emerald-600",
-  },
-
-  {
-    id: "compress",
-    name: "Compress PDF",
-    description: "Reduce PDF file size while maintaining optimal quality",
-    icon: Minimize2,
-    path: "/compress",
-    color: "from-red-500 to-red-600",
+    gradient: "from-emerald-50 to-teal-50",
+    iconColor: "text-emerald-600",
+    hoverColor: "hover:border-emerald-200"
   },
   {
-    id: "reorder",
-    name: "Reorder Pages",
-    description: "Rearrange pages in your PDF using intuitive drag and drop",
-    icon: RotateCcw,
-    path: "/reorder",
-    color: "from-indigo-500 to-indigo-600",
+    name: "Extract Pages",
+    description: "Extract specific pages from your PDF documents",
+    path: "/extract",
+    icon: SplitSquareHorizontal,
+    gradient: "from-violet-50 to-purple-50",
+    iconColor: "text-violet-600",
+    hoverColor: "hover:border-violet-200"
   },
 ];
 
@@ -63,104 +35,168 @@ const features = [
   {
     icon: Zap,
     title: "Lightning Fast",
-    description: "Process PDFs instantly with client-side technology",
+    description: "Process documents in seconds with optimized algorithms"
   },
   {
     icon: Shield,
-    title: "Privacy First",
-    description: "Your files never leave your device",
+    title: "Secure & Private",
+    description: "All processing happens locally - your files never leave your device"
   },
   {
-    icon: Clock,
-    title: "Always Available",
-    description: "No server downtime, works offline",
-  },
+    icon: Download,
+    title: "No Registration",
+    description: "Start working immediately without creating an account"
+  }
 ];
 
-export const HomePage: React.FC = () => {
+export default function HomePage() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 homepage-hero">
-        <h1 className="text-5xl font-bold text-slate-900 mb-6 tracking-tight drop-shadow-sm">
-          PDF Tools at Your
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            {" "}
-            Fingertips
-          </span>
-        </h1>
-
-        <p className="text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed mb-8">
-          A powerful, client-side PDF toolbox for all your document processing
-          needs. No uploads required - everything happens securely in your
-          browser.
-        </p>
-
-        {/* Feature Pills */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {features.map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <div
-                key={index}
-                className="flex items-center space-x-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200 hover:shadow-md hover:scale-105 transition-all duration-200 hover-effect"
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-indigo-50/30"></div>
+        <div className="relative px-6 pt-16 pb-20 sm:px-12 lg:px-20 lg:pt-24 lg:pb-28">
+          <div className="mx-auto max-w-4xl text-center">
+            {/* Badge */}
+            <div className="mb-8 inline-flex items-center rounded-full bg-white/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-slate-600 shadow-sm border border-slate-200">
+              <Zap className="mr-2 h-4 w-4 text-blue-500" />
+              Professional PDF Toolkit
+            </div>
+            
+            {/* Main Heading */}
+            <h1 className="mb-6 text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+              Elegant PDF
+              <span className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Processing
+              </span>
+            </h1>
+            
+            {/* Subtitle */}
+            <p className="mx-auto mb-10 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+              Professional-grade PDF tools designed for elegance and efficiency. 
+              Merge, split, and extract with sophisticated precision.
+            </p>
+            
+            {/* CTA Button */}
+            <div className="flex justify-center">
+              <Link
+                to="/merge"
+                className="group inline-flex items-center rounded-2xl bg-white px-8 py-4 text-base font-semibold text-slate-700 shadow-lg shadow-slate-900/10 ring-1 ring-slate-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/20 hover:ring-slate-300"
               >
-                <IconComponent
-                  className="w-4 h-4 text-slate-600"
-                  strokeWidth={2}
-                />
-                <span className="text-sm font-medium text-slate-700">
+                Get Started
+                <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className="py-20 px-6 sm:px-12 lg:px-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+              Why Choose Our Tools
+            </h2>
+            <p className="mt-4 text-lg text-slate-600">
+              Built with modern standards and elegant design principles
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+            {features.map((feature, index) => (
+              <div
+                key={feature.title}
+                className="group relative rounded-2xl bg-white/70 backdrop-blur-sm p-8 shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-slate-900/10"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-slate-100 to-slate-50 mb-6 group-hover:scale-110 transition-transform duration-200">
+                  <feature.icon className="h-6 w-6 text-slate-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   {feature.title}
-                </span>
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Tools Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {tools.map((tool, index) => {
-          const IconComponent = tool.icon;
-          return (
-            <Link key={tool.id} to={tool.path} className="group hover-effect">
-              <Card
-                variant="elevated"
-                hoverable
-                className="h-full animate-slide-in-up border-slate-200/60 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+      <div className="py-20 px-6 sm:px-12 lg:px-20 bg-gradient-to-b from-white to-slate-50">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
+              Professional Tools
+            </h2>
+            <p className="mt-4 text-lg text-slate-600">
+              Choose the perfect tool for your PDF processing needs
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {tools.map((tool, index) => (
+              <Link
+                key={tool.name}
+                to={tool.path}
+                className="group relative block"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="flex items-start space-x-4">
-                  <div
-                    className={`bg-gradient-to-r ${tool.color} rounded-2xl p-3 shadow-lg group-hover:shadow-xl transition-all duration-200 group-hover:-translate-y-1`}
-                  >
-                    <IconComponent
-                      className="w-6 h-6 text-white"
-                      strokeWidth={2}
-                    />
+                <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${tool.gradient} p-8 shadow-sm border border-white/50 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:shadow-slate-900/10 ${tool.hoverColor}`}>
+                  {/* Icon */}
+                  <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/80 backdrop-blur-sm mb-6 group-hover:scale-110 transition-all duration-200 shadow-sm">
+                    <tool.icon className={`h-7 w-7 ${tool.iconColor}`} />
                   </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-slate-800 group-hover:text-slate-900 transition-colors">
-                        {tool.name}
-                      </h3>
-                      <ArrowRight
-                        className="w-5 h-5 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-1 transition-all duration-200"
-                        strokeWidth={2}
-                      />
-                    </div>
-
-                    <p className="text-slate-600 text-sm leading-relaxed">
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-semibold text-slate-900 mb-3 group-hover:text-slate-700">
+                      {tool.name}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed mb-4">
                       {tool.description}
                     </p>
+                    
+                    {/* Arrow */}
+                    <div className="flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-600">
+                      <span>Try it now</span>
+                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
+                  
+                  {/* Subtle decoration */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/20 rounded-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
                 </div>
-              </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="py-20 px-6 sm:px-12 lg:px-20">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="rounded-3xl bg-gradient-to-r from-slate-50 to-white p-12 shadow-lg shadow-slate-900/5 border border-slate-100">
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">
+              Ready to Get Started?
+            </h2>
+            <p className="text-lg text-slate-600 mb-8">
+              Join thousands of professionals who trust our elegant PDF tools
+            </p>
+            <Link
+              to="/merge"
+              className="inline-flex items-center rounded-2xl bg-slate-900 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:bg-slate-800"
+            >
+              Start Processing PDFs
+              <ChevronRight className="ml-2 h-5 w-5" />
             </Link>
-          );
-        })}
+          </div>
+        </div>
       </div>
     </div>
   );
-};
+}
+

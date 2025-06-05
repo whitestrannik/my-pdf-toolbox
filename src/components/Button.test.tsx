@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { Button } from "./Button";
+import { describe, it, expect, afterEach } from "vitest";
+import Button from "./Button";
 
 // Ensure cleanup after each test
 afterEach(() => {
@@ -12,26 +12,66 @@ describe("Button", () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole("button", { name: "Click me" });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass("bg-gradient-primary"); // primary variant
-    expect(button).toHaveClass("px-6"); // medium size
+    expect(button).toHaveClass("bg-white"); // primary variant
+    expect(button).toHaveClass("px-4"); // medium size
   });
 
-  it("handles click events", () => {
-    const handleClick = vi.fn();
-    render(<Button onClick={handleClick}>Click me</Button>);
+  it("renders children correctly", () => {
+    render(<Button>Click me</Button>);
+    expect(screen.getByText("Click me")).toBeInTheDocument();
+  });
 
-    const button = screen.getByRole("button", { name: "Click me" });
-    fireEvent.click(button);
+  it("applies variant classes correctly", () => {
+    render(<Button variant="primary">Primary Button</Button>);
+    const button = screen.getByText("Primary Button");
+    expect(button).toHaveClass("bg-white");
+  });
 
-    expect(handleClick).toHaveBeenCalledTimes(1);
+  it("applies size classes correctly", () => {
+    render(<Button size="lg">Large Button</Button>);
+    const button = screen.getByText("Large Button");
+    expect(button).toHaveClass("px-6", "py-3", "text-base");
   });
 
   it("shows loading state correctly", () => {
-    render(<Button isLoading>Loading button</Button>);
+    render(<Button loading>Loading Button</Button>);
+    expect(screen.getByText("Loading Button")).toBeInTheDocument();
+    // Should have loader icon
+    expect(document.querySelector('.animate-spin')).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
-    expect(screen.getByRole("button")).toBeDisabled();
-    expect(screen.getByRole("button")).toHaveAttribute("disabled");
+  it("handles disabled state", () => {
+    render(<Button disabled>Disabled Button</Button>);
+    const button = screen.getByText("Disabled Button");
+    expect(button).toBeDisabled();
+  });
+
+  it("renders with icons correctly", () => {
+    const leftIcon = <span data-testid="left-icon">←</span>;
+    const rightIcon = <span data-testid="right-icon">→</span>;
+    
+    render(
+      <Button leftIcon={leftIcon} rightIcon={rightIcon}>
+        Icon Button
+      </Button>
+    );
+    
+    expect(screen.getByTestId("left-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("right-icon")).toBeInTheDocument();
+  });
+
+  it("handles click events", () => {
+    let clicked = false;
+    render(<Button onClick={() => { clicked = true; }}>Click me</Button>);
+    
+    fireEvent.click(screen.getByText("Click me"));
+    expect(clicked).toBe(true);
+  });
+
+  it("applies fullWidth correctly", () => {
+    render(<Button fullWidth>Full Width Button</Button>);
+    const button = screen.getByText("Full Width Button");
+    expect(button).toHaveClass("w-full");
   });
 
   it("applies different variants correctly", () => {
@@ -39,43 +79,43 @@ describe("Button", () => {
     const { unmount: unmount1 } = render(
       <Button variant="primary">Primary</Button>,
     );
-    expect(screen.getByRole("button")).toHaveClass("bg-gradient-primary");
+    expect(screen.getByRole("button")).toHaveClass("bg-white");
     unmount1();
 
     // Test secondary variant
     const { unmount } = render(<Button variant="secondary">Secondary</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-slate-100");
+    expect(screen.getByRole("button")).toHaveClass("bg-slate-50");
     unmount();
 
-    // Test outline variant
+    // Test elegant variant
     const { unmount: unmount2 } = render(
-      <Button variant="outline">Outline</Button>,
+      <Button variant="elegant">Elegant</Button>,
     );
-    expect(screen.getByRole("button")).toHaveClass("border-2");
+    expect(screen.getByRole("button")).toHaveClass("bg-gradient-to-r");
     unmount2();
 
     // Test ghost variant
     const { unmount: unmount3 } = render(
       <Button variant="ghost">Ghost</Button>,
     );
-    expect(screen.getByRole("button")).toHaveClass("text-slate-600");
+    expect(screen.getByRole("button")).toHaveClass("bg-transparent");
     unmount3();
   });
 
   it("applies different sizes correctly", () => {
     // Test small size
     const { unmount } = render(<Button size="sm">Small</Button>);
-    expect(screen.getByRole("button")).toHaveClass("px-4");
+    expect(screen.getByRole("button")).toHaveClass("px-3");
     unmount();
 
     // Test medium size (default)
     const { unmount: unmount2 } = render(<Button size="md">Medium</Button>);
-    expect(screen.getByRole("button")).toHaveClass("px-6");
+    expect(screen.getByRole("button")).toHaveClass("px-4");
     unmount2();
 
     // Test large size
     const { unmount: unmount3 } = render(<Button size="lg">Large</Button>);
-    expect(screen.getByRole("button")).toHaveClass("px-8");
+    expect(screen.getByRole("button")).toHaveClass("px-6");
     unmount3();
   });
 
