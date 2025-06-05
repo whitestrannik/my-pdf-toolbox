@@ -23,13 +23,13 @@ describe("Button", () => {
 
   it("applies variant classes correctly", () => {
     render(<Button variant="primary">Primary Button</Button>);
-    const button = screen.getByText("Primary Button");
+    const button = screen.getByRole("button");
     expect(button).toHaveClass("bg-white");
   });
 
   it("applies size classes correctly", () => {
     render(<Button size="lg">Large Button</Button>);
-    const button = screen.getByText("Large Button");
+    const button = screen.getByRole("button");
     expect(button).toHaveClass("px-6", "py-3", "text-base");
   });
 
@@ -37,40 +37,48 @@ describe("Button", () => {
     render(<Button loading>Loading Button</Button>);
     expect(screen.getByText("Loading Button")).toBeInTheDocument();
     // Should have loader icon
-    expect(document.querySelector('.animate-spin')).toBeInTheDocument();
+    expect(document.querySelector(".animate-spin")).toBeInTheDocument();
   });
 
   it("handles disabled state", () => {
     render(<Button disabled>Disabled Button</Button>);
-    const button = screen.getByText("Disabled Button");
+    const button = screen.getByRole("button");
     expect(button).toBeDisabled();
   });
 
   it("renders with icons correctly", () => {
     const leftIcon = <span data-testid="left-icon">←</span>;
     const rightIcon = <span data-testid="right-icon">→</span>;
-    
+
     render(
       <Button leftIcon={leftIcon} rightIcon={rightIcon}>
         Icon Button
-      </Button>
+      </Button>,
     );
-    
+
     expect(screen.getByTestId("left-icon")).toBeInTheDocument();
     expect(screen.getByTestId("right-icon")).toBeInTheDocument();
   });
 
   it("handles click events", () => {
     let clicked = false;
-    render(<Button onClick={() => { clicked = true; }}>Click me</Button>);
-    
+    render(
+      <Button
+        onClick={() => {
+          clicked = true;
+        }}
+      >
+        Click me
+      </Button>,
+    );
+
     fireEvent.click(screen.getByText("Click me"));
     expect(clicked).toBe(true);
   });
 
   it("applies fullWidth correctly", () => {
     render(<Button fullWidth>Full Width Button</Button>);
-    const button = screen.getByText("Full Width Button");
+    const button = screen.getByRole("button");
     expect(button).toHaveClass("w-full");
   });
 

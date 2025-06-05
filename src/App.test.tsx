@@ -58,8 +58,8 @@ const TestApp = ({ initialPath = "/" }: { initialPath?: string }) => {
 describe("App", () => {
   it("renders app title in header", () => {
     render(<TestApp initialPath="/" />);
-    const headline = screen.getByRole("heading", { name: "PDF Toolbox" });
-    expect(headline).toBeInTheDocument();
+    const brandText = screen.getByText("PDF toolbox");
+    expect(brandText).toBeInTheDocument();
   });
 
   it("renders homepage with privacy section", () => {

@@ -1,4 +1,14 @@
-import { ChevronRight, FileText, Scissors, SplitSquareHorizontal, Zap, Shield, Download, ImageIcon, Minimize2, RotateCcw } from "lucide-react";
+import {
+  ChevronRight,
+  FileText,
+  Scissors,
+  Zap,
+  Shield,
+  Download,
+  ImageIcon,
+  Minimize2,
+  RotateCcw,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const tools = [
@@ -9,7 +19,7 @@ const tools = [
     icon: FileText,
     gradient: "from-blue-50 to-indigo-50",
     iconColor: "text-blue-600",
-    hoverColor: "hover:border-blue-200"
+    hoverColor: "hover:border-blue-200",
   },
   {
     name: "Split & Extract",
@@ -18,7 +28,7 @@ const tools = [
     icon: Scissors,
     gradient: "from-emerald-50 to-teal-50",
     iconColor: "text-emerald-600",
-    hoverColor: "hover:border-emerald-200"
+    hoverColor: "hover:border-emerald-200",
   },
   {
     name: "Images to PDF",
@@ -27,7 +37,7 @@ const tools = [
     icon: ImageIcon,
     gradient: "from-violet-50 to-purple-50",
     iconColor: "text-violet-600",
-    hoverColor: "hover:border-violet-200"
+    hoverColor: "hover:border-violet-200",
   },
   {
     name: "Compress PDF",
@@ -36,7 +46,7 @@ const tools = [
     icon: Minimize2,
     gradient: "from-rose-50 to-pink-50",
     iconColor: "text-rose-600",
-    hoverColor: "hover:border-rose-200"
+    hoverColor: "hover:border-rose-200",
   },
   {
     name: "Reorder Pages",
@@ -45,7 +55,7 @@ const tools = [
     icon: RotateCcw,
     gradient: "from-amber-50 to-orange-50",
     iconColor: "text-amber-600",
-    hoverColor: "hover:border-amber-200"
+    hoverColor: "hover:border-amber-200",
   },
 ];
 
@@ -53,18 +63,19 @@ const features = [
   {
     icon: Zap,
     title: "Lightning Fast",
-    description: "Process documents in seconds with optimized algorithms"
+    description: "Process documents in seconds with optimized algorithms",
   },
   {
     icon: Shield,
     title: "Secure & Private",
-    description: "All processing happens locally - your files never leave your device"
+    description:
+      "All processing happens locally - your files never leave your device",
   },
   {
     icon: Download,
     title: "No Registration",
-    description: "Start working immediately without creating an account"
-  }
+    description: "Start working immediately without creating an account",
+  },
 ];
 
 export default function HomePage() {
@@ -80,7 +91,7 @@ export default function HomePage() {
               <Zap className="mr-2 h-4 w-4 text-blue-500" />
               Open Source PDF Toolkit
             </div>
-            
+
             {/* Main Heading */}
             <h1 className="mb-6 text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
               Elegant PDF
@@ -88,13 +99,13 @@ export default function HomePage() {
                 Processing
               </span>
             </h1>
-            
+
             {/* Subtitle */}
             <p className="mx-auto mb-10 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-              Free, open-source PDF tools that work entirely in your browser. 
+              Free, open-source PDF tools that work entirely in your browser.
               Merge, split, and extract with complete privacy.
             </p>
-            
+
             {/* CTA Button */}
             <div className="flex justify-center">
               <Link
@@ -120,7 +131,7 @@ export default function HomePage() {
               Simple, secure, and completely free to use
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             {features.map((feature, index) => (
               <div
@@ -154,7 +165,7 @@ export default function HomePage() {
               Choose the tool you need for your PDF processing
             </p>
           </div>
-          
+
           {/* Scrollable Tools Container */}
           <div className="relative">
             <div className="flex overflow-x-auto space-x-6 pb-4 scrollbar-hide snap-x snap-mandatory">
@@ -165,12 +176,14 @@ export default function HomePage() {
                   className="group relative block flex-shrink-0 w-80 snap-start"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${tool.gradient} p-8 shadow-sm border border-white/50 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:shadow-slate-900/10 ${tool.hoverColor} h-full`}>
+                  <div
+                    className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${tool.gradient} p-8 shadow-sm border border-white/50 transition-all duration-300 hover:-translate-y-3 hover:shadow-xl hover:shadow-slate-900/10 ${tool.hoverColor} h-full`}
+                  >
                     {/* Icon */}
                     <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-white/80 backdrop-blur-sm mb-6 group-hover:scale-110 transition-all duration-200 shadow-sm">
                       <tool.icon className={`h-7 w-7 ${tool.iconColor}`} />
                     </div>
-                    
+
                     {/* Content */}
                     <div className="relative z-10">
                       <h3 className="text-xl font-semibold text-slate-900 mb-3 group-hover:text-slate-700">
@@ -179,25 +192,28 @@ export default function HomePage() {
                       <p className="text-slate-600 leading-relaxed mb-4">
                         {tool.description}
                       </p>
-                      
+
                       {/* Arrow */}
                       <div className="flex items-center text-sm font-medium text-slate-500 group-hover:text-slate-600">
                         <span>Try it now</span>
                         <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
-                    
+
                     {/* Subtle decoration */}
                     <div className="absolute top-0 right-0 w-20 h-20 bg-white/20 rounded-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
                   </div>
                 </Link>
               ))}
             </div>
-            
+
             {/* Scroll Indicators */}
             <div className="flex justify-center mt-6 space-x-2">
               {tools.map((_, index) => (
-                <div key={index} className="w-2 h-2 bg-slate-300 rounded-full"></div>
+                <div
+                  key={index}
+                  className="w-2 h-2 bg-slate-300 rounded-full"
+                ></div>
               ))}
             </div>
           </div>
@@ -227,4 +243,3 @@ export default function HomePage() {
     </div>
   );
 }
-

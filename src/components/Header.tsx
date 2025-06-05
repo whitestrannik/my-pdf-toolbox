@@ -22,19 +22,25 @@ export const Header: React.FC = () => {
                 <div className="w-4 h-5 bg-gradient-to-b from-red-50 to-red-100 border border-red-200 rounded-sm shadow-sm transition-all duration-300 group-hover:shadow-md">
                   {/* PDF Text */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs font-bold text-red-600 leading-none" style={{ fontSize: '6px' }}>
+                    <span
+                      className="text-xs font-bold text-red-600 leading-none"
+                      style={{ fontSize: "6px" }}
+                    >
                       PDF
                     </span>
                   </div>
-                  
+
                   {/* Corner Fold */}
                   <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white border-l border-b border-red-200 transform rotate-45 origin-bottom-left"></div>
                 </div>
               </div>
             </div>
-            
+
             {/* 28px Text */}
-            <span className="font-normal text-slate-500 tracking-wider" style={{ fontSize: '28px' }}>
+            <span
+              className="font-normal text-slate-500 tracking-wider"
+              style={{ fontSize: "28px" }}
+            >
               PDF toolbox
             </span>
           </Link>
