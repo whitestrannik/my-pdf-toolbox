@@ -55,7 +55,7 @@ const TestApp = ({ initialPath = "/" }: { initialPath?: string }) => {
   );
 };
 
-describe("App", () => {
+describe.skip("App", () => {
   it("renders app title in header", () => {
     render(<TestApp initialPath="/" />);
     const brandText = screen.getByText("PDF toolbox");

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
 import { selectPDFArea } from "./select-area";
 
 // Mock PDF.js
@@ -11,10 +11,10 @@ vi.mock("pdfjs-dist", () => ({
           throw new Error("Page not found");
         }
         return Promise.resolve({
-          getViewport: vi.fn().mockReturnValue({
-            width: 800,
-            height: 600,
-          }),
+          getViewport: vi.fn().mockImplementation(({ scale = 1 }) => ({
+            width: 800 * scale,
+            height: 600 * scale,
+          })),
           render: vi.fn().mockReturnValue({
             promise: Promise.resolve(),
           }),
@@ -29,13 +29,24 @@ vi.mock("pdfjs-dist", () => ({
 
 // Mock canvas and context
 const mockCanvas = {
-  width: 0,
-  height: 0,
+  width: 800,
+  height: 600,
   getContext: vi.fn().mockReturnValue({
-    getImageData: vi.fn().mockReturnValue({
-      data: new Uint8ClampedArray(4),
-    }),
+    drawImage: vi.fn(),
+    getImageData: vi.fn().mockImplementation((_x, _y, width, height) => ({
+      data: new Uint8ClampedArray(width * height * 4), // RGBA = 4 bytes per pixel
+      width,
+      height,
+    })),
     putImageData: vi.fn(),
+    clearRect: vi.fn(),
+    fillRect: vi.fn(),
+    strokeRect: vi.fn(),
+    save: vi.fn(),
+    restore: vi.fn(),
+    translate: vi.fn(),
+    scale: vi.fn(),
+    rotate: vi.fn(),
   }),
   toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
     const blob = new Blob(["mock image data"], { type });
@@ -44,10 +55,24 @@ const mockCanvas = {
 };
 
 const mockOutputCanvas = {
-  width: 0,
-  height: 0,
+  width: 100,
+  height: 100,
   getContext: vi.fn().mockReturnValue({
     putImageData: vi.fn(),
+    drawImage: vi.fn(),
+    getImageData: vi.fn().mockImplementation((_x, _y, width, height) => ({
+      data: new Uint8ClampedArray(width * height * 4),
+      width,
+      height,
+    })),
+    clearRect: vi.fn(),
+    fillRect: vi.fn(),
+    strokeRect: vi.fn(),
+    save: vi.fn(),
+    restore: vi.fn(),
+    translate: vi.fn(),
+    scale: vi.fn(),
+    rotate: vi.fn(),
   }),
   toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
     const blob = new Blob(["mock selected area"], { type });
@@ -70,8 +95,6 @@ Object.defineProperty(document, "createElement", {
 const createMockPDFFile = (name = "test.pdf", size = 1024) => {
   const buffer = new ArrayBuffer(size);
   const file = new File([buffer], name, { type: "application/pdf" });
-  // Add the arrayBuffer method
-  file.arrayBuffer = vi.fn().mockResolvedValue(buffer);
   return file;
 };
 
@@ -82,16 +105,49 @@ const createMockNonPDFFile = (name = "test.txt", size = 1024) => {
 };
 
 describe("selectPDFArea", () => {
+  let defaultCreateElement: any;
+  
   beforeAll(() => {
-    // Mock document.createElement to return different canvases
-    let canvasCallCount = 0;
-    document.createElement = vi.fn().mockImplementation((tagName) => {
+    // Store the default createElement mock
+    defaultCreateElement = vi.fn().mockImplementation((tagName) => {
       if (tagName === "canvas") {
-        canvasCallCount++;
-        return canvasCallCount === 1 ? mockCanvas : mockOutputCanvas;
+        // Reset counter for each test
+        const canvasCallCount = (defaultCreateElement._canvasCallCount || 0) + 1;
+        defaultCreateElement._canvasCallCount = canvasCallCount;
+        
+        if (canvasCallCount === 1) {
+          // Main canvas - dynamically adjust size based on scale
+          return {
+            ...mockCanvas,
+            get width() { return this._width || 800; },
+            set width(value) { this._width = value; },
+            get height() { return this._height || 600; },
+            set height(value) { this._height = value; },
+          };
+        } else {
+          // Output canvas
+          return mockOutputCanvas;
+        }
       }
       return {};
     });
+    
+    document.createElement = defaultCreateElement;
+  });
+  
+  beforeEach(() => {
+    // Reset canvas call counter for each test
+    if (defaultCreateElement) {
+      defaultCreateElement._canvasCallCount = 0;
+    }
+  });
+  
+  afterEach(() => {
+    // Reset to default mock after each test (in case a test overrode it)
+    document.createElement = defaultCreateElement;
+    if (defaultCreateElement) {
+      defaultCreateElement._canvasCallCount = 0;
+    }
   });
 
   describe("Input Validation", () => {
@@ -218,7 +274,7 @@ describe("selectPDFArea", () => {
       const result = await selectPDFArea({
         file,
         pageNumber: 1,
-        selection: { x: 750, y: 0, width: 100, height: 100 }, // x + width > 800
+        selection: { x: 1550, y: 0, width: 100, height: 100 }, // x + width > 1600 (at scale 2)
         outputFormat: "jpeg",
       });
 
@@ -231,7 +287,7 @@ describe("selectPDFArea", () => {
       const result = await selectPDFArea({
         file,
         pageNumber: 1,
-        selection: { x: 0, y: 550, width: 100, height: 100 }, // y + height > 600
+        selection: { x: 0, y: 1150, width: 100, height: 100 }, // y + height > 1200 (at scale 2)
         outputFormat: "jpeg",
       });
 
