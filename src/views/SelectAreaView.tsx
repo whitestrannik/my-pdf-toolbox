@@ -3,6 +3,8 @@ import { Dropzone, Button, Modal, Toast } from "../components";
 import { selectPDFArea } from "../pdf-utils";
 import { saveAs } from "file-saver";
 import * as pdfjsLib from "pdfjs-dist";
+// Import icons as needed - currently commented out to fix build
+// import { Crop, Download, Copy, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Configure PDF.js worker for offline use
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
@@ -24,9 +26,10 @@ interface ProcessingState {
 
 interface PageInfo {
   pageNumber: number;
-  thumbnail: string;
+  thumbnail: string | null; // null = not generated yet
   width: number;
   height: number;
+  isGenerating?: boolean; // for loading state
 }
 
 interface SelectionState {
@@ -57,6 +60,8 @@ interface ToastState {
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 const CANVAS_SCALE = 2; // High-DPI rendering
+const THUMBNAIL_SCALE = 0.12; // Smaller thumbnails for faster generation
+// const PREVIEW_SCALE = 0.3; // Medium scale for quick preview - currently unused
 
 export const SelectAreaView: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
@@ -86,55 +91,132 @@ export const SelectAreaView: React.FC = () => {
     type: "success",
   });
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const generatePageThumbnails = useCallback(
-    async (file: File): Promise<PageInfo[]> => {
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const pageCount = pdf.numPages;
-        const pageInfos: PageInfo[] = [];
-
-        for (let i = 1; i <= pageCount; i++) {
-          const page = await pdf.getPage(i);
-          const scale = 0.2; // Small scale for thumbnails
-          const viewport = page.getViewport({ scale });
-
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d")!;
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-
-          await page.render({
-            canvasContext: context,
-            viewport: viewport,
-          }).promise;
-
-          pageInfos.push({
-            pageNumber: i,
-            thumbnail: canvas.toDataURL("image/jpeg", 0.8),
-            width: viewport.width / scale, // Original dimensions
-            height: viewport.height / scale,
-          });
-        }
-
-        return pageInfos;
-      } catch (error) {
-        console.error("Failed to generate page thumbnails:", error);
-        throw error;
-      }
-    },
-    [],
+  // Cache PDF document to avoid re-parsing
+  const [pdfDocument, setPdfDocument] =
+    useState<pdfjsLib.PDFDocumentProxy | null>(null);
+  const [thumbnailCache, setThumbnailCache] = useState<Map<number, string>>(
+    new Map(),
   );
 
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Generate single thumbnail on demand
+  const generateSingleThumbnail = useCallback(
+    async (pageNumber: number): Promise<string> => {
+      if (!pdfDocument) throw new Error("PDF document not loaded");
+
+      // Check cache first
+      const cached = thumbnailCache.get(pageNumber);
+      if (cached) return cached;
+
+      const page = await pdfDocument.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: THUMBNAIL_SCALE });
+
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d")!;
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+      }).promise;
+
+      const thumbnail = canvas.toDataURL("image/jpeg", 0.7);
+
+      // Cache the result
+      setThumbnailCache((prev) => new Map(prev).set(pageNumber, thumbnail));
+
+      return thumbnail;
+    },
+    [pdfDocument, thumbnailCache],
+  );
+
+  // Generate thumbnails for visible pages + a few ahead
+  const generateThumbnailsLazily = useCallback(
+    async (startPage: number, count: number = 5) => {
+      if (!pdfDocument) return;
+
+      const endPage = Math.min(startPage + count - 1, pdfDocument.numPages);
+
+      for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
+        // Skip if already cached or generating
+        if (thumbnailCache.has(pageNum)) continue;
+
+        // Mark as generating
+        setPages((prev) =>
+          prev.map((page) =>
+            page.pageNumber === pageNum
+              ? { ...page, isGenerating: true }
+              : page,
+          ),
+        );
+
+        try {
+          const thumbnail = await generateSingleThumbnail(pageNum);
+
+          // Update page info with thumbnail
+          setPages((prev) =>
+            prev.map((page) =>
+              page.pageNumber === pageNum
+                ? { ...page, thumbnail, isGenerating: false }
+                : page,
+            ),
+          );
+        } catch (error) {
+          console.error(
+            `Failed to generate thumbnail for page ${pageNum}:`,
+            error,
+          );
+          setPages((prev) =>
+            prev.map((page) =>
+              page.pageNumber === pageNum
+                ? { ...page, isGenerating: false }
+                : page,
+            ),
+          );
+        }
+      }
+    },
+    [pdfDocument, thumbnailCache, generateSingleThumbnail],
+  );
+
+  // Initialize PDF document and page structure
+  const initializePDF = useCallback(async (file: File): Promise<PageInfo[]> => {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      setPdfDocument(pdf);
+
+      const pageCount = pdf.numPages;
+      const pageInfos: PageInfo[] = [];
+
+      // Create page structure without thumbnails (lazy loading)
+      for (let i = 1; i <= pageCount; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 1 });
+
+        pageInfos.push({
+          pageNumber: i,
+          thumbnail: null, // Will be generated lazily
+          width: viewport.width,
+          height: viewport.height,
+          isGenerating: false,
+        });
+      }
+
+      return pageInfos;
+    } catch (error) {
+      console.error("Failed to initialize PDF:", error);
+      throw error;
+    }
+  }, []);
+
   const renderCurrentPage = useCallback(async () => {
-    if (!uploadedFile || !canvasRef.current) return;
+    if (!pdfDocument || !canvasRef.current) return;
 
     try {
-      const arrayBuffer = await uploadedFile.file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      const page = await pdf.getPage(currentPage);
+      const page = await pdfDocument.getPage(currentPage);
       const scale = CANVAS_SCALE;
       const viewport = page.getViewport({ scale });
 
@@ -153,11 +235,52 @@ export const SelectAreaView: React.FC = () => {
     } catch (error) {
       console.error("Failed to render page:", error);
     }
-  }, [uploadedFile, currentPage]);
+  }, [pdfDocument, currentPage]);
 
   useEffect(() => {
     renderCurrentPage();
   }, [renderCurrentPage]);
+
+  // Generate thumbnails when pages change or current page changes
+  useEffect(() => {
+    if (pages.length > 0 && pdfDocument) {
+      // Generate thumbnails for current page and nearby pages
+      const startPage = Math.max(1, currentPage - 2);
+      generateThumbnailsLazily(startPage, 5);
+    }
+  }, [pages.length, currentPage, pdfDocument, generateThumbnailsLazily]);
+
+  // Background thumbnail generation for remaining pages
+  useEffect(() => {
+    if (pages.length > 0 && pdfDocument) {
+      const generateRemainingThumbnails = () => {
+        // Find pages without thumbnails
+        const pagesWithoutThumbnails = pages
+          .filter((page) => !page.thumbnail && !page.isGenerating)
+          .map((page) => page.pageNumber);
+
+        if (pagesWithoutThumbnails.length > 0) {
+          // Generate one thumbnail at a time when browser is idle
+          const nextPage = pagesWithoutThumbnails[0];
+          generateThumbnailsLazily(nextPage, 1).then(() => {
+            // Schedule next generation
+            if (pagesWithoutThumbnails.length > 1) {
+              requestIdleCallback(generateRemainingThumbnails, {
+                timeout: 5000,
+              });
+            }
+          });
+        }
+      };
+
+      // Start background generation after a short delay
+      const timeoutId = setTimeout(() => {
+        requestIdleCallback(generateRemainingThumbnails, { timeout: 5000 });
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [pages, pdfDocument, generateThumbnailsLazily]);
 
   const validateFile = (file: File): string | null => {
     if (file.type !== "application/pdf") {
@@ -185,10 +308,14 @@ export const SelectAreaView: React.FC = () => {
         return;
       }
 
-      setProcessing({ isProcessing: true, progress: "Analyzing PDF pages..." });
+      setProcessing({
+        isProcessing: true,
+        progress: "Loading PDF document...",
+      });
 
       try {
-        const pageInfos = await generatePageThumbnails(file);
+        // Initialize PDF structure quickly
+        const pageInfos = await initializePDF(file);
         setUploadedFile({
           file,
           id: `${file.name}-${Date.now()}`,
@@ -202,6 +329,16 @@ export const SelectAreaView: React.FC = () => {
           ...prev,
           filename: `${baseName}-page1-selection`,
         }));
+
+        setProcessing({
+          isProcessing: false,
+          progress: "Generating thumbnails...",
+        });
+
+        // Start background thumbnail generation for first few pages
+        requestIdleCallback(() => {
+          generateThumbnailsLazily(1, 3);
+        });
       } catch (err) {
         console.error("Failed to process PDF:", err);
         setUploadedFile({
@@ -210,11 +347,12 @@ export const SelectAreaView: React.FC = () => {
           error: "Failed to process PDF file",
         });
         setPages([]);
+        setPdfDocument(null);
       }
 
       setProcessing({ isProcessing: false, progress: "" });
     },
-    [generatePageThumbnails],
+    [initializePDF, generateThumbnailsLazily],
   );
 
   const removeFile = () => {
@@ -222,6 +360,8 @@ export const SelectAreaView: React.FC = () => {
     setPages([]);
     setCurrentPage(1);
     setSelectionState((prev) => ({ ...prev, selection: null }));
+    setPdfDocument(null);
+    setThumbnailCache(new Map());
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -608,11 +748,49 @@ export const SelectAreaView: React.FC = () => {
                           : "border-slate-200 hover:border-slate-300"
                       }`}
                     >
-                      <img
-                        src={page.thumbnail}
-                        alt={`Page ${page.pageNumber}`}
-                        className="w-full h-auto rounded"
-                      />
+                      {page.thumbnail ? (
+                        <img
+                          src={page.thumbnail}
+                          alt={`Page ${page.pageNumber}`}
+                          className="w-full h-auto rounded"
+                        />
+                      ) : page.isGenerating ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-6 w-6 border-2 border-emerald-500 border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center cursor-pointer hover:bg-slate-50"
+                          onClick={() => {
+                            // Trigger thumbnail generation on click
+                            if (
+                              pdfDocument &&
+                              !thumbnailCache.has(page.pageNumber)
+                            ) {
+                              generateThumbnailsLazily(page.pageNumber, 1);
+                            }
+                          }}
+                        >
+                          <div className="text-center">
+                            <svg
+                              className="w-6 h-6 text-slate-400 mx-auto mb-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l2.586-2.586a2 2 0 013.414 0L20 14"
+                              />
+                            </svg>
+                            <span className="text-xs text-slate-400">
+                              Click to load
+                            </span>
+                          </div>
+                        </div>
+                      )}
                       <p className="text-xs text-slate-600 mt-1">
                         Page {page.pageNumber}
                       </p>
