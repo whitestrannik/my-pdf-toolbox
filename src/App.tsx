@@ -12,6 +12,7 @@ import {
   CompressPDFView,
   ImagesToPDFView,
   ReorderPagesView,
+  SelectAreaView,
 } from "./views";
 
 function AppContent() {
@@ -32,6 +33,7 @@ function AppContent() {
             <Route path="/split-pdfs" element={<SplitPDFsView />} />
             <Route path="/compress" element={<CompressPDFView />} />
             <Route path="/reorder" element={<ReorderPagesView />} />
+            <Route path="/select-area" element={<SelectAreaView />} />
           </Routes>
         </div>
       </main>

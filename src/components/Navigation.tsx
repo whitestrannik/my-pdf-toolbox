@@ -5,6 +5,7 @@ import {
   Scissors,
   Minimize2,
   RotateCcw,
+  Crop,
 } from "lucide-react";
 
 const tools = [
@@ -37,6 +38,12 @@ const tools = [
     name: "Reorder Pages",
     icon: RotateCcw,
     path: "/reorder",
+  },
+  {
+    id: "select-area",
+    name: "Select Area",
+    icon: Crop,
+    path: "/select-area",
   },
 ];
 

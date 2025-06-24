@@ -4,4 +4,5 @@ export { SplitPDFsView } from "./SplitPDFsView";
 export { CompressPDFView } from "./CompressPDFView";
 export { ImagesToPDFView } from "./ImagesToPDFView";
 export { ReorderPagesView } from "./ReorderPagesView";
+export { SelectAreaView } from "./SelectAreaView";
 export { PlaceholderView } from "./PlaceholderView";
