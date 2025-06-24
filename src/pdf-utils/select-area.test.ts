@@ -1,4 +1,12 @@
-import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  beforeEach,
+  afterEach,
+} from "vitest";
 import { selectPDFArea } from "./select-area";
 
 // Mock PDF.js
@@ -48,7 +56,7 @@ const mockCanvas = {
     scale: vi.fn(),
     rotate: vi.fn(),
   }),
-  toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
+  toBlob: vi.fn().mockImplementation((callback, type) => {
     const blob = new Blob(["mock image data"], { type });
     callback(blob);
   }),
@@ -74,7 +82,7 @@ const mockOutputCanvas = {
     scale: vi.fn(),
     rotate: vi.fn(),
   }),
-  toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
+  toBlob: vi.fn().mockImplementation((callback, type) => {
     const blob = new Blob(["mock selected area"], { type });
     callback(blob);
   }),
@@ -106,23 +114,32 @@ const createMockNonPDFFile = (name = "test.txt", size = 1024) => {
 
 describe("selectPDFArea", () => {
   let defaultCreateElement: any;
-  
+
   beforeAll(() => {
     // Store the default createElement mock
     defaultCreateElement = vi.fn().mockImplementation((tagName) => {
       if (tagName === "canvas") {
         // Reset counter for each test
-        const canvasCallCount = (defaultCreateElement._canvasCallCount || 0) + 1;
+        const canvasCallCount =
+          (defaultCreateElement._canvasCallCount || 0) + 1;
         defaultCreateElement._canvasCallCount = canvasCallCount;
-        
+
         if (canvasCallCount === 1) {
           // Main canvas - dynamically adjust size based on scale
           return {
             ...mockCanvas,
-            get width() { return this._width || 800; },
-            set width(value) { this._width = value; },
-            get height() { return this._height || 600; },
-            set height(value) { this._height = value; },
+            get width() {
+              return this._width || 800;
+            },
+            set width(value) {
+              this._width = value;
+            },
+            get height() {
+              return this._height || 600;
+            },
+            set height(value) {
+              this._height = value;
+            },
           };
         } else {
           // Output canvas
@@ -131,17 +148,17 @@ describe("selectPDFArea", () => {
       }
       return {};
     });
-    
+
     document.createElement = defaultCreateElement;
   });
-  
+
   beforeEach(() => {
     // Reset canvas call counter for each test
     if (defaultCreateElement) {
       defaultCreateElement._canvasCallCount = 0;
     }
   });
-  
+
   afterEach(() => {
     // Reset to default mock after each test (in case a test overrode it)
     document.createElement = defaultCreateElement;

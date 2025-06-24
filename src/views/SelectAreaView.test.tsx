@@ -17,7 +17,7 @@ vi.mock("pdfjs-dist", () => ({
   getDocument: vi.fn().mockReturnValue({
     promise: Promise.resolve({
       numPages: 3,
-      getPage: vi.fn().mockImplementation((_pageNum) =>
+      getPage: vi.fn().mockImplementation(() =>
         Promise.resolve({
           getViewport: vi.fn().mockReturnValue({
             width: 800,

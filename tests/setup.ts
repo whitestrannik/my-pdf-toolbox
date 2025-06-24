@@ -7,7 +7,9 @@ import * as matchers from "@testing-library/jest-dom/matchers";
 expect.extend(matchers);
 
 // Mock File.prototype.arrayBuffer globally
-global.File.prototype.arrayBuffer = vi.fn().mockImplementation(function(this: File) {
+global.File.prototype.arrayBuffer = vi.fn().mockImplementation(function (
+  this: File,
+) {
   return Promise.resolve(new ArrayBuffer(this.size || 1024));
 });
 
@@ -32,7 +34,7 @@ const mockCanvas = {
     scale: vi.fn(),
     rotate: vi.fn(),
   }),
-  toBlob: vi.fn().mockImplementation((callback, type, quality) => {
+  toBlob: vi.fn().mockImplementation((callback, type) => {
     const blob = new Blob(["mock image data"], { type: type || "image/png" });
     callback(blob);
   }),
@@ -125,11 +127,28 @@ global.URL.revokeObjectURL = vi.fn();
 
 // Mock DOMMatrix for pdfjs-dist
 (global as any).DOMMatrix = class DOMMatrix {
-  a = 1; b = 0; c = 0; d = 1; e = 0; f = 0;
-  m11 = 1; m12 = 0; m13 = 0; m14 = 0;
-  m21 = 0; m22 = 1; m23 = 0; m24 = 0;
-  m31 = 0; m32 = 0; m33 = 1; m34 = 0;
-  m41 = 0; m42 = 0; m43 = 0; m44 = 1;
+  a = 1;
+  b = 0;
+  c = 0;
+  d = 1;
+  e = 0;
+  f = 0;
+  m11 = 1;
+  m12 = 0;
+  m13 = 0;
+  m14 = 0;
+  m21 = 0;
+  m22 = 1;
+  m23 = 0;
+  m24 = 0;
+  m31 = 0;
+  m32 = 0;
+  m33 = 1;
+  m34 = 0;
+  m41 = 0;
+  m42 = 0;
+  m43 = 0;
+  m44 = 1;
   is2D = true;
   isIdentity = true;
 
@@ -239,7 +258,7 @@ afterEach(() => {
 beforeEach(() => {
   // Reset DOM to clean state
   document.body.innerHTML = '<div id="root"></div>';
-  
+
   // Reset all mocks
   vi.clearAllMocks();
 });
