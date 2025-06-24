@@ -17,7 +17,7 @@ vi.mock("pdfjs-dist", () => ({
   getDocument: vi.fn().mockReturnValue({
     promise: Promise.resolve({
       numPages: 3,
-      getPage: vi.fn().mockImplementation((pageNum) =>
+      getPage: vi.fn().mockImplementation((_pageNum) =>
         Promise.resolve({
           getViewport: vi.fn().mockReturnValue({
             width: 800,
@@ -79,7 +79,9 @@ describe("SelectAreaView", () => {
 
     expect(screen.getByText("Select Area")).toBeInTheDocument();
     expect(
-      screen.getByText(/Select any area from PDF pages and export as high-quality images/),
+      screen.getByText(
+        /Select any area from PDF pages and export as high-quality images/,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -97,7 +99,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     expect(dropzone).toBeInTheDocument();
 
     // Simulate file drop
@@ -119,7 +123,9 @@ describe("SelectAreaView", () => {
       type: "text/plain",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -127,7 +133,9 @@ describe("SelectAreaView", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("test.txt: Only PDF files are supported")).toBeInTheDocument();
+      expect(
+        screen.getByText("test.txt: Only PDF files are supported"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -140,7 +148,9 @@ describe("SelectAreaView", () => {
     });
     Object.defineProperty(largeFile, "size", { value: 21 * 1024 * 1024 });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [largeFile],
@@ -148,7 +158,9 @@ describe("SelectAreaView", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("large.pdf: File size exceeds 20MB limit")).toBeInTheDocument();
+      expect(
+        screen.getByText("large.pdf: File size exceeds 20MB limit"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -159,7 +171,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -179,7 +193,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -188,7 +204,9 @@ describe("SelectAreaView", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Page 1 - Select Area")).toBeInTheDocument();
-      expect(screen.getByText(/Click and drag on the PDF to select an area/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Click and drag on the PDF to select an area/),
+      ).toBeInTheDocument();
     });
   });
 
@@ -199,7 +217,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -226,7 +246,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -249,7 +271,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -274,7 +298,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -296,7 +322,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -312,7 +340,9 @@ describe("SelectAreaView", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("test.pdf")).not.toBeInTheDocument();
-      expect(screen.getByText(/Drag & drop PDF files here/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Drag & drop PDF files here/),
+      ).toBeInTheDocument();
     });
   });
 
@@ -323,7 +353,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -345,7 +377,9 @@ describe("SelectAreaView", () => {
     });
     Object.defineProperty(file, "size", { value: 1024 });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -365,7 +399,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -387,7 +423,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -412,7 +450,9 @@ describe("SelectAreaView", () => {
       type: "application/pdf",
     });
 
-    const dropzone = screen.getByText(/Drag & drop PDF files here/).closest("div");
+    const dropzone = screen
+      .getByText(/Drag & drop PDF files here/)
+      .closest("div");
     fireEvent.drop(dropzone!, {
       dataTransfer: {
         files: [file],
@@ -430,4 +470,4 @@ describe("SelectAreaView", () => {
     // Filename should update to reflect page 2
     // This tests the filename generation logic
   });
-}); 
+});

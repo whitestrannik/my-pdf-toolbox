@@ -87,7 +87,6 @@ export const SelectAreaView: React.FC = () => {
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   const generatePageThumbnails = useCallback(
     async (file: File): Promise<PageInfo[]> => {
@@ -150,7 +149,7 @@ export const SelectAreaView: React.FC = () => {
       }).promise;
 
       // Clear any previous selection
-      setSelectionState(prev => ({ ...prev, selection: null }));
+      setSelectionState((prev) => ({ ...prev, selection: null }));
     } catch (error) {
       console.error("Failed to render page:", error);
     }
@@ -196,10 +195,10 @@ export const SelectAreaView: React.FC = () => {
         });
         setPages(pageInfos);
         setCurrentPage(1);
-        
+
         // Set default filename
         const baseName = file.name.replace(".pdf", "");
-        setExportSettings(prev => ({
+        setExportSettings((prev) => ({
           ...prev,
           filename: `${baseName}-page1-selection`,
         }));
@@ -222,7 +221,7 @@ export const SelectAreaView: React.FC = () => {
     setUploadedFile(null);
     setPages([]);
     setCurrentPage(1);
-    setSelectionState(prev => ({ ...prev, selection: null }));
+    setSelectionState((prev) => ({ ...prev, selection: null }));
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -253,7 +252,7 @@ export const SelectAreaView: React.FC = () => {
     const x = (e.clientX - rect.left) * scaleX;
     const y = (e.clientY - rect.top) * scaleY;
 
-    setSelectionState(prev => ({
+    setSelectionState((prev) => ({
       ...prev,
       currentX: x,
       currentY: y,
@@ -264,20 +263,20 @@ export const SelectAreaView: React.FC = () => {
     if (!selectionState.isSelecting) return;
 
     const { startX, startY, currentX, currentY } = selectionState;
-    
+
     const x = Math.min(startX, currentX);
     const y = Math.min(startY, currentY);
     const width = Math.abs(currentX - startX);
     const height = Math.abs(currentY - startY);
 
     if (width > 10 && height > 10) {
-      setSelectionState(prev => ({
+      setSelectionState((prev) => ({
         ...prev,
         isSelecting: false,
         selection: { x, y, width, height },
       }));
     } else {
-      setSelectionState(prev => ({
+      setSelectionState((prev) => ({
         ...prev,
         isSelecting: false,
         selection: null,
@@ -287,11 +286,11 @@ export const SelectAreaView: React.FC = () => {
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    
+
     // Update filename
     if (uploadedFile) {
       const baseName = uploadedFile.file.name.replace(".pdf", "");
-      setExportSettings(prev => ({
+      setExportSettings((prev) => ({
         ...prev,
         filename: `${baseName}-page${pageNumber}-selection`,
       }));
@@ -328,7 +327,7 @@ export const SelectAreaView: React.FC = () => {
         throw new Error(result.error);
       }
 
-      setProcessing(prev => ({ ...prev, progress: "Preparing download..." }));
+      setProcessing((prev) => ({ ...prev, progress: "Preparing download..." }));
 
       // Generate filename with timestamp
       const timestamp = new Date()
@@ -377,7 +376,8 @@ export const SelectAreaView: React.FC = () => {
       setProcessing({
         isProcessing: false,
         progress: "",
-        error: "Clipboard API not supported. Please use the 'Save to File' button instead.",
+        error:
+          "Clipboard API not supported. Please use the 'Save to File' button instead.",
       });
       setShowModal(true);
       return;
@@ -424,7 +424,10 @@ export const SelectAreaView: React.FC = () => {
       setProcessing({
         isProcessing: false,
         progress: "",
-        error: error instanceof Error ? error.message : "Failed to copy to clipboard",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to copy to clipboard",
       });
       setShowModal(true);
     }
@@ -440,7 +443,7 @@ export const SelectAreaView: React.FC = () => {
 
   const getSelectionInfo = () => {
     if (!selectionState.selection) return null;
-    
+
     const { x, y, width, height } = selectionState.selection;
     return {
       x: Math.round(x),
@@ -449,8 +452,6 @@ export const SelectAreaView: React.FC = () => {
       height: Math.round(height),
     };
   };
-
-  const currentPageInfo = pages.find(p => p.pageNumber === currentPage);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
@@ -462,7 +463,8 @@ export const SelectAreaView: React.FC = () => {
           </span>
         </h1>
         <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
-          Select any area from PDF pages and export as high-quality images with automatic clipboard copying.
+          Select any area from PDF pages and export as high-quality images with
+          automatic clipboard copying.
         </p>
       </div>
 
@@ -519,7 +521,8 @@ export const SelectAreaView: React.FC = () => {
                       {uploadedFile.file.name}
                     </p>
                     <p className="text-sm text-slate-600">
-                      {formatFileSize(uploadedFile.file.size)} • {pages.length} pages
+                      {formatFileSize(uploadedFile.file.size)} • {pages.length}{" "}
+                      pages
                     </p>
                     {uploadedFile.error && (
                       <p className="text-sm text-red-600 mt-1">
@@ -550,13 +553,15 @@ export const SelectAreaView: React.FC = () => {
                 <h3 className="text-lg font-semibold text-slate-800 mb-4">
                   Pages ({pages.length})
                 </h3>
-                
+
                 {/* Page Navigation Controls */}
                 <div className="flex items-center space-x-2 mb-4">
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                    onClick={() =>
+                      handlePageChange(Math.max(1, currentPage - 1))
+                    }
                     disabled={currentPage === 1}
                   >
                     ←
@@ -575,12 +580,16 @@ export const SelectAreaView: React.FC = () => {
                       }}
                       className="w-16 px-2 py-1 border border-slate-300 rounded-lg text-center text-sm"
                     />
-                    <span className="text-sm text-slate-600">of {pages.length}</span>
+                    <span className="text-sm text-slate-600">
+                      of {pages.length}
+                    </span>
                   </div>
                   <Button
                     variant="secondary"
                     size="sm"
-                    onClick={() => handlePageChange(Math.min(pages.length, currentPage + 1))}
+                    onClick={() =>
+                      handlePageChange(Math.min(pages.length, currentPage + 1))
+                    }
                     disabled={currentPage === pages.length}
                   >
                     →
@@ -622,7 +631,8 @@ export const SelectAreaView: React.FC = () => {
                   </h3>
                   {selectionState.selection && (
                     <div className="text-sm text-slate-600">
-                      Selection: {getSelectionInfo()?.width} × {getSelectionInfo()?.height}px
+                      Selection: {getSelectionInfo()?.width} ×{" "}
+                      {getSelectionInfo()?.height}px
                       {getSelectionInfo() && (
                         <span className="ml-2">
                           at ({getSelectionInfo()?.x}, {getSelectionInfo()?.y})
@@ -641,57 +651,60 @@ export const SelectAreaView: React.FC = () => {
                     onMouseUp={handleMouseUp}
                     className="block max-w-full h-auto cursor-crosshair"
                     style={{
-                      width: '100%',
-                      height: 'auto',
+                      width: "100%",
+                      height: "auto",
                     }}
                   />
-                  
+
                   {/* Selection Overlay */}
-                  {selectionState.isSelecting && (() => {
-                    if (!canvasRef.current) return null;
-                    const rect = canvasRef.current.getBoundingClientRect();
-                    const scaleX = rect.width / canvasRef.current.width;
-                    const scaleY = rect.height / canvasRef.current.height;
-                    
-                    return (
-                      <div
-                        className="absolute border-2 border-emerald-500 bg-emerald-500/20 pointer-events-none"
-                        style={{
-                          left: `${Math.min(selectionState.startX, selectionState.currentX) * scaleX}px`,
-                          top: `${Math.min(selectionState.startY, selectionState.currentY) * scaleY}px`,
-                          width: `${Math.abs(selectionState.currentX - selectionState.startX) * scaleX}px`,
-                          height: `${Math.abs(selectionState.currentY - selectionState.startY) * scaleY}px`,
-                        }}
-                      />
-                    );
-                  })()}
-                  
+                  {selectionState.isSelecting &&
+                    (() => {
+                      if (!canvasRef.current) return null;
+                      const rect = canvasRef.current.getBoundingClientRect();
+                      const scaleX = rect.width / canvasRef.current.width;
+                      const scaleY = rect.height / canvasRef.current.height;
+
+                      return (
+                        <div
+                          className="absolute border-2 border-emerald-500 bg-emerald-500/20 pointer-events-none"
+                          style={{
+                            left: `${Math.min(selectionState.startX, selectionState.currentX) * scaleX}px`,
+                            top: `${Math.min(selectionState.startY, selectionState.currentY) * scaleY}px`,
+                            width: `${Math.abs(selectionState.currentX - selectionState.startX) * scaleX}px`,
+                            height: `${Math.abs(selectionState.currentY - selectionState.startY) * scaleY}px`,
+                          }}
+                        />
+                      );
+                    })()}
+
                   {/* Final Selection Overlay */}
-                  {selectionState.selection && (() => {
-                    if (!canvasRef.current) return null;
-                    const rect = canvasRef.current.getBoundingClientRect();
-                    const scaleX = rect.width / canvasRef.current.width;
-                    const scaleY = rect.height / canvasRef.current.height;
-                    
-                    return (
-                      <div
-                        className="absolute border-2 border-emerald-600 bg-emerald-600/20 pointer-events-none"
-                        style={{
-                          left: `${selectionState.selection.x * scaleX}px`,
-                          top: `${selectionState.selection.y * scaleY}px`,
-                          width: `${selectionState.selection.width * scaleX}px`,
-                          height: `${selectionState.selection.height * scaleY}px`,
-                        }}
-                      />
-                    );
-                  })()}
+                  {selectionState.selection &&
+                    (() => {
+                      if (!canvasRef.current) return null;
+                      const rect = canvasRef.current.getBoundingClientRect();
+                      const scaleX = rect.width / canvasRef.current.width;
+                      const scaleY = rect.height / canvasRef.current.height;
+
+                      return (
+                        <div
+                          className="absolute border-2 border-emerald-600 bg-emerald-600/20 pointer-events-none"
+                          style={{
+                            left: `${selectionState.selection.x * scaleX}px`,
+                            top: `${selectionState.selection.y * scaleY}px`,
+                            width: `${selectionState.selection.width * scaleX}px`,
+                            height: `${selectionState.selection.height * scaleY}px`,
+                          }}
+                        />
+                      );
+                    })()}
                 </div>
 
                 {/* Instructions */}
                 <div className="mt-4 p-4 bg-slate-50 rounded-xl">
                   <p className="text-sm text-slate-600">
-                    <strong>Instructions:</strong> Click and drag on the PDF to select an area. 
-                    The selected area will be highlighted and can be exported as an image.
+                    <strong>Instructions:</strong> Click and drag on the PDF to
+                    select an area. The selected area will be highlighted and
+                    can be exported as an image.
                     {selectionState.selection && (
                       <span className="block mt-2 text-emerald-600 font-medium">
                         ✓ Area selected! Scroll down to export settings.
@@ -725,7 +738,7 @@ export const SelectAreaView: React.FC = () => {
               </span>
               Export Settings
             </h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Output Format */}
               <div>
@@ -744,7 +757,7 @@ export const SelectAreaView: React.FC = () => {
                         value={format.value}
                         checked={exportSettings.outputFormat === format.value}
                         onChange={(e) =>
-                          setExportSettings(prev => ({
+                          setExportSettings((prev) => ({
                             ...prev,
                             outputFormat: e.target.value as "jpeg" | "png",
                           }))
@@ -770,7 +783,7 @@ export const SelectAreaView: React.FC = () => {
                     step={0.1}
                     value={exportSettings.quality}
                     onChange={(e) =>
-                      setExportSettings(prev => ({
+                      setExportSettings((prev) => ({
                         ...prev,
                         quality: parseFloat(e.target.value),
                       }))
@@ -789,7 +802,7 @@ export const SelectAreaView: React.FC = () => {
                   type="text"
                   value={exportSettings.filename}
                   onChange={(e) =>
-                    setExportSettings(prev => ({
+                    setExportSettings((prev) => ({
                       ...prev,
                       filename: e.target.value,
                     }))
@@ -808,7 +821,8 @@ export const SelectAreaView: React.FC = () => {
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 text-lg"
                 size="lg"
               >
-                {processing.isProcessing && processing.progress.includes("clipboard") ? (
+                {processing.isProcessing &&
+                processing.progress.includes("clipboard") ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
                     Copying...
@@ -832,14 +846,15 @@ export const SelectAreaView: React.FC = () => {
                   </>
                 )}
               </Button>
-              
+
               <Button
                 onClick={handleExportArea}
                 disabled={processing.isProcessing || !selectionState.selection}
                 className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-3 text-lg"
                 size="lg"
               >
-                {processing.isProcessing && !processing.progress.includes("clipboard") ? (
+                {processing.isProcessing &&
+                !processing.progress.includes("clipboard") ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
                     Exporting...
@@ -873,7 +888,9 @@ export const SelectAreaView: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-lg font-medium text-slate-900 mb-2">Processing...</p>
+            <p className="text-lg font-medium text-slate-900 mb-2">
+              Processing...
+            </p>
             <p className="text-slate-600">{processing.progress}</p>
           </div>
         </div>
@@ -913,8 +930,8 @@ export const SelectAreaView: React.FC = () => {
         isVisible={toast.isVisible}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast(prev => ({ ...prev, isVisible: false }))}
+        onClose={() => setToast((prev) => ({ ...prev, isVisible: false }))}
       />
     </div>
   );
-}; 
+};

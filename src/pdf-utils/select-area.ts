@@ -42,7 +42,14 @@ export const selectPDFArea = async (
   options: SelectAreaOptions,
 ): Promise<SelectAreaResult> => {
   try {
-    const { file, pageNumber, selection, outputFormat, quality = 0.92, scale = 2 } = options;
+    const {
+      file,
+      pageNumber,
+      selection,
+      outputFormat,
+      quality = 0.92,
+      scale = 2,
+    } = options;
 
     // Validate inputs
     if (!file) {
@@ -58,7 +65,10 @@ export const selectPDFArea = async (
     }
 
     if (selection.width <= 0 || selection.height <= 0) {
-      return { success: false, error: "Selection area must have positive dimensions" };
+      return {
+        success: false,
+        error: "Selection area must have positive dimensions",
+      };
     }
 
     // Load PDF
@@ -96,7 +106,12 @@ export const selectPDFArea = async (
     const maxX = viewport.width - selection.width;
     const maxY = viewport.height - selection.height;
 
-    if (selection.x < 0 || selection.y < 0 || selection.x > maxX || selection.y > maxY) {
+    if (
+      selection.x < 0 ||
+      selection.y < 0 ||
+      selection.x > maxX ||
+      selection.y > maxY
+    ) {
       return {
         success: false,
         error: "Selection area is outside page boundaries",
@@ -115,7 +130,10 @@ export const selectPDFArea = async (
     const outputCanvas = document.createElement("canvas");
     const outputContext = outputCanvas.getContext("2d");
     if (!outputContext) {
-      return { success: false, error: "Failed to create output canvas context" };
+      return {
+        success: false,
+        error: "Failed to create output canvas context",
+      };
     }
 
     outputCanvas.width = selection.width;
@@ -150,4 +168,4 @@ export const selectPDFArea = async (
       error: error instanceof Error ? error.message : "Unknown error occurred",
     };
   }
-}; 
+};

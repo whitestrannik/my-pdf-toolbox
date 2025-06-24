@@ -37,7 +37,7 @@ const mockCanvas = {
     }),
     putImageData: vi.fn(),
   }),
-  toBlob: vi.fn().mockImplementation((callback, type, quality) => {
+  toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
     const blob = new Blob(["mock image data"], { type });
     callback(blob);
   }),
@@ -49,7 +49,7 @@ const mockOutputCanvas = {
   getContext: vi.fn().mockReturnValue({
     putImageData: vi.fn(),
   }),
-  toBlob: vi.fn().mockImplementation((callback, type, quality) => {
+  toBlob: vi.fn().mockImplementation((callback, type, _quality) => {
     const blob = new Blob(["mock selected area"], { type });
     callback(blob);
   }),
@@ -70,6 +70,8 @@ Object.defineProperty(document, "createElement", {
 const createMockPDFFile = (name = "test.pdf", size = 1024) => {
   const buffer = new ArrayBuffer(size);
   const file = new File([buffer], name, { type: "application/pdf" });
+  // Add the arrayBuffer method
+  file.arrayBuffer = vi.fn().mockResolvedValue(buffer);
   return file;
 };
 
@@ -399,7 +401,9 @@ describe("selectPDFArea", () => {
     it("should handle file reading errors", async () => {
       const file = createMockPDFFile();
       // Mock file.arrayBuffer to throw an error
-      vi.spyOn(file, "arrayBuffer").mockRejectedValue(new Error("File read error"));
+      vi.spyOn(file, "arrayBuffer").mockRejectedValue(
+        new Error("File read error"),
+      );
 
       const result = await selectPDFArea({
         file,
@@ -455,4 +459,4 @@ describe("selectPDFArea", () => {
       expect(result.metadata).toBeUndefined();
     });
   });
-}); 
+});
