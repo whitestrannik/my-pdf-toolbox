@@ -27,9 +27,11 @@ export const Card: React.FC<CardProps> = ({
 
   const variantStyles = {
     default: "bg-slate-800/70 border-slate-700 shadow-sm",
-    elevated: "bg-slate-800/80 border-slate-600/80 shadow-lg shadow-slate-900/60",
+    elevated:
+      "bg-slate-800/80 border-slate-600/80 shadow-lg shadow-slate-900/60",
     glass: "bg-slate-800/90 backdrop-blur-sm border-slate-600/20 shadow-lg",
-    gradient: "bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600 shadow-md",
+    gradient:
+      "bg-gradient-to-br from-slate-800 to-slate-700 border-slate-600 shadow-md",
   };
 
   const hoverStyles = hoverable

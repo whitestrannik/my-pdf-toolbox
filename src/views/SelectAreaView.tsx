@@ -690,7 +690,7 @@ export const SelectAreaView: React.FC = () => {
             {/* Page Navigation Sidebar */}
             <div className="lg:col-span-1">
               <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700 sticky top-6">
-                                  <h3 className="text-lg font-semibold text-slate-100 mb-4">
+                <h3 className="text-lg font-semibold text-slate-100 mb-4">
                   Pages ({pages.length})
                 </h3>
 
@@ -804,7 +804,7 @@ export const SelectAreaView: React.FC = () => {
             <div className="lg:col-span-3">
               <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700">
                 <div className="flex items-center justify-between mb-4">
-                                      <h3 className="text-lg font-semibold text-slate-100">
+                  <h3 className="text-lg font-semibold text-slate-100">
                     Page {currentPage} - Select Area
                   </h3>
                   {selectionState.selection && (
@@ -898,7 +898,7 @@ export const SelectAreaView: React.FC = () => {
         {/* Export Settings */}
         {uploadedFile && !uploadedFile.error && selectionState.selection && (
           <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
-                          <h3 className="text-lg font-semibold text-slate-100 mb-6 flex items-center">
+            <h3 className="text-lg font-semibold text-slate-100 mb-6 flex items-center">
               <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
                 <svg
                   className="w-6 h-6 text-white"
@@ -1066,7 +1066,7 @@ export const SelectAreaView: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mx-auto mb-4"></div>
-                            <p className="text-lg font-medium text-slate-100 mb-2">
+            <p className="text-lg font-medium text-slate-100 mb-2">
               Processing...
             </p>
             <p className="text-slate-600">{processing.progress}</p>

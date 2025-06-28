@@ -26,12 +26,12 @@
   --color-emerald-100: #065f46;
   --color-emerald-500: #10b981;
   --color-emerald-600: #34d399;
-  
+
   --color-violet-50: #4c1d95;
   --color-violet-100: #5b21b6;
   --color-violet-500: #8b5cf6;
   --color-violet-600: #a78bfa;
-  
+
   --color-rose-50: #7f1d1d;
   --color-rose-100: #991b1b;
   --color-rose-500: #f43f5e;
@@ -40,9 +40,12 @@
   /* Enhanced Shadows for dark theme */
   --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.2);
   --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-  --shadow-elegant: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-refined: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-luxury: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  --shadow-elegant:
+    0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-refined:
+    0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-luxury:
+    0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
 
   /* Refined Spacing */
   --space-1: 4px;
@@ -82,10 +85,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Dark, elegant background with higher contrast */
-  background: linear-gradient(180deg, 
-    #0f172a 0%, 
-    #1e293b 50%, 
-    #334155 100%);
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   background-attachment: fixed;
   min-height: 100vh;
   color: var(--color-primary-700);
@@ -105,7 +105,9 @@ h6 {
 }
 
 /* Global dark theme text defaults */
-p, span, div {
+p,
+span,
+div {
   color: var(--color-primary-600);
 }
 
@@ -222,7 +224,8 @@ h2 {
 }
 
 @keyframes subtleFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -275,21 +278,23 @@ h2 {
 
 /* Refined Gradients */
 .bg-gradient-light {
-  background: linear-gradient(135deg, 
-    var(--color-primary-50) 0%, 
-    #ffffff 100%);
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, #ffffff 100%);
 }
 
 .bg-gradient-brand-light {
-  background: linear-gradient(135deg, 
-    var(--color-brand-50) 0%, 
-    var(--color-brand-100) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-50) 0%,
+    var(--color-brand-100) 100%
+  );
 }
 
 .bg-gradient-elegant {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(248, 250, 252, 0.9) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(248, 250, 252, 0.9) 100%
+  );
 }
 
 /* Elegant Hover Effects */
@@ -331,7 +336,11 @@ h2 {
 }
 
 .btn-brand-elegant {
-  background: linear-gradient(135deg, var(--color-brand-500), var(--color-brand-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-500),
+    var(--color-brand-600)
+  );
   border: none;
   color: white;
   box-shadow: var(--shadow-elegant);
@@ -340,7 +349,11 @@ h2 {
 .btn-brand-elegant:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-refined);
-  background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-600),
+    var(--color-brand-600)
+  );
 }
 
 /* Status Indicators - Light */
@@ -479,7 +492,9 @@ h2 {
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
   pointer-events: none;
 }
 
@@ -497,4 +512,3 @@ h2 {
   opacity: 1;
   visibility: visible;
 }
-

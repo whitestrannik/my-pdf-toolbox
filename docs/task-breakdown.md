@@ -157,6 +157,7 @@ Each utility must be:
 - **Build Verification:** All tests pass, no linting errors, clean build output
 
 **Still Needed:**
+
 - **Comprehensive E2E Tests:** User flow tests for all PDF tools (combine, split, reorder, compress, images to PDF)
 
 ---

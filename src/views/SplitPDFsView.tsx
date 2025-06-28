@@ -614,9 +614,7 @@ export const SplitPDFsView: React.FC = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xs text-slate-400">
-                        PDF
-                      </span>
+                      <span className="text-xs text-slate-400">PDF</span>
                     </div>
                   )}
                 </div>
@@ -769,9 +767,7 @@ export const SplitPDFsView: React.FC = () => {
                   </p>
                 )}
                 <div className="mt-2">
-                  <p className="text-xs text-slate-400 mb-2">
-                    Valid examples:
-                  </p>
+                  <p className="text-xs text-slate-400 mb-2">Valid examples:</p>
                   <div className="flex flex-wrap gap-2">
                     {["all", "1,2,3", "2-5", "7", "1-3,5,8-10"].map(
                       (example) => (

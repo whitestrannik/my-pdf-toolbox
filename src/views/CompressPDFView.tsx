@@ -346,9 +346,7 @@ export const CompressPDFView: React.FC = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xs text-slate-400">
-                        PDF
-                      </span>
+                      <span className="text-xs text-slate-400">PDF</span>
                     </div>
                   )}
                 </div>
@@ -390,27 +388,21 @@ export const CompressPDFView: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center p-4 bg-slate-700/50 rounded-lg">
-                <p className="text-sm text-slate-400">
-                  Original Size
-                </p>
+                <p className="text-sm text-slate-400">Original Size</p>
                 <p className="text-lg font-semibold text-slate-100">
                   {formatFileSize(compressionResult.originalSize)}
                 </p>
               </div>
 
               <div className="text-center p-4 bg-slate-700/50 rounded-lg">
-                <p className="text-sm text-slate-400">
-                  Compressed Size
-                </p>
+                <p className="text-sm text-slate-400">Compressed Size</p>
                 <p className="text-lg font-semibold text-slate-100">
                   {formatFileSize(compressionResult.compressedSize)}
                 </p>
               </div>
 
               <div className="text-center p-4 bg-green-900/20 rounded-lg">
-                <p className="text-sm text-green-400">
-                  Size Reduction
-                </p>
+                <p className="text-sm text-green-400">Size Reduction</p>
                 <p className="text-lg font-semibold text-green-300">
                   {compressionResult.reductionPercentage}%
                 </p>
