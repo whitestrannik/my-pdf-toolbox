@@ -37,30 +37,30 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary: cn(
-        "bg-white border border-slate-200 text-slate-700 shadow-sm",
-        "hover:bg-slate-50 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5",
-        "focus:ring-blue-400 focus:border-blue-300",
+        "bg-slate-700 border border-slate-600 text-slate-100 shadow-sm",
+        "hover:bg-slate-600 hover:border-slate-500 hover:shadow-md hover:-translate-y-0.5",
+        "focus:ring-blue-400 focus:border-blue-400",
         "active:translate-y-0 active:shadow-sm",
       ),
       secondary: cn(
-        "bg-slate-50 border border-slate-200 text-slate-600",
-        "hover:bg-slate-100 hover:border-slate-300 hover:text-slate-700",
+        "bg-slate-800 border border-slate-700 text-slate-300",
+        "hover:bg-slate-700 hover:border-slate-600 hover:text-slate-200",
         "focus:ring-slate-400",
       ),
       elegant: cn(
-        "bg-gradient-to-r from-white to-slate-50 border border-slate-200 text-slate-700 shadow-sm",
-        "hover:from-slate-50 hover:to-slate-100 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5",
-        "focus:ring-blue-400 focus:border-blue-300",
+        "bg-gradient-to-r from-slate-700 to-slate-600 border border-slate-600 text-slate-100 shadow-sm",
+        "hover:from-slate-600 hover:to-slate-500 hover:border-slate-500 hover:shadow-md hover:-translate-y-0.5",
+        "focus:ring-blue-400 focus:border-blue-400",
         "active:translate-y-0 active:shadow-sm",
       ),
       minimal: cn(
-        "bg-transparent border border-transparent text-slate-600",
-        "hover:bg-slate-50 hover:text-slate-700",
-        "focus:ring-slate-400 focus:bg-slate-50",
+        "bg-transparent border border-transparent text-slate-300",
+        "hover:bg-slate-800 hover:text-slate-200",
+        "focus:ring-slate-400 focus:bg-slate-800",
       ),
       ghost: cn(
-        "bg-transparent border border-transparent text-slate-500",
-        "hover:bg-slate-50 hover:text-slate-600",
+        "bg-transparent border border-transparent text-slate-400",
+        "hover:bg-slate-800 hover:text-slate-300",
         "focus:ring-slate-400",
       ),
     };

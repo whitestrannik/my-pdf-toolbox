@@ -228,14 +228,14 @@ export const ImagesToPDFView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+      <div className="text-center mb-5 bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+        <h1 className="text-4xl font-bold text-slate-100 mb-4 tracking-tight drop-shadow-sm">
           🖼️{" "}
-          <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             Images to PDF
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
           Convert multiple images into a single PDF document with custom layout
           and quality settings.
         </p>
@@ -243,8 +243,8 @@ export const ImagesToPDFView: React.FC = () => {
 
       <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+          <h2 className="text-xl font-semibold text-slate-200 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
                 className="w-6 h-6 text-white"
@@ -288,9 +288,9 @@ export const ImagesToPDFView: React.FC = () => {
 
         {/* Images Management Section - Full width like header/footer */}
         {uploadedImages.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+              <h2 className="text-xl font-semibold text-slate-200 flex items-center">
                 <span className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-3 shadow-lg mr-4">
                   <svg
                     className="w-6 h-6 text-white"

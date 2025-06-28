@@ -602,7 +602,7 @@ export const SelectAreaView: React.FC = () => {
             Select Area
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
           Select any area from PDF pages and export as high-quality images with
           automatic clipboard copying.
         </p>

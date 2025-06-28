@@ -214,14 +214,14 @@ export const CombinePDFsView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+      <div className="text-center mb-5 bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+        <h1 className="text-4xl font-bold text-slate-100 mb-4 tracking-tight drop-shadow-sm">
           📄{" "}
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Combine PDFs
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
           Merge multiple PDF files into a single document with professional
           quality. Maximum file size: 20MB per file.
         </p>
@@ -229,8 +229,8 @@ export const CombinePDFsView: React.FC = () => {
 
       <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+          <h2 className="text-xl font-semibold text-slate-200 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
                 className="w-6 h-6 text-white"
@@ -256,7 +256,7 @@ export const CombinePDFsView: React.FC = () => {
             className="w-full min-h-[200px]"
           >
             <div className="space-y-2">
-              <div className="text-gray-600 dark:text-gray-400">
+              <div className="text-slate-300">
                 <p className="text-lg font-medium">
                   {processing.isProcessing
                     ? "Processing..."
@@ -274,9 +274,9 @@ export const CombinePDFsView: React.FC = () => {
 
         {/* Files Management Section - Full width like header/footer */}
         {uploadedFiles.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+              <h2 className="text-xl font-semibold text-slate-200 flex items-center">
                 <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
                   <svg
                     className="w-6 h-6 text-white"
@@ -319,8 +319,8 @@ export const CombinePDFsView: React.FC = () => {
             </div>
 
             {hasErrors && (
-              <div className="mb-6 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200/60 rounded-2xl shadow-sm">
-                <h3 className="text-sm font-semibold text-red-800 mb-2 flex items-center">
+              <div className="mb-6 p-4 bg-red-900/30 backdrop-blur-sm border border-red-700/60 rounded-2xl shadow-sm">
+                <h3 className="text-sm font-semibold text-red-300 mb-2 flex items-center">
                   <svg
                     className="w-4 h-4 mr-2"
                     fill="currentColor"
@@ -334,7 +334,7 @@ export const CombinePDFsView: React.FC = () => {
                   </svg>
                   Some files have errors:
                 </h3>
-                <ul className="text-sm text-red-700 space-y-1 ml-6">
+                <ul className="text-sm text-red-200 space-y-1 ml-6">
                   {uploadedFiles
                     .filter((file) => file.error)
                     .map((file) => (
@@ -352,12 +352,12 @@ export const CombinePDFsView: React.FC = () => {
                   key={fileObj.id}
                   className={`flex items-center space-x-4 p-4 rounded-2xl transition-all duration-200 hover:shadow-md ${
                     fileObj.error
-                      ? "bg-red-50/60 border border-red-200/60 backdrop-blur-sm"
-                      : "bg-slate-50/60 border border-slate-200/60 backdrop-blur-sm hover:bg-slate-50/80"
+                      ? "bg-red-900/20 border border-red-700/60 backdrop-blur-sm"
+                      : "bg-slate-700/40 border border-slate-600/60 backdrop-blur-sm hover:bg-slate-700/60"
                   }`}
                 >
                   {/* Thumbnail */}
-                  <div className="flex-shrink-0 w-16 h-20 bg-slate-100 rounded-xl overflow-hidden shadow-sm">
+                  <div className="flex-shrink-0 w-16 h-20 bg-slate-600 rounded-xl overflow-hidden shadow-sm">
                     {fileObj.thumbnail ? (
                       <img
                         src={fileObj.thumbnail}
@@ -366,7 +366,7 @@ export const CombinePDFsView: React.FC = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-xs font-medium text-slate-500">
+                        <span className="text-xs font-medium text-slate-300">
                           PDF
                         </span>
                       </div>
@@ -375,14 +375,14 @@ export const CombinePDFsView: React.FC = () => {
 
                   {/* File Info */}
                   <div className="flex-grow min-w-0">
-                    <p className="text-sm font-semibold text-slate-800 truncate mb-1">
+                    <p className="text-sm font-semibold text-slate-200 truncate mb-1">
                       {fileObj.file.name}
                     </p>
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-slate-400">
                       {(fileObj.file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                     {fileObj.error && (
-                      <p className="text-xs text-red-600 mt-1 font-medium">
+                      <p className="text-xs text-red-300 mt-1 font-medium">
                         {fileObj.error}
                       </p>
                     )}

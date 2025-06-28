@@ -313,14 +313,14 @@ export const ReorderPagesView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+      <div className="text-center mb-5 bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+        <h1 className="text-4xl font-bold text-slate-100 mb-4 tracking-tight drop-shadow-sm">
           🔄{" "}
-          <span className="bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">
             Reorder Pages
           </span>
         </h1>
-        <p className="text-lg text-slate-700 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
           Rearrange PDF pages using intuitive drag and drop functionality with
           real-time preview.
         </p>

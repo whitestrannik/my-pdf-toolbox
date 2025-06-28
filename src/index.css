@@ -2,47 +2,47 @@
 @import "tailwindcss";
 
 :root {
-  /* Elegant Light Color Palette */
-  --color-primary-50: #f8fafc;
-  --color-primary-100: #f1f5f9;
-  --color-primary-200: #e2e8f0;
-  --color-primary-300: #cbd5e1;
+  /* Darker, more contrast Color Palette */
+  --color-primary-50: #1e293b;
+  --color-primary-100: #334155;
+  --color-primary-200: #475569;
+  --color-primary-300: #64748b;
   --color-primary-400: #94a3b8;
-  --color-primary-500: #64748b;
-  --color-primary-600: #475569;
-  --color-primary-700: #334155;
+  --color-primary-500: #cbd5e1;
+  --color-primary-600: #e2e8f0;
+  --color-primary-700: #f1f5f9;
 
-  /* Refined Brand Colors */
-  --color-brand-50: #f0f9ff;
-  --color-brand-100: #e0f2fe;
-  --color-brand-200: #bae6fd;
-  --color-brand-300: #7dd3fc;
-  --color-brand-400: #38bdf8;
-  --color-brand-500: #0ea5e9;
-  --color-brand-600: #0284c7;
+  /* Enhanced Brand Colors for dark theme */
+  --color-brand-50: #0f172a;
+  --color-brand-100: #1e293b;
+  --color-brand-200: #334155;
+  --color-brand-300: #475569;
+  --color-brand-400: #0ea5e9;
+  --color-brand-500: #38bdf8;
+  --color-brand-600: #7dd3fc;
 
-  /* Elegant Accent Colors */
-  --color-emerald-50: #ecfdf5;
-  --color-emerald-100: #d1fae5;
+  /* Enhanced Accent Colors */
+  --color-emerald-50: #064e3b;
+  --color-emerald-100: #065f46;
   --color-emerald-500: #10b981;
-  --color-emerald-600: #059669;
+  --color-emerald-600: #34d399;
   
-  --color-violet-50: #f5f3ff;
-  --color-violet-100: #ede9fe;
+  --color-violet-50: #4c1d95;
+  --color-violet-100: #5b21b6;
   --color-violet-500: #8b5cf6;
-  --color-violet-600: #7c3aed;
+  --color-violet-600: #a78bfa;
   
-  --color-rose-50: #fef2f2;
-  --color-rose-100: #fecaca;
+  --color-rose-50: #7f1d1d;
+  --color-rose-100: #991b1b;
   --color-rose-500: #f43f5e;
-  --color-rose-600: #e11d48;
+  --color-rose-600: #fb7185;
 
-  /* Subtle Shadows */
-  --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.03);
-  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
-  --shadow-elegant: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-  --shadow-refined: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
-  --shadow-luxury: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+  /* Enhanced Shadows for dark theme */
+  --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-elegant: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-refined: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-luxury: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
 
   /* Refined Spacing */
   --space-1: 4px;
@@ -81,17 +81,17 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Light, elegant background */
+  /* Dark, elegant background with higher contrast */
   background: linear-gradient(180deg, 
-    #ffffff 0%, 
-    #f8fafc 50%, 
-    #f1f5f9 100%);
+    #0f172a 0%, 
+    #1e293b 50%, 
+    #334155 100%);
   background-attachment: fixed;
   min-height: 100vh;
   color: var(--color-primary-700);
 }
 
-/* Refined Typography */
+/* Enhanced Typography with better contrast */
 h1,
 h2,
 h3,
@@ -102,6 +102,57 @@ h6 {
   line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--color-primary-700);
+}
+
+/* Global dark theme text defaults */
+p, span, div {
+  color: var(--color-primary-600);
+}
+
+/* Ensure readability for all text elements */
+.text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+.text-slate-800 {
+  color: #e2e8f0 !important;
+}
+
+.text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+.text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Override common light theme backgrounds */
+.bg-white\/90 {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+}
+
+.bg-white\/80 {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+}
+
+.bg-white\/70 {
+  background-color: rgba(30, 41, 59, 0.7) !important;
+}
+
+.border-white\/20 {
+  border-color: rgba(100, 116, 139, 0.3) !important;
+}
+
+.border-slate-100 {
+  border-color: #475569 !important;
+}
+
+.border-slate-200 {
+  border-color: #64748b !important;
 }
 
 h1 {
@@ -115,25 +166,25 @@ h2 {
   font-weight: 650;
 }
 
-/* Elegant Scrollbar */
+/* Enhanced Scrollbar for dark theme */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--color-primary-100);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary-300);
-  border-radius: 2px;
+  background: var(--color-primary-400);
+  border-radius: 3px;
   transition: all 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-400);
+  background: var(--color-primary-500);
 }
 
 /* Refined Focus States */
@@ -191,11 +242,11 @@ h2 {
   animation: subtleFloat 4s ease-in-out infinite;
 }
 
-/* Elegant Card System */
+/* Enhanced Card System for darker theme */
 .card-elegant {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(30, 41, 59, 0.8);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(100, 116, 139, 0.3);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-elegant);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -353,6 +404,45 @@ h2 {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Custom scrollbar utilities for better accessibility */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-track-slate-100::-webkit-scrollbar-track {
+  background-color: #f1f5f9;
+  border-radius: 4px;
+}
+
+.scrollbar-track-slate-700::-webkit-scrollbar-track {
+  background-color: #334155;
+  border-radius: 4px;
+}
+
+.scrollbar-thumb-slate-300::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 4px;
+}
+
+.scrollbar-thumb-slate-400::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
+  border-radius: 4px;
+}
+
+.scrollbar-thumb-slate-500::-webkit-scrollbar-thumb {
+  background-color: #64748b;
+  border-radius: 4px;
+}
+
+.hover\:scrollbar-thumb-slate-400:hover::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
 }
 
 /* Smooth Scrolling */

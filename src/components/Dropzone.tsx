@@ -60,10 +60,10 @@ export const Dropzone: React.FC<DropzoneProps> = ({
         relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
         ${
           disabled
-            ? "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed opacity-50"
+            ? "border-slate-600 bg-slate-800/50 cursor-not-allowed opacity-50"
             : isDragOver
-              ? "border-sky-500 bg-sky-50 dark:bg-sky-900/20 cursor-pointer"
-              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer"
+              ? "border-sky-400 bg-sky-900/30 cursor-pointer"
+              : "border-slate-600 hover:border-slate-500 cursor-pointer bg-slate-800/30"
         }
         ${className}
       `}
@@ -86,7 +86,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       {children || (
         <div className="space-y-2">
           <svg
-            className="mx-auto h-12 w-12 text-gray-400"
+            className="mx-auto h-12 w-12 text-slate-400"
             stroke="currentColor"
             fill="none"
             viewBox="0 0 48 48"
@@ -98,7 +98,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
               strokeLinejoin="round"
             />
           </svg>
-          <div className="text-gray-600 dark:text-gray-400">
+          <div className="text-slate-300">
             <p className="text-lg font-medium">Drop files here</p>
             <p className="text-sm">or click to browse</p>
           </div>
