@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/my-pdf-toolbox/",
+  base: "/",
   test: {
     globals: true,
     environment: "jsdom",
