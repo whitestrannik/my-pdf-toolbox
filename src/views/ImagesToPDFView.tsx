@@ -436,7 +436,7 @@ export const ImagesToPDFView: React.FC = () => {
         )}
 
         {validImages.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               PDF Settings
             </h2>

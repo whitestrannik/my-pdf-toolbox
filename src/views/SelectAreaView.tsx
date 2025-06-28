@@ -595,8 +595,8 @@ export const SelectAreaView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+      <div className="text-center mb-5 bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+        <h1 className="text-4xl font-bold text-slate-100 mb-4 tracking-tight drop-shadow-sm">
           🎯{" "}
           <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
             Select Area
@@ -611,7 +611,7 @@ export const SelectAreaView: React.FC = () => {
       <div className="space-y-5">
         {/* Upload Section */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+          <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
                 className="w-6 h-6 text-white"
@@ -657,7 +657,7 @@ export const SelectAreaView: React.FC = () => {
                     </svg>
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">
+                    <p className="font-medium text-slate-100">
                       {uploadedFile.file.name}
                     </p>
                     <p className="text-sm text-slate-600">
@@ -689,8 +689,8 @@ export const SelectAreaView: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
             {/* Page Navigation Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-white/20 sticky top-6">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">
+              <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700 sticky top-6">
+                                  <h3 className="text-lg font-semibold text-slate-100 mb-4">
                   Pages ({pages.length})
                 </h3>
 
@@ -802,9 +802,9 @@ export const SelectAreaView: React.FC = () => {
 
             {/* Main Canvas Area */}
             <div className="lg:col-span-3">
-              <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-white/20">
+              <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-slate-700">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-slate-800">
+                                      <h3 className="text-lg font-semibold text-slate-100">
                     Page {currentPage} - Select Area
                   </h3>
                   {selectionState.selection && (
@@ -897,8 +897,8 @@ export const SelectAreaView: React.FC = () => {
 
         {/* Export Settings */}
         {uploadedFile && !uploadedFile.error && selectionState.selection && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-            <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+                          <h3 className="text-lg font-semibold text-slate-100 mb-6 flex items-center">
               <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
                 <svg
                   className="w-6 h-6 text-white"
@@ -1066,7 +1066,7 @@ export const SelectAreaView: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-lg font-medium text-slate-900 mb-2">
+                            <p className="text-lg font-medium text-slate-100 mb-2">
               Processing...
             </p>
             <p className="text-slate-600">{processing.progress}</p>

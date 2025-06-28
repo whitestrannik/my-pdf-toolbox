@@ -335,9 +335,9 @@ export const CompressPDFView: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center space-x-4 p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="flex items-center space-x-4 p-3 border border-slate-600 bg-slate-700/50 rounded-lg">
                 {/* Thumbnail */}
-                <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
+                <div className="flex-shrink-0 w-16 h-20 bg-slate-600 rounded overflow-hidden">
                   {uploadedFile.thumbnail ? (
                     <img
                       src={uploadedFile.thumbnail}
@@ -346,7 +346,7 @@ export const CompressPDFView: React.FC = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-slate-400">
                         PDF
                       </span>
                     </div>
@@ -355,10 +355,10 @@ export const CompressPDFView: React.FC = () => {
 
                 {/* File Info */}
                 <div className="flex-grow min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-medium text-slate-100 truncate">
                     {uploadedFile.file.name}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-slate-400">
                     {formatFileSize(uploadedFile.file.size)}
                   </p>
                 </div>
@@ -368,8 +368,8 @@ export const CompressPDFView: React.FC = () => {
         )}
 
         {compressionResult && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 mt-8">
-            <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700 mt-8">
+            <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
               <span className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-3 shadow-lg mr-4">
                 <svg
                   className="w-6 h-6 text-white"
@@ -389,29 +389,29 @@ export const CompressPDFView: React.FC = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-center p-4 bg-slate-700/50 rounded-lg">
+                <p className="text-sm text-slate-400">
                   Original Size
                 </p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                <p className="text-lg font-semibold text-slate-100">
                   {formatFileSize(compressionResult.originalSize)}
                 </p>
               </div>
 
-              <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-center p-4 bg-slate-700/50 rounded-lg">
+                <p className="text-sm text-slate-400">
                   Compressed Size
                 </p>
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                <p className="text-lg font-semibold text-slate-100">
                   {formatFileSize(compressionResult.compressedSize)}
                 </p>
               </div>
 
-              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <p className="text-sm text-green-600 dark:text-green-400">
+              <div className="text-center p-4 bg-green-900/20 rounded-lg">
+                <p className="text-sm text-green-400">
                   Size Reduction
                 </p>
-                <p className="text-lg font-semibold text-green-700 dark:text-green-300">
+                <p className="text-lg font-semibold text-green-300">
                   {compressionResult.reductionPercentage}%
                 </p>
               </div>
@@ -420,14 +420,14 @@ export const CompressPDFView: React.FC = () => {
         )}
 
         {uploadedFile && !uploadedFile.error && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 mt-8">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700 mt-8">
+            <h2 className="text-lg font-semibold text-slate-100 mb-4">
               Compression Settings
             </h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-slate-300 mb-3">
                   Compression Level
                 </label>
                 <div className="space-y-3">
@@ -449,10 +449,10 @@ export const CompressPDFView: React.FC = () => {
                         className="mt-1"
                       />
                       <div className="flex-grow">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize">
+                        <span className="text-sm font-medium text-slate-200 capitalize">
                           {level} Compression
                         </span>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-slate-400">
                           {getCompressionDescription(level)}
                         </p>
                       </div>

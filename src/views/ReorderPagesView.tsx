@@ -328,8 +328,8 @@ export const ReorderPagesView: React.FC = () => {
 
       <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+          <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
                 className="w-6 h-6 text-white"
@@ -375,7 +375,7 @@ export const ReorderPagesView: React.FC = () => {
         {uploadedFile && pages.length > 0 && (
           <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+              <h2 className="text-xl font-semibold text-slate-100 flex items-center">
                 <span className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl p-3 shadow-lg mr-4">
                   <svg
                     className="w-6 h-6 text-white"
@@ -422,12 +422,12 @@ export const ReorderPagesView: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center space-x-4 p-4 bg-slate-50/60 border border-slate-200/60 backdrop-blur-sm rounded-2xl transition-all duration-200">
+              <div className="flex items-center space-x-4 p-4 bg-slate-700/50 border border-slate-600 backdrop-blur-sm rounded-2xl transition-all duration-200">
                 <div className="flex-grow min-w-0">
-                  <p className="text-sm font-semibold text-slate-800 truncate mb-1">
+                  <p className="text-sm font-semibold text-slate-100 truncate mb-1">
                     {uploadedFile?.file.name}
                   </p>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-slate-400">
                     {(uploadedFile?.file.size / 1024 / 1024).toFixed(2)} MB •{" "}
                     {pages.length} pages
                   </p>
@@ -438,9 +438,9 @@ export const ReorderPagesView: React.FC = () => {
         )}
 
         {pages.length > 0 && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+              <h2 className="text-xl font-semibold text-slate-100 flex items-center">
                 <span className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-3 shadow-lg mr-4">
                   <svg
                     className="w-6 h-6 text-white"
@@ -491,9 +491,9 @@ export const ReorderPagesView: React.FC = () => {
               </div>
             </div>
 
-            <div className="mb-6 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200/60 rounded-2xl shadow-sm">
-              <p className="text-sm text-blue-800 flex items-start">
-                <span className="text-blue-600 mr-2">💡</span>
+            <div className="mb-6 p-4 bg-blue-900/20 backdrop-blur-sm border border-blue-700/60 rounded-2xl shadow-sm">
+              <p className="text-sm text-blue-300 flex items-start">
+                <span className="text-blue-400 mr-2">💡</span>
                 <span>
                   <strong>Tip:</strong> Drag and drop pages to reorder them. The
                   page number shows the current position.
@@ -537,11 +537,11 @@ export const ReorderPagesView: React.FC = () => {
 
                   {/* Page Info */}
                   <div className="p-2 text-center">
-                    <p className="text-xs font-medium text-gray-900 dark:text-white">
+                    <p className="text-xs font-medium text-slate-100">
                       Page {index + 1}
                     </p>
                     {page.originalIndex !== index && (
-                      <p className="text-xs text-orange-600 dark:text-orange-400">
+                      <p className="text-xs text-orange-400">
                         (was {page.originalIndex + 1})
                       </p>
                     )}

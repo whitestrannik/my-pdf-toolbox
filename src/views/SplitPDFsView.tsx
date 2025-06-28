@@ -505,10 +505,10 @@ export const SplitPDFsView: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-4 relative z-10">
-      <div className="text-center mb-5 bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight drop-shadow-sm">
+      <div className="text-center mb-5 bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+        <h1 className="text-4xl font-bold text-slate-100 mb-4 tracking-tight drop-shadow-sm">
           ✂️{" "}
-          <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
             Split & Extract PDFs
           </span>
         </h1>
@@ -520,8 +520,8 @@ export const SplitPDFsView: React.FC = () => {
 
       <div className="space-y-5">
         {/* Upload Section - Full width like header/footer */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
+          <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
             <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
               <svg
                 className="w-6 h-6 text-white"
@@ -565,9 +565,9 @@ export const SplitPDFsView: React.FC = () => {
 
         {/* File Info Section - Full width like header/footer */}
         {uploadedFile && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-slate-800 flex items-center">
+              <h2 className="text-xl font-semibold text-slate-100 flex items-center">
                 <span className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-3 shadow-lg mr-4">
                   <svg
                     className="w-6 h-6 text-white"
@@ -603,9 +603,9 @@ export const SplitPDFsView: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex items-center space-x-4 p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="flex items-center space-x-4 p-3 border border-slate-600 bg-slate-700/50 rounded-lg">
                 {/* Thumbnail */}
-                <div className="flex-shrink-0 w-16 h-20 bg-gray-200 dark:bg-gray-600 rounded overflow-hidden">
+                <div className="flex-shrink-0 w-16 h-20 bg-slate-600 rounded overflow-hidden">
                   {uploadedFile.thumbnail ? (
                     <img
                       src={uploadedFile.thumbnail}
@@ -614,7 +614,7 @@ export const SplitPDFsView: React.FC = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-slate-400">
                         PDF
                       </span>
                     </div>
@@ -623,10 +623,10 @@ export const SplitPDFsView: React.FC = () => {
 
                 {/* File Info */}
                 <div className="flex-grow min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-medium text-slate-100 truncate">
                     {uploadedFile.file.name}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-slate-400">
                     {(uploadedFile.file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
@@ -636,8 +636,8 @@ export const SplitPDFsView: React.FC = () => {
         )}
 
         {uploadedFile && !uploadedFile.error && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-white/20 mt-8">
-            <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+          <div className="bg-slate-800/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-slate-700 mt-8">
+            <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center">
               <span className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-3 shadow-lg mr-4">
                 <svg
                   className="w-6 h-6 text-white"
@@ -659,11 +659,11 @@ export const SplitPDFsView: React.FC = () => {
             <div className="space-y-6">
               {/* Output Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-slate-300 mb-3">
                   Output Type
                 </label>
                 <div className="space-y-3">
-                  <label className="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer">
+                  <label className="flex items-start p-3 border border-slate-600 rounded-lg hover:bg-slate-700/50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="outputType"
@@ -681,16 +681,16 @@ export const SplitPDFsView: React.FC = () => {
                       className="mr-3 mt-1"
                     />
                     <div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-slate-200">
                         Split to separate PDF documents
                       </span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-slate-400 mt-1">
                         Creates individual PDF files for each specified page
                         (e.g., page 1, page 2, etc.)
                       </p>
                     </div>
                   </label>
-                  <label className="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer">
+                  <label className="flex items-start p-3 border border-slate-600 rounded-lg hover:bg-slate-700/50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="outputType"
@@ -708,16 +708,16 @@ export const SplitPDFsView: React.FC = () => {
                       className="mr-3 mt-1"
                     />
                     <div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-slate-200">
                         Convert to image files
                       </span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-slate-400 mt-1">
                         Converts each page to JPEG or PNG images with
                         customizable quality
                       </p>
                     </div>
                   </label>
-                  <label className="flex items-start p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer">
+                  <label className="flex items-start p-3 border border-slate-600 rounded-lg hover:bg-slate-700/50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="outputType"
@@ -735,10 +735,10 @@ export const SplitPDFsView: React.FC = () => {
                       className="mr-3 mt-1"
                     />
                     <div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <span className="text-sm font-medium text-slate-200">
                         Extract to single PDF document
                       </span>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-slate-400 mt-1">
                         Extracts specified pages and combines them into one new
                         PDF document
                       </p>
@@ -749,7 +749,7 @@ export const SplitPDFsView: React.FC = () => {
 
               {/* Page Range */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-slate-300 mb-2">
                   Page Range
                 </label>
                 <input
@@ -757,19 +757,19 @@ export const SplitPDFsView: React.FC = () => {
                   value={splitSettings.pageRange}
                   onChange={(e) => handlePageRangeChange(e.target.value)}
                   placeholder="e.g., all, 1,2,3, 2-5, 7"
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 dark:bg-gray-700 dark:text-white ${
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 bg-slate-700 text-slate-100 ${
                     pageRangeValidation.isValid
-                      ? "border-gray-300 dark:border-gray-600 focus:ring-sky-500"
-                      : "border-red-300 dark:border-red-600 focus:ring-red-500"
+                      ? "border-slate-600 focus:ring-sky-500"
+                      : "border-red-600 focus:ring-red-500"
                   }`}
                 />
                 {pageRangeValidation.error && (
-                  <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                  <p className="text-xs text-red-400 mt-1">
                     {pageRangeValidation.error}
                   </p>
                 )}
                 <div className="mt-2">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  <p className="text-xs text-slate-400 mb-2">
                     Valid examples:
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -779,7 +779,7 @@ export const SplitPDFsView: React.FC = () => {
                           key={example}
                           type="button"
                           onClick={() => handlePageRangeChange(example)}
-                          className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                          className="px-2 py-1 text-xs bg-slate-700 text-slate-300 border border-slate-600 rounded hover:bg-slate-600 transition-colors"
                         >
                           {example}
                         </button>
@@ -793,7 +793,7 @@ export const SplitPDFsView: React.FC = () => {
               {splitSettings.outputType === "images" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
                       Image Format
                     </label>
                     <select
@@ -804,7 +804,7 @@ export const SplitPDFsView: React.FC = () => {
                           imageFormat: e.target.value as "jpeg" | "png",
                         }))
                       }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-3 py-2 border border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 bg-slate-700 text-slate-100"
                     >
                       <option value="jpeg">JPEG (smaller files)</option>
                       <option value="png">PNG (lossless)</option>
@@ -812,7 +812,7 @@ export const SplitPDFsView: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
                       Image Quality:{" "}
                       {Math.round(splitSettings.imageQuality * 100)}%
                     </label>

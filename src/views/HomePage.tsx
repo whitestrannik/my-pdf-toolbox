@@ -242,7 +242,7 @@ export default function HomePage() {
             </p>
             <Link
               to="/combine"
-              className="inline-flex items-center rounded-2xl bg-slate-100 px-8 py-4 text-base font-semibold text-slate-900 shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:bg-white"
+              className="inline-flex items-center rounded-2xl bg-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:bg-blue-700"
             >
               Start Processing PDFs
               <ChevronRight className="ml-2 h-5 w-5" />
